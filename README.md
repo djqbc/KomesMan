@@ -1,2 +1,3 @@
 # KomesMan
-an Python Pac-Man clone
+an Python Pac-Man clone...
+but much better
