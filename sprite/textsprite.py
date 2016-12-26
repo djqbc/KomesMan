@@ -1,4 +1,4 @@
-from mysprite import MySprite
+from sprite.mysprite import MySprite
 import pygame
 
 class TextSprite(MySprite):
