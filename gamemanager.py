@@ -10,6 +10,7 @@ from map import Map
 from system.drawsystem import DrawSystem
 from system.usermovementsystem import UserMovementSystem
 from system.aimovementsystem import AiMovementSystem
+from system.tagsystem import TagSystem
 from entity import Entity
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
@@ -27,7 +28,13 @@ class GameManager:
     drawSystem = DrawSystem()
     userMoveSystem = UserMovementSystem()
     aiMoveSystem = AiMovementSystem()
-    allSystems = [userMoveSystem, aiMoveSystem, drawSystem]#kolejnosc moze byc wazna
+    tagSystem = TagSystem()
+    allSystems = {
+        tagSystem.NAME : tagSystem,
+        userMoveSystem.NAME : userMoveSystem, 
+        aiMoveSystem.NAME : aiMoveSystem, 
+        drawSystem.NAME : drawSystem
+        }#kolejnosc moze byc wazna
     
     def __init__(self):
         pygame.init()
@@ -38,8 +45,8 @@ class GameManager:
     
     def update(self, _timeDelta):
         '''Updates current game state'''
-        for system in self.allSystems:
-            system.update(_timeDelta)
+        for _, system in self.allSystems.items():
+            system.update(_timeDelta, self.allSystems)
     
     def init(self):
         self.helperCreateKomesMan()
@@ -70,13 +77,15 @@ class GameManager:
         komesMan = Entity()
         komesMan.addArtifact(SpriteArtifact(KomesManSprite(), 0, 0))
         komesMan.addArtifact(MovementArtifact())
+        komesMan.addArtifact(TagArtifact("KomesMan"))
+        self.tagSystem.register(komesMan)
         self.userMoveSystem.register(komesMan)
         self.drawSystem.register(komesMan)
         
     def helperCreateCop(self, _x, _y):
         cop = Entity()
         cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y))
-        cop.addArtifact(MovementArtifact())
+        cop.addArtifact(MovementArtifact(0.3))
         self.aiMoveSystem.register(cop)
         self.drawSystem.register(cop)
 

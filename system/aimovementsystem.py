@@ -1,8 +1,11 @@
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
+from sprite.mysprite import AnimationState
+from system.tagsystem import TagSystem
 import pygame
 
 class AiMovementSystem:
+    NAME = "AiMovementSystem"
     observing = []
     def __init__(self):
         pass
@@ -11,7 +14,33 @@ class AiMovementSystem:
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
-    def update(self, _delta):
-        pass
+    def update(self, _delta, _systems):
+        tagSystem = _systems[TagSystem.NAME]
+        entities = tagSystem.getEntities("KomesMan")
+        if entities != None:
+            komesMan = entities[0]
+            x = komesMan.artifacts[SpriteArtifact.NAME].positionX
+            y = komesMan.artifacts[SpriteArtifact.NAME].positionY
+            for cop in self.observing:#pozniej otagowac grupy wrogow i dla kazdej z nich miec mozliwosc innego kontrolera
+                if cop.artifacts[SpriteArtifact.NAME].positionX < x:
+                    cop.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_RIGHT
+                    cop.artifacts[MovementArtifact.NAME].movementVector[0] = 1
+                elif cop.artifacts[SpriteArtifact.NAME].positionX > x:
+                    cop.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_LEFT
+                    cop.artifacts[MovementArtifact.NAME].movementVector[0] = -1
+                else:
+                    cop.artifacts[MovementArtifact.NAME].movementVector[0] = 0
+                if cop.artifacts[SpriteArtifact.NAME].positionY < y:
+                    cop.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_DOWN
+                    cop.artifacts[MovementArtifact.NAME].movementVector[1] = 1
+                elif cop.artifacts[SpriteArtifact.NAME].positionY > y:
+                    cop.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_UP
+                    cop.artifacts[MovementArtifact.NAME].movementVector[1] = -1
+                else:
+                    cop.artifacts[MovementArtifact.NAME].movementVector[1] = 0
+                
+                if cop.artifacts[MovementArtifact.NAME].movementVector != [0, 0]:
+                    cop.artifacts[SpriteArtifact.NAME].positionX += (cop.artifacts[MovementArtifact.NAME].movementVector[0] * cop.artifacts[MovementArtifact.NAME].speedModifier)
+                    cop.artifacts[SpriteArtifact.NAME].positionY += (cop.artifacts[MovementArtifact.NAME].movementVector[1] * cop.artifacts[MovementArtifact.NAME].speedModifier)
     def input(self, _event):
         pass

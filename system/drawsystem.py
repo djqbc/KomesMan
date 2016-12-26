@@ -1,6 +1,7 @@
 from artifact.spriteartifact import SpriteArtifact
 
 class DrawSystem:
+    NAME = "DrawSystem"
     observing = []
     def register(self, _object):
         if SpriteArtifact.NAME in _object.artifacts:   
@@ -11,6 +12,6 @@ class DrawSystem:
         for entity in self.observing:
             entity.artifacts[SpriteArtifact.NAME].sprite.draw(_screen, entity.artifacts[SpriteArtifact.NAME].positionX, 
                                                               entity.artifacts[SpriteArtifact.NAME].positionY)
-    def update(self, _timeDelta):
+    def update(self, _timeDelta, _systems):
         for entity in self.observing:
             entity.artifacts[SpriteArtifact.NAME].sprite.update(_timeDelta)

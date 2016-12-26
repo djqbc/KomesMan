@@ -4,6 +4,7 @@ from sprite.mysprite import AnimationState
 import pygame
 
 class UserMovementSystem:
+    NAME = "UserMovementSystem"
     observing = []
     activeKeys = {}
     
@@ -14,7 +15,7 @@ class UserMovementSystem:
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
-    def update(self, _delta):
+    def update(self, _delta, _systems):
         for entity in self.observing:
             if entity.artifacts[MovementArtifact.NAME].movementVector != [0, 0]:
                 entity.artifacts[SpriteArtifact.NAME].positionX += (entity.artifacts[MovementArtifact.NAME].movementVector[0] * entity.artifacts[MovementArtifact.NAME].speedModifier)
