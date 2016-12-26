@@ -1,6 +1,7 @@
 from enum import Enum
 import sys, pygame
 
+from binaryboardtospritesconverter import BinaryBoardToSpritesConverter
 from board import Board
 from predefinedboard import PredefinedBoard
 from sprite.komesmansprite import KomesManSprite
@@ -52,7 +53,8 @@ class GameManager:
         self.helperCreateKomesMan()
         self.helperCreateCop(200, 0)
         self.helperCreateCop(400, 0)
-        self.helperCreateBoard(PredefinedBoard().get_board())
+        self.helperCreateBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
+        #self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
     
