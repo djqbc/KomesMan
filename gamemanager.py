@@ -1,5 +1,8 @@
 from enum import Enum
 import sys, pygame
+
+from board import Board
+from predefinedboard import PredefinedBoard
 from sprite.komesmansprite import KomesManSprite
 from sprite.copsprite import CopSprite
 from map import Map
@@ -29,7 +32,7 @@ class GameManager:
     def __init__(self):
         pygame.init()
         self.gameState = GameState.INIT
-        self.screen = pygame.display.set_mode((800, 600), 0, 32)
+        self.screen = pygame.display.set_mode((1024, 768), 0, 32)
         pygame.display.set_caption('KomesMan')        
         self.init()
     
@@ -42,6 +45,7 @@ class GameManager:
         self.helperCreateKomesMan()
         self.helperCreateCop(200, 0)
         self.helperCreateCop(400, 0)
+        self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
     
@@ -75,3 +79,7 @@ class GameManager:
         cop.addArtifact(MovementArtifact())
         self.aiMoveSystem.register(cop)
         self.drawSystem.register(cop)
+
+    def helperCreateBoard(self, predefinedboard):
+        board = Board(predefinedboard, self.drawSystem)
+
