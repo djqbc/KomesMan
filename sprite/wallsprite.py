@@ -4,6 +4,7 @@ from sprite.mysprite import MySprite
 
 class WallKind(Enum):
     '''Enum representing animation state'''
+    NONE = 0
     CORNER_TOPLEFT = 1
     CORNER_BOTTOMLEFT = 2
     CORNER_BOTTOMRIGHT = 3
@@ -15,6 +16,36 @@ class WallKind(Enum):
     END_LEFT = 9
     END_TOP = 10
     SQUARE = 11
+    
+class WallKindDirection(Enum):
+    IN = 0
+    OUT = 1
+
+class Direction(Enum):
+    LEFT = 0
+    RIGHT = 1
+    UP = 2
+    DOWN = 3
+    
+class WallKindTrueTable:
+    table = {
+        Direction.LEFT : {
+            WallKindDirection.IN : [WallKind.CORNER_TOPLEFT, WallKind.CORNER_BOTTOMLEFT, WallKind.HORIZONTAL_WALL, WallKind.END_LEFT, WallKind.NONE],
+            WallKindDirection.OUT : [WallKind.CORNER_BOTTOMRIGHT, WallKind.CORNER_TOPRIGHT, WallKind.HORIZONTAL_WALL, WallKind.END_RIGHT, WallKind.NONE]
+            },
+        Direction.RIGHT : {
+            WallKindDirection.IN : [WallKind.CORNER_BOTTOMRIGHT, WallKind.CORNER_TOPRIGHT, WallKind.HORIZONTAL_WALL, WallKind.END_RIGHT, WallKind.NONE],
+            WallKindDirection.OUT : [WallKind.CORNER_TOPLEFT, WallKind.CORNER_BOTTOMLEFT, WallKind.HORIZONTAL_WALL, WallKind.END_LEFT, WallKind.NONE]
+            },
+        Direction.UP : {
+            WallKindDirection.IN : [WallKind.CORNER_TOPLEFT, WallKind.CORNER_TOPRIGHT, WallKind.VERTICAL_WALL, WallKind.END_TOP, WallKind.NONE],
+            WallKindDirection.OUT : [WallKind.CORNER_BOTTOMLEFT, WallKind.CORNER_BOTTOMRIGHT, WallKind.VERTICAL_WALL, WallKind.END_BOTTOM, WallKind.NONE]
+            },
+        Direction.DOWN : {
+            WallKindDirection.IN : [WallKind.CORNER_BOTTOMLEFT, WallKind.CORNER_BOTTOMRIGHT, WallKind.VERTICAL_WALL, WallKind.END_BOTTOM, WallKind.NONE],
+            WallKindDirection.OUT : [WallKind.CORNER_TOPLEFT, WallKind.CORNER_TOPRIGHT, WallKind.VERTICAL_WALL, WallKind.END_TOP, WallKind.NONE]
+            }
+        }
 
 
 class WallSprite(MySprite):
@@ -35,6 +66,7 @@ class WallSprite(MySprite):
 
     def __init__(self, wallkind):
         super(WallSprite, self).__init__()
+        self.wallkind = wallkind
         self.image = pygame.image.load(self.wallkinds[wallkind]);
 
     def draw(self, _screen, _positionX, _positionY):

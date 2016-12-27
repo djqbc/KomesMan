@@ -17,6 +17,7 @@ class AiMovementSystem:
     def update(self, _delta, _systems):
         tagSystem = _systems[TagSystem.NAME]
         entities = tagSystem.getEntities("KomesMan")
+        board = tagSystem.getEntities("Board")[0]
         if entities != None:
             komesMan = entities[0]
             x = komesMan.artifacts[SpriteArtifact.NAME].positionX
@@ -40,7 +41,10 @@ class AiMovementSystem:
                     cop.artifacts[MovementArtifact.NAME].movementVector[1] = 0
                 
                 if cop.artifacts[MovementArtifact.NAME].movementVector != [0, 0]:
-                    cop.artifacts[SpriteArtifact.NAME].positionX += (cop.artifacts[MovementArtifact.NAME].movementVector[0] * cop.artifacts[MovementArtifact.NAME].speedModifier)
-                    cop.artifacts[SpriteArtifact.NAME].positionY += (cop.artifacts[MovementArtifact.NAME].movementVector[1] * cop.artifacts[MovementArtifact.NAME].speedModifier)
+                    dX = cop.artifacts[MovementArtifact.NAME].movementVector[0] * cop.artifacts[MovementArtifact.NAME].speedModifier
+                    dY = cop.artifacts[MovementArtifact.NAME].movementVector[1] * cop.artifacts[MovementArtifact.NAME].speedModifier
+                    if board.checkMove(cop.artifacts[SpriteArtifact.NAME].positionX, cop.artifacts[SpriteArtifact.NAME].positionY, dX, dY):
+                        cop.artifacts[SpriteArtifact.NAME].positionX += dX
+                        cop.artifacts[SpriteArtifact.NAME].positionY += dY
     def input(self, _event):
         pass

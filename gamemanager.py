@@ -50,10 +50,10 @@ class GameManager:
             system.update(_timeDelta, self.allSystems)
     
     def init(self):
+        self.helperCreateBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
         self.helperCreateKomesMan()
         self.helperCreateCop(200, 0)
         self.helperCreateCop(400, 0)
-        self.helperCreateBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
         #self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
@@ -92,5 +92,5 @@ class GameManager:
         self.drawSystem.register(cop)
 
     def helperCreateBoard(self, predefinedboard):
-        board = Board(predefinedboard, self.drawSystem)
+        board = Board(predefinedboard, self.allSystems)
 

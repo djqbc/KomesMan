@@ -1,6 +1,7 @@
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
 from sprite.mysprite import AnimationState
+from system.tagsystem import TagSystem
 import pygame
 
 class UserMovementSystem:
@@ -16,10 +17,15 @@ class UserMovementSystem:
         else:
             raise NameError("ERROR!!!")
     def update(self, _delta, _systems):
+        tagSystem = _systems[TagSystem.NAME]
+        board = tagSystem.getEntities("Board")[0]
         for entity in self.observing:
             if entity.artifacts[MovementArtifact.NAME].movementVector != [0, 0]:
-                entity.artifacts[SpriteArtifact.NAME].positionX += (entity.artifacts[MovementArtifact.NAME].movementVector[0] * entity.artifacts[MovementArtifact.NAME].speedModifier)
-                entity.artifacts[SpriteArtifact.NAME].positionY += (entity.artifacts[MovementArtifact.NAME].movementVector[1] * entity.artifacts[MovementArtifact.NAME].speedModifier)
+                dX = entity.artifacts[MovementArtifact.NAME].movementVector[0] * entity.artifacts[MovementArtifact.NAME].speedModifier
+                dY = entity.artifacts[MovementArtifact.NAME].movementVector[1] * entity.artifacts[MovementArtifact.NAME].speedModifier
+                if board.checkMove(entity.artifacts[SpriteArtifact.NAME].positionX, entity.artifacts[SpriteArtifact.NAME].positionY, dX, dY):
+                    entity.artifacts[SpriteArtifact.NAME].positionX += dX
+                    entity.artifacts[SpriteArtifact.NAME].positionY += dY
     def input(self, _event):
         if _event.type == pygame.KEYDOWN:
             if _event.key == pygame.K_DOWN:
