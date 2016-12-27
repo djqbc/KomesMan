@@ -9,6 +9,9 @@ class AiMovementSystem:
     observing = []
     def __init__(self):
         pass
+    def remove(self, _entity):
+        self.observing[:] = [entity for entity in self.observing if entity != _entity]
+                
     def register(self, _object):
         if SpriteArtifact.NAME in _object.artifacts and MovementArtifact.NAME in _object.artifacts:   
             self.observing.append(_object)

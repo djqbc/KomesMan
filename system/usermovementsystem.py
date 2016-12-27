@@ -16,6 +16,8 @@ class UserMovementSystem:
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
+    def remove(self, _entity):
+        self.observing[:] = [entity for entity in self.observing if entity != _entity]
     def update(self, _delta, _systems):
         tagSystem = _systems[TagSystem.NAME]
         board = tagSystem.getEntities("Board")[0]

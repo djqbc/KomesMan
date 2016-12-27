@@ -1,4 +1,3 @@
-from enum import Enum
 import sys, pygame
 
 from binaryboardtospritesconverter import BinaryBoardToSpritesConverter
@@ -15,31 +14,36 @@ from system.tagsystem import TagSystem
 from entity import Entity
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
-from artifact.tagartifact import TagArtifact
-
-class GameState(Enum):
-    '''Enum representing game state'''
-    INIT = 0
-    END = 1
+from artifact.tagartifact import TagArtifact, TagType
+from system.collisionsystem import CollisionSystem
+from artifact.behaviorartifact import BehaviorArtifact
+from behavior.simplecopbehavior import SimpleCopBehavior
+from behavior.komesmanbehavior import KomesManBehavior
+from system.gamesystem import GameSystem
+from sprite.beersprite import BeerSprite
+from behavior.beerbehavior import BeerBehavior
+from myevents import REMOVE_OBJECT_EVENT
 
 class GameManager:
     '''Class managing game state''' 
-    gameState = GameState.INIT  
     screen = None
     drawSystem = DrawSystem()
     userMoveSystem = UserMovementSystem()
     aiMoveSystem = AiMovementSystem()
     tagSystem = TagSystem()
+    collisionSystem = CollisionSystem()
+    gameSystem = GameSystem()
     allSystems = {
         tagSystem.NAME : tagSystem,
+        collisionSystem.NAME : collisionSystem,
         userMoveSystem.NAME : userMoveSystem, 
         aiMoveSystem.NAME : aiMoveSystem, 
-        drawSystem.NAME : drawSystem
+        drawSystem.NAME : drawSystem,
+        gameSystem.NAME : gameSystem
         }#kolejnosc moze byc wazna
     
     def __init__(self):
         pygame.init()
-        self.gameState = GameState.INIT
         self.screen = pygame.display.set_mode((1024, 768), 0, 32)
         pygame.display.set_caption('KomesMan')        
         self.init()
@@ -54,6 +58,7 @@ class GameManager:
         self.helperCreateKomesMan()
         self.helperCreateCop(200, 0)
         self.helperCreateCop(400, 0)
+        self.helperCreateBeer(0, 100)
         #self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
@@ -66,30 +71,46 @@ class GameManager:
         pygame.display.flip()
     
     def input(self, _event):
-        if _event.type == pygame.QUIT:
-            self.gameState = GameState.END
+        if _event.type == REMOVE_OBJECT_EVENT:
+            for _, system in self.allSystems.items():
+                system.remove(_event.reference)
         else:
-            self.userMoveSystem.input(_event)
-            self.aiMoveSystem.input(_event)
+            for _, system in self.allSystems.items():
+                system.input(_event)
     
     def quit(self):
-        return (self.gameState == GameState.END)
+        return self.gameSystem.quit()
     
     def helperCreateKomesMan(self):
         komesMan = Entity()
         komesMan.addArtifact(SpriteArtifact(KomesManSprite(), 0, 0))
         komesMan.addArtifact(MovementArtifact())
-        komesMan.addArtifact(TagArtifact("KomesMan"))
+        komesMan.addArtifact(TagArtifact("KomesMan", TagType.KOMESMAN))
+        komesMan.addArtifact(BehaviorArtifact(KomesManBehavior()))
         self.tagSystem.register(komesMan)
         self.userMoveSystem.register(komesMan)
         self.drawSystem.register(komesMan)
+        self.collisionSystem.register(komesMan)
         
     def helperCreateCop(self, _x, _y):
         cop = Entity()
         cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y))
         cop.addArtifact(MovementArtifact(0.3))
+        cop.addArtifact(TagArtifact("Enemy", TagType.ENEMY))
+        cop.addArtifact(BehaviorArtifact(SimpleCopBehavior()))
         self.aiMoveSystem.register(cop)
         self.drawSystem.register(cop)
+        self.tagSystem.register(cop)
+        self.collisionSystem.register(cop)
+        
+    def helperCreateBeer(self, _x, _y):
+        beer = Entity()
+        beer.addArtifact(SpriteArtifact(BeerSprite(), _x, _y))
+        beer.addArtifact(TagArtifact("Item", TagType.ITEM))
+        beer.addArtifact(BehaviorArtifact(BeerBehavior()))
+        self.drawSystem.register(beer)
+        self.tagSystem.register(beer)
+        self.collisionSystem.register(beer)
 
     def helperCreateBoard(self, predefinedboard):
         board = Board(predefinedboard, self.allSystems)

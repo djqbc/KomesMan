@@ -30,6 +30,8 @@ class KomesManSprite(MySprite):
             }
     def draw(self, _screen, _positionX, _positionY):
         diff = self.timeElapsed - floor(self.timeElapsed) 
+        self.image2 = self.animations[self.currentAnimation][0]
+        self.rect = self.image2.get_rect()
         if diff < 0.33:
             _screen.blit(self.animations[self.currentAnimation][0], (_positionX, _positionY))
         elif diff < 0.66:
