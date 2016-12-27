@@ -56,9 +56,9 @@ class GameManager:
     def init(self):
         self.helperCreateBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
         self.helperCreateKomesMan()
-        self.helperCreateCop(200, 0)
-        self.helperCreateCop(400, 0)
-        self.helperCreateBeer(0, 100)
+        self.helperCreateCop(200, 64)
+        self.helperCreateCop(400, 64)
+        self.helperCreateBeer(0, 320)
         #self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
@@ -83,7 +83,7 @@ class GameManager:
     
     def helperCreateKomesMan(self):
         komesMan = Entity()
-        komesMan.addArtifact(SpriteArtifact(KomesManSprite(), 0, 0))
+        komesMan.addArtifact(SpriteArtifact(KomesManSprite(), 64, 64))
         komesMan.addArtifact(MovementArtifact())
         komesMan.addArtifact(TagArtifact("KomesMan", TagType.KOMESMAN))
         komesMan.addArtifact(BehaviorArtifact(KomesManBehavior()))
