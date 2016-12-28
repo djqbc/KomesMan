@@ -3,6 +3,7 @@ from artifact.spriteartifact import SpriteArtifact
 from sprite.mysprite import AnimationState
 from system.tagsystem import TagSystem
 import pygame
+from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, startTimer
 
 class UserMovementSystem:
     NAME = "UserMovementSystem"
@@ -75,3 +76,17 @@ class UserMovementSystem:
                     self.activeKeys[pygame.K_RIGHT] = False
                     for entity in self.observing:
                         entity.artifacts[MovementArtifact.NAME].movementVector[0] = 0
+        elif _event.type == ENTITY_EFFECT_EVENT:
+            if _event.reason == EventType.START:
+                for entity in self.observing:
+                    if entity == _event.reference:
+                        if _event.effect == EntityEffect.SPEED_CHANGE:
+                            entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
+                            startTimer(_event.time, lambda : 
+                                       pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.SPEED_CHANGE, 
+                                                                            reason=EventType.STOP, modifier=1.0/_event.modifier, reference=_event.reference)))
+            elif _event.reason == EventType.STOP:
+                for entity in self.observing:
+                    if entity == _event.reference:
+                        if _event.effect == EntityEffect.SPEED_CHANGE:
+                            entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
