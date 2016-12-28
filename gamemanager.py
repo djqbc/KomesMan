@@ -25,6 +25,8 @@ from behavior.beerbehavior import BeerBehavior
 from myevents import REMOVE_OBJECT_EVENT
 from sprite.drugsprite import DrugSprite
 from behavior.drugbehavior import DrugBehavior
+from sprite.capsprite import CapSprite
+from behavior.capbehavior import CapBehavior
 
 class GameManager:
     '''Class managing game state''' 
@@ -62,6 +64,7 @@ class GameManager:
         self.helperCreateCop(400, 64)
         self.helperCreateBeer(0, 320)
         self.helperCreateDrug(448, 320)
+        self.helperCreateCap(640, 320)
         #self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
@@ -123,6 +126,15 @@ class GameManager:
         self.drawSystem.register(drug)
         self.tagSystem.register(drug)
         self.collisionSystem.register(drug)
+        
+    def helperCreateCap(self, _x, _y):
+        cap = Entity()
+        cap.addArtifact(SpriteArtifact(CapSprite(), _x, _y))
+        cap.addArtifact(TagArtifact("Item", TagType.ITEM))
+        cap.addArtifact(BehaviorArtifact(CapBehavior()))
+        self.drawSystem.register(cap)
+        self.tagSystem.register(cap)
+        self.collisionSystem.register(cap)
 
     def helperCreateBoard(self, predefinedboard):
         board = Board(predefinedboard, self.allSystems)
