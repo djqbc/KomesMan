@@ -12,7 +12,9 @@ class UserMovementSystem:
     activeKeys = {}
     
     def __init__(self):
-        pass
+        self.previousdX = 0
+        self.previousdY = 0
+
     def register(self, _object):
         if SpriteArtifact.NAME in _object.artifacts and MovementArtifact.NAME in _object.artifacts:   
             self.observing.append(_object)
@@ -20,6 +22,7 @@ class UserMovementSystem:
             raise NameError("ERROR!!!")
     def remove(self, _entity):
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
+
     def update(self, _delta, _systems):
         if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
             return
@@ -32,6 +35,16 @@ class UserMovementSystem:
                 if board.checkMove(entity.artifacts[SpriteArtifact.NAME].positionX, entity.artifacts[SpriteArtifact.NAME].positionY, dX, dY):
                     entity.artifacts[SpriteArtifact.NAME].positionX += dX
                     entity.artifacts[SpriteArtifact.NAME].positionY += dY
+                    self.previousdX=dX
+                    self.previousdY=dY
+                else:
+                    if dX != 0:  # left
+                        if board.checkMove(entity.artifacts[SpriteArtifact.NAME].positionX, entity.artifacts[SpriteArtifact.NAME].positionY, 0, self.previousdY):
+                            entity.artifacts[SpriteArtifact.NAME].positionY += self.previousdY
+                    if dY != 0:  # up
+                        if board.checkMove(entity.artifacts[SpriteArtifact.NAME].positionX, entity.artifacts[SpriteArtifact.NAME].positionY, self.previousdX, 0):
+                            entity.artifacts[SpriteArtifact.NAME].positionX += self.previousdX
+
     def input(self, _event):
         if _event.type == pygame.KEYDOWN:
             if _event.key == pygame.K_DOWN:

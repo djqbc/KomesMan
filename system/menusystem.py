@@ -48,4 +48,7 @@ class MenuSystem:
                 self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.addHighlight()
             elif _event.key == pygame.K_RETURN and self.currentGameState == GameState.MENU:
                 #narazie kazda opcja zaczyna gre
-                pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.START_NEW_GAME))
+                if self.currentIndex == 0:
+                    pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.START_NEW_GAME))
+                if self.currentIndex == 1:
+                    pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.QUIT))

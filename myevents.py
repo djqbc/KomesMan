@@ -2,7 +2,9 @@ import pygame
 from enum import Enum
 from threading import Timer
 
-#fajnie byoby to pozamieniac na enum ale mi sie nie chce 
+#fajnie byoby to pozamieniac na enum ale mi sie nie chce
+#czemu mnie to nie dziwi?
+
 COLLISION_EVENT = pygame.USEREVENT + 1
 LOST_GAME_EVENT = pygame.USEREVENT + 2
 REMOVE_OBJECT_EVENT = pygame.USEREVENT + 3
@@ -24,6 +26,7 @@ class EntityEffect(Enum):
 
 class MenuEventType(Enum):
     START_NEW_GAME = 0
+    QUIT = 1
 
 def startTimer(_timeoutMs, _timeoutCallback):
     t = Timer(_timeoutMs / 1000, _timeoutCallback)

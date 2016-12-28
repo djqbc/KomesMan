@@ -28,6 +28,9 @@ class GameSystem:
             if _event.action == MenuEventType.START_NEW_GAME:
                 self.gameState = GameState.GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME))
+            if _event.action == MenuEventType.QUIT:
+                self.gameState = GameState.END
+                pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))
         elif _event.type == pygame.KEYUP:
             if _event.key == pygame.K_ESCAPE:
                 if self.gameState == GameState.GAME:
