@@ -9,6 +9,7 @@ REMOVE_OBJECT_EVENT = pygame.USEREVENT + 3
 SCREEN_EFFECT_EVENT = pygame.USEREVENT + 4
 GAME_STATE_CHANGE_EVENT = pygame.USEREVENT + 5
 ENTITY_EFFECT_EVENT = pygame.USEREVENT + 6
+MENU_EVENT = pygame.USEREVENT + 7
 
 class ScreenEffectEvent(Enum):
     BLUR = 0
@@ -20,6 +21,9 @@ class EventType(Enum):
     
 class EntityEffect(Enum):
     SPEED_CHANGE = 0    
+
+class MenuEventType(Enum):
+    START_NEW_GAME = 0
 
 def startTimer(_timeoutMs, _timeoutCallback):
     t = Timer(_timeoutMs / 1000, _timeoutCallback)

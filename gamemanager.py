@@ -19,7 +19,7 @@ from system.collisionsystem import CollisionSystem
 from artifact.behaviorartifact import BehaviorArtifact
 from behavior.simplecopbehavior import SimpleCopBehavior
 from behavior.komesmanbehavior import KomesManBehavior
-from system.gamesystem import GameSystem
+from system.gamesystem import GameSystem, GameState
 from sprite.beersprite import BeerSprite
 from behavior.beerbehavior import BeerBehavior
 from myevents import REMOVE_OBJECT_EVENT
@@ -27,6 +27,9 @@ from sprite.drugsprite import DrugSprite
 from behavior.drugbehavior import DrugBehavior
 from sprite.capsprite import CapSprite
 from behavior.capbehavior import CapBehavior
+from sprite.textsprite import TextSprite
+from system.menusystem import MenuSystem
+from sprite.simpleimagesprite import SimpleImageSprite
 
 class GameManager:
     '''Class managing game state''' 
@@ -37,13 +40,15 @@ class GameManager:
     tagSystem = TagSystem()
     collisionSystem = CollisionSystem()
     gameSystem = GameSystem()
+    menuSystem = MenuSystem()
     allSystems = {
         tagSystem.NAME : tagSystem,
         collisionSystem.NAME : collisionSystem,
         userMoveSystem.NAME : userMoveSystem, 
         aiMoveSystem.NAME : aiMoveSystem, 
         drawSystem.NAME : drawSystem,
-        gameSystem.NAME : gameSystem
+        gameSystem.NAME : gameSystem,
+        menuSystem.NAME : menuSystem
         }#kolejnosc moze byc wazna
     
     def __init__(self):
@@ -65,9 +70,14 @@ class GameManager:
         self.helperCreateBeer(0, 320)
         self.helperCreateDrug(448, 320)
         self.helperCreateCap(640, 320)
+        self.helperCreateMenuBackground(0, 0)
+        self.helperCreateMenuElement(0, 0, "Play", None)
+        self.helperCreateMenuElement(0, 50, "Test2", None)
         #self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
+        
+        self.gameSystem.endInit()
     
     def render(self, _updateMidstep):
         '''Renders currect scene'''
@@ -89,7 +99,7 @@ class GameManager:
     
     def helperCreateKomesMan(self):
         komesMan = Entity()
-        komesMan.addArtifact(SpriteArtifact(KomesManSprite(), 64, 64))
+        komesMan.addArtifact(SpriteArtifact(KomesManSprite(), 64, 64, GameState.GAME))
         komesMan.addArtifact(MovementArtifact())
         komesMan.addArtifact(TagArtifact("KomesMan", TagType.KOMESMAN))
         komesMan.addArtifact(BehaviorArtifact(KomesManBehavior()))
@@ -100,7 +110,7 @@ class GameManager:
         
     def helperCreateCop(self, _x, _y):
         cop = Entity()
-        cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y))
+        cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y, GameState.GAME))
         cop.addArtifact(MovementArtifact(0.3))
         cop.addArtifact(TagArtifact("Enemy", TagType.ENEMY))
         cop.addArtifact(BehaviorArtifact(SimpleCopBehavior()))
@@ -111,7 +121,7 @@ class GameManager:
         
     def helperCreateBeer(self, _x, _y):
         beer = Entity()
-        beer.addArtifact(SpriteArtifact(BeerSprite(), _x, _y))
+        beer.addArtifact(SpriteArtifact(BeerSprite(), _x, _y, GameState.GAME))
         beer.addArtifact(TagArtifact("Item", TagType.ITEM))
         beer.addArtifact(BehaviorArtifact(BeerBehavior()))
         self.drawSystem.register(beer)
@@ -120,7 +130,7 @@ class GameManager:
     
     def helperCreateDrug(self, _x, _y):
         drug = Entity()
-        drug.addArtifact(SpriteArtifact(DrugSprite(), _x, _y))
+        drug.addArtifact(SpriteArtifact(DrugSprite(), _x, _y, GameState.GAME))
         drug.addArtifact(TagArtifact("Item", TagType.ITEM))
         drug.addArtifact(BehaviorArtifact(DrugBehavior()))
         self.drawSystem.register(drug)
@@ -129,12 +139,24 @@ class GameManager:
         
     def helperCreateCap(self, _x, _y):
         cap = Entity()
-        cap.addArtifact(SpriteArtifact(CapSprite(), _x, _y))
+        cap.addArtifact(SpriteArtifact(CapSprite(), _x, _y, GameState.GAME))
         cap.addArtifact(TagArtifact("Item", TagType.ITEM))
         cap.addArtifact(BehaviorArtifact(CapBehavior()))
         self.drawSystem.register(cap)
         self.tagSystem.register(cap)
         self.collisionSystem.register(cap)
+    
+    def helperCreateMenuElement(self, _x, _y, _text, _parent):
+        menu = Entity()
+        menu.addArtifact(SpriteArtifact(TextSprite(_text), _x, _y, GameState.MENU))
+        self.drawSystem.register(menu)
+        self.menuSystem.register(menu, _parent)
+        return menu
+    
+    def helperCreateMenuBackground(self, _x, _y):
+        bg = Entity()
+        bg.addArtifact(SpriteArtifact(SimpleImageSprite('res/img/logo.png'), _x, _y, GameState.MENU))
+        self.drawSystem.register(bg)
 
     def helperCreateBoard(self, predefinedboard):
         board = Board(predefinedboard, self.allSystems)

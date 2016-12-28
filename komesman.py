@@ -1,5 +1,5 @@
 from gamemanager import GameManager
-import sys, pygame, time
+import pygame, time
 
 game = GameManager()
 

@@ -4,6 +4,7 @@ from sprite.mysprite import AnimationState
 from system.tagsystem import TagSystem
 import pygame
 from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, startTimer
+from system.gamesystem import GameSystem, GameState
 
 class UserMovementSystem:
     NAME = "UserMovementSystem"
@@ -20,6 +21,8 @@ class UserMovementSystem:
     def remove(self, _entity):
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
     def update(self, _delta, _systems):
+        if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
+            return
         tagSystem = _systems[TagSystem.NAME]
         board = tagSystem.getEntities("Board")[0]
         for entity in self.observing:

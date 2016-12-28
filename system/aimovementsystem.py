@@ -3,6 +3,7 @@ from artifact.spriteartifact import SpriteArtifact
 from sprite.mysprite import AnimationState
 from system.tagsystem import TagSystem
 import pygame
+from system.gamesystem import GameSystem, GameState
 
 class AiMovementSystem:
     NAME = "AiMovementSystem"
@@ -18,6 +19,8 @@ class AiMovementSystem:
         else:
             raise NameError("ERROR!!!")
     def update(self, _delta, _systems):
+        if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
+            return
         tagSystem = _systems[TagSystem.NAME]
         entities = tagSystem.getEntities("KomesMan")
         board = tagSystem.getEntities("Board")[0]

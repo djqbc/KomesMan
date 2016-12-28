@@ -5,6 +5,7 @@ from sprite.wallsprite import WallSprite, WallKind, WallKindTrueTable, Direction
 
 from system.drawsystem import DrawSystem
 from system.tagsystem import TagSystem
+from system.gamesystem import GameState
 
 class Board(Entity):
     def __init__(self, board, systems, tilesize=64):
@@ -17,7 +18,7 @@ class Board(Entity):
             for cell in row:
                 if cell != 0:
                     tileSprite = WallSprite(cell)
-                    self.map[iY][iX].addArtifact(SpriteArtifact(tileSprite, iY*tilesize, iX*tilesize))                    
+                    self.map[iY][iX].addArtifact(SpriteArtifact(tileSprite, iY*tilesize, iX*tilesize, GameState.GAME))                    
                     systems[DrawSystem.NAME].register(self.map[iY][iX])
                 iY += 1
             iX += 1
