@@ -18,6 +18,7 @@ class AiMovementSystem:
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
+
     def update(self, _delta, _systems):
         if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
             return

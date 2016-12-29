@@ -2,6 +2,7 @@ import sys, pygame
 
 from binaryboardtospritesconverter import BinaryBoardToSpritesConverter
 from board import Board
+from pathfinder import Pathfinder
 from predefinedboard import PredefinedBoard
 from sprite.komesmansprite import KomesManSprite
 from sprite.copsprite import CopSprite
@@ -83,7 +84,6 @@ class GameManager:
         #self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
-        
         self.gameSystem.endInit()
     
     def render(self, _updateMidstep):
@@ -173,4 +173,9 @@ class GameManager:
 
     def helperCreateBoard(self, predefinedboard):
         board = Board(predefinedboard, self.allSystems)
+        # DEBUG STUFF
+        # pf = Pathfinder(predefinedboard)
+        # pf.prepareAllStepsForShortestPaths()
+        # END DEBUG STUFF
+
 
