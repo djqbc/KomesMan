@@ -4,6 +4,7 @@ from threading import Timer
 
 #fajnie byoby to pozamieniac na enum ale mi sie nie chce
 #czemu mnie to nie dziwi?
+#widze ze nie tylko mi sie nie chce ;)
 
 COLLISION_EVENT = pygame.USEREVENT + 1
 LOST_GAME_EVENT = pygame.USEREVENT + 2
@@ -12,6 +13,7 @@ SCREEN_EFFECT_EVENT = pygame.USEREVENT + 4
 GAME_STATE_CHANGE_EVENT = pygame.USEREVENT + 5
 ENTITY_EFFECT_EVENT = pygame.USEREVENT + 6
 MENU_EVENT = pygame.USEREVENT + 7
+WON_GAME_EVENT = pygame.USEREVENT + 10
 
 class ScreenEffectEvent(Enum):
     BLUR = 0
@@ -23,6 +25,7 @@ class EventType(Enum):
     
 class EntityEffect(Enum):
     SPEED_CHANGE = 0    
+    PICK_UP_CAP = 1
 
 class MenuEventType(Enum):
     START_NEW_GAME = 0

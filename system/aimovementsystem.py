@@ -29,28 +29,30 @@ class AiMovementSystem:
             x = komesMan.artifacts[SpriteArtifact.NAME].positionX
             y = komesMan.artifacts[SpriteArtifact.NAME].positionY
             for cop in self.observing:#pozniej otagowac grupy wrogow i dla kazdej z nich miec mozliwosc innego kontrolera
-                if cop.artifacts[SpriteArtifact.NAME].positionX < x:
-                    cop.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_RIGHT
-                    cop.artifacts[MovementArtifact.NAME].movementVector[0] = 1
-                elif cop.artifacts[SpriteArtifact.NAME].positionX > x:
-                    cop.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_LEFT
-                    cop.artifacts[MovementArtifact.NAME].movementVector[0] = -1
+                spriteArtifact = cop.artifacts[SpriteArtifact.NAME]
+                movementArtifact = cop.artifacts[MovementArtifact.NAME]
+                if spriteArtifact.positionX < x:
+                    spriteArtifact.sprite.currentAnimation = AnimationState.MOVE_RIGHT
+                    movementArtifact.movementVector[0] = 1
+                elif spriteArtifact.positionX > x:
+                    spriteArtifact.sprite.currentAnimation = AnimationState.MOVE_LEFT
+                    movementArtifact.movementVector[0] = -1
                 else:
-                    cop.artifacts[MovementArtifact.NAME].movementVector[0] = 0
-                if cop.artifacts[SpriteArtifact.NAME].positionY < y:
-                    cop.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_DOWN
-                    cop.artifacts[MovementArtifact.NAME].movementVector[1] = 1
-                elif cop.artifacts[SpriteArtifact.NAME].positionY > y:
-                    cop.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_UP
-                    cop.artifacts[MovementArtifact.NAME].movementVector[1] = -1
+                    movementArtifact.movementVector[0] = 0
+                if spriteArtifact.positionY < y:
+                    spriteArtifact.sprite.currentAnimation = AnimationState.MOVE_DOWN
+                    movementArtifact.movementVector[1] = 1
+                elif spriteArtifact.positionY > y:
+                    spriteArtifact.sprite.currentAnimation = AnimationState.MOVE_UP
+                    movementArtifact.movementVector[1] = -1
                 else:
-                    cop.artifacts[MovementArtifact.NAME].movementVector[1] = 0
+                    movementArtifact.movementVector[1] = 0
                 
-                if cop.artifacts[MovementArtifact.NAME].movementVector != [0, 0]:
-                    dX = cop.artifacts[MovementArtifact.NAME].movementVector[0] * cop.artifacts[MovementArtifact.NAME].speedModifier
-                    dY = cop.artifacts[MovementArtifact.NAME].movementVector[1] * cop.artifacts[MovementArtifact.NAME].speedModifier
-                    if board.checkMove(cop.artifacts[SpriteArtifact.NAME].positionX, cop.artifacts[SpriteArtifact.NAME].positionY, dX, dY):
-                        cop.artifacts[SpriteArtifact.NAME].positionX += dX
-                        cop.artifacts[SpriteArtifact.NAME].positionY += dY
+                if movementArtifact.movementVector != [0, 0]:
+                    dX = movementArtifact.movementVector[0] * movementArtifact.speedModifier * _delta
+                    dY = movementArtifact.movementVector[1] * movementArtifact.speedModifier * _delta
+                    if board.checkMove(spriteArtifact.positionX, spriteArtifact.positionY, dX, dY):
+                        spriteArtifact.positionX += dX
+                        spriteArtifact.positionY += dY
     def input(self, _event):
         pass

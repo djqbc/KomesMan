@@ -21,11 +21,14 @@ class CollisionSystem:
             x += 1
             for index in range(x, len(self.observing)):
                 entity2 = self.observing[index]
+#             for entity2 in self.observing:
                 if entity != entity2:
-                    entity.artifacts[SpriteArtifact.NAME].sprite.rect.x = entity.artifacts[SpriteArtifact.NAME].positionX
-                    entity.artifacts[SpriteArtifact.NAME].sprite.rect.y = entity.artifacts[SpriteArtifact.NAME].positionY
-                    entity2.artifacts[SpriteArtifact.NAME].sprite.rect.x = entity2.artifacts[SpriteArtifact.NAME].positionX
-                    entity2.artifacts[SpriteArtifact.NAME].sprite.rect.y = entity2.artifacts[SpriteArtifact.NAME].positionY
-                    if pygame.sprite.collide_rect(entity.artifacts[SpriteArtifact.NAME].sprite, entity2.artifacts[SpriteArtifact.NAME].sprite) == True:
+                    e1SpriteArtifact = entity.artifacts[SpriteArtifact.NAME]
+                    e2SpriteArtifact = entity2.artifacts[SpriteArtifact.NAME]
+                    e1SpriteArtifact.sprite.rect.x = e1SpriteArtifact.positionX
+                    e1SpriteArtifact.sprite.rect.y = e1SpriteArtifact.positionY
+                    e2SpriteArtifact.sprite.rect.x = e2SpriteArtifact.positionX
+                    e2SpriteArtifact.sprite.rect.y = e2SpriteArtifact.positionY
+                    if pygame.sprite.collide_rect(e1SpriteArtifact.sprite, e2SpriteArtifact.sprite) == True:
                         entity.artifacts[BehaviorArtifact.NAME].behavior.input(pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
                         entity2.artifacts[BehaviorArtifact.NAME].behavior.input(pygame.event.Event(COLLISION_EVENT, me=entity2, colliding=entity), pygame.event.post)

@@ -30,6 +30,8 @@ from behavior.capbehavior import CapBehavior
 from sprite.textsprite import TextSprite
 from system.menusystem import MenuSystem
 from sprite.simpleimagesprite import SimpleImageSprite
+from sprite.hudsprite import HUDSprite
+from system.hudsystem import HUDSystem
 
 class GameManager:
     '''Class managing game state''' 
@@ -41,7 +43,9 @@ class GameManager:
     collisionSystem = CollisionSystem()
     gameSystem = GameSystem()
     menuSystem = MenuSystem()
+    hudSystem = HUDSystem()
     allSystems = {
+        hudSystem.NAME : hudSystem,
         tagSystem.NAME : tagSystem,
         collisionSystem.NAME : collisionSystem,
         userMoveSystem.NAME : userMoveSystem, 
@@ -63,6 +67,7 @@ class GameManager:
             system.update(_timeDelta, self.allSystems)
     
     def init(self):
+        #TODO: usunac helpery - przeniesc je do osobnej klasy/klas builderow czy cos w tym stylu
         self.helperCreateBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
         self.helperCreateKomesMan()
         self.helperCreateCop(200, 64)
@@ -70,9 +75,11 @@ class GameManager:
         self.helperCreateBeer(0, 320)
         self.helperCreateDrug(448, 320)
         self.helperCreateCap(640, 320)
+        self.helperCreateCap(640, 448)
         self.helperCreateMenuBackground(0, 0)
         self.helperCreateMenuElement(490, 550, "Play", None)
         self.helperCreateMenuElement(490, 600, "Exit", None)
+        self.helperCreateHUD(950, 10)
         #self.helperCreateBoard(PredefinedBoard().get_board())
         self.m = Map()
         self.m.generate()
@@ -157,6 +164,12 @@ class GameManager:
         bg = Entity()
         bg.addArtifact(SpriteArtifact(SimpleImageSprite('res/img/logo.png'), _x, _y, GameState.MENU))
         self.drawSystem.register(bg)
+        
+    def helperCreateHUD(self, _x, _y):
+        hud = Entity()
+        hud.addArtifact(SpriteArtifact(HUDSprite(), _x, _y, GameState.GAME))
+        self.drawSystem.register(hud)
+        self.hudSystem.register(hud)
 
     def helperCreateBoard(self, predefinedboard):
         board = Board(predefinedboard, self.allSystems)

@@ -29,21 +29,23 @@ class UserMovementSystem:
         tagSystem = _systems[TagSystem.NAME]
         board = tagSystem.getEntities("Board")[0]
         for entity in self.observing:
-            if entity.artifacts[MovementArtifact.NAME].movementVector != [0, 0]:
-                dX = entity.artifacts[MovementArtifact.NAME].movementVector[0] * entity.artifacts[MovementArtifact.NAME].speedModifier
-                dY = entity.artifacts[MovementArtifact.NAME].movementVector[1] * entity.artifacts[MovementArtifact.NAME].speedModifier
-                if board.checkMove(entity.artifacts[SpriteArtifact.NAME].positionX, entity.artifacts[SpriteArtifact.NAME].positionY, dX, dY):
-                    entity.artifacts[SpriteArtifact.NAME].positionX += dX
-                    entity.artifacts[SpriteArtifact.NAME].positionY += dY
+            movementArtifact = entity.artifacts[MovementArtifact.NAME]
+            if movementArtifact.movementVector != [0, 0]:
+                dX = movementArtifact.movementVector[0] * movementArtifact.speedModifier * _delta
+                dY = movementArtifact.movementVector[1] * movementArtifact.speedModifier * _delta
+                spriteArtifact = entity.artifacts[SpriteArtifact.NAME]
+                if board.checkMove(spriteArtifact.positionX, spriteArtifact.positionY, dX, dY):
+                    spriteArtifact.positionX += dX
+                    spriteArtifact.positionY += dY
                     self.previousdX=dX
                     self.previousdY=dY
                 else:
                     if dX != 0:  # left
-                        if board.checkMove(entity.artifacts[SpriteArtifact.NAME].positionX, entity.artifacts[SpriteArtifact.NAME].positionY, 0, self.previousdY):
-                            entity.artifacts[SpriteArtifact.NAME].positionY += self.previousdY
+                        if board.checkMove(spriteArtifact.positionX, spriteArtifact.positionY, 0, self.previousdY):
+                            spriteArtifact.positionY += self.previousdY
                     if dY != 0:  # up
-                        if board.checkMove(entity.artifacts[SpriteArtifact.NAME].positionX, entity.artifacts[SpriteArtifact.NAME].positionY, self.previousdX, 0):
-                            entity.artifacts[SpriteArtifact.NAME].positionX += self.previousdX
+                        if board.checkMove(spriteArtifact.positionX, spriteArtifact.positionY, self.previousdX, 0):
+                            spriteArtifact.positionX += self.previousdX
 
     def input(self, _event):
         if _event.type == pygame.KEYDOWN:
@@ -93,16 +95,15 @@ class UserMovementSystem:
                     for entity in self.observing:
                         entity.artifacts[MovementArtifact.NAME].movementVector[0] = 0
         elif _event.type == ENTITY_EFFECT_EVENT:
-            if _event.reason == EventType.START:
-                for entity in self.observing:
-                    if entity == _event.reference:
-                        if _event.effect == EntityEffect.SPEED_CHANGE:
+            if _event.effect == EntityEffect.SPEED_CHANGE:
+                if _event.reason == EventType.START:
+                    for entity in self.observing:
+                        if entity == _event.reference:
                             entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
                             startTimer(_event.time, lambda : 
                                        pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.SPEED_CHANGE, 
                                                                             reason=EventType.STOP, modifier=1.0/_event.modifier, reference=_event.reference)))
-            elif _event.reason == EventType.STOP:
-                for entity in self.observing:
-                    if entity == _event.reference:
-                        if _event.effect == EntityEffect.SPEED_CHANGE:
-                            entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
+                elif _event.reason == EventType.STOP:
+                    for entity in self.observing:
+                        if entity == _event.reference:
+                                entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier

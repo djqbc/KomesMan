@@ -1,5 +1,5 @@
 from myevents import LOST_GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT,\
-    MenuEventType
+    MenuEventType, WON_GAME_EVENT
 from enum import IntEnum
 import pygame
 
@@ -19,6 +19,9 @@ class GameSystem:
         pass
     def input(self, _event):
         if _event.type == LOST_GAME_EVENT:
+            self.gameState = GameState.END
+            pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))
+        elif _event.type == WON_GAME_EVENT:
             self.gameState = GameState.END
             pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))
         elif _event.type == pygame.QUIT:
