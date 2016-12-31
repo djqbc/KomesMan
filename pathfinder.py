@@ -1,5 +1,9 @@
 from math import inf
 
+from artifact.tagartifact import TagArtifact
+from entity import Entity
+
+
 class Node:
     def __init__(self, x, y):
         self.x = x
@@ -28,24 +32,33 @@ class Edge:
     def __ne__(self, other):
         return not (self == other)
 
-class Pathfinder:
+class Pathfinder(Entity):
 
     def __init__(self, board):
+        super(Pathfinder, self).__init__()
         self.board = board
         self.nodes = []
         self.shortestPaths = {}
+        self.addArtifact(TagArtifact("PathFinder"))
 
     def prepareAllStepsForShortestPaths(self):
         #Generate all edges of graph
         maxY = len(self.board)
         maxX = len(self.board[1])
+        nodesIndexes = {}
+        self.indexesNodes = {}
 
+        i=0
         y = 0
         for row in self.board:
             x = 0
             for cell in row:
                 if cell == 0:
-                    self.nodes.append(Node(x,y))
+                    node = Node(x,y)
+                    self.nodes.append(node)
+                    nodesIndexes[node] = i
+                    self.indexesNodes[i] = node
+                    i+=1
                 x+=1
             y+=1
 
@@ -63,32 +76,47 @@ class Pathfinder:
             x = 0
             for cell in row:
                 if cell == 0:
+                    xyNodeIndex = nodesIndexes[Node(x, y)]
                     if x>0 and self.board[y][x-1] == 0:
-                        distanceTable[self.nodes.index(Node(x, y))][self.nodes.index(Node(x-1, y))] = 1
-                        previousNodesTable[self.nodes.index(Node(x, y))][self.nodes.index(Node(x-1, y))] = self.nodes.index(Node(x, y))
+                        distanceTable[xyNodeIndex][nodesIndexes[Node(x-1, y)]] = 1
+                        previousNodesTable[xyNodeIndex][nodesIndexes[Node(x-1, y)]] = xyNodeIndex
                     if x<maxX-1 and self.board[y][x+1] == 0:
-                        distanceTable[self.nodes.index(Node(x, y))][self.nodes.index(Node(x+1, y))] = 1
-                        previousNodesTable[self.nodes.index(Node(x, y))][self.nodes.index(Node(x+1, y))] = self.nodes.index(Node(x, y))
+                        distanceTable[xyNodeIndex][nodesIndexes[Node(x+1, y)]] = 1
+                        previousNodesTable[xyNodeIndex][nodesIndexes[Node(x+1, y)]] = xyNodeIndex
                     if y>0 and self.board[y-1][x] == 0:
-                        distanceTable[self.nodes.index(Node(x, y))][self.nodes.index(Node(x, y-1))] = 1
-                        previousNodesTable[self.nodes.index(Node(x, y))][self.nodes.index(Node(x, y-1))] = self.nodes.index(Node(x, y))
+                        distanceTable[xyNodeIndex][nodesIndexes[Node(x, y-1)]] = 1
+                        previousNodesTable[xyNodeIndex][nodesIndexes[Node(x, y-1)]] = xyNodeIndex
                     if y<maxY-1 and self.board[y+1][x] == 0:
-                        distanceTable[self.nodes.index(Node(x, y))][self.nodes.index(Node(x, y+1))] = 1
-                        previousNodesTable[self.nodes.index(Node(x, y))][self.nodes.index(Node(x, y+1))] = self.nodes.index(Node(x, y))
+                        distanceTable[xyNodeIndex][nodesIndexes[Node(x, y+1)]] = 1
+                        previousNodesTable[xyNodeIndex][nodesIndexes[Node(x, y+1)]] = xyNodeIndex
                 x+=1
             y+=1
 
-            '''
-            todo !!!
-            dla każdego wierzchołka u  w V[G] wykonaj
-                dla każdego wierzchołka v1 w V[G] wykonaj
-                    dla każdego wierzchołka v2 w V[G] wykonaj
-                    jeżeli
-                    d[v1][v2] > d[v1][u] + d[u][v2] to
-                        d[v1][v2] = d[v1][u] + d[u][v2]
-                        poprzednik[v1][v2] = poprzednik[u][v2]
-            '''
+        i = 0
+        totaltodo = len(self.nodes)**3
+        for u in self.nodes:
+            for v1 in self.nodes:
+                for v2 in self.nodes:
+                    possible_shorter_distance = distanceTable[nodesIndexes[v1]][nodesIndexes[u]] = distanceTable[nodesIndexes[u]][nodesIndexes[v2]]
+                    print(i/totaltodo, 'done...')
+                    i+=1
+                    if distanceTable[nodesIndexes[v1]][nodesIndexes[v2]] > possible_shorter_distance:
+                        distanceTable[nodesIndexes[v1]][nodesIndexes[v2]] = possible_shorter_distance
+                        previousNodesTable[nodesIndexes[v1]][nodesIndexes[v2]] = previousNodesTable[nodesIndexes[u]][nodesIndexes[v2]]
 
-    def getNextMove(self, startx, starty, destx, desty):
-        # todo ^^^ calkowite przerobienie na powyzsze...
-        return self.shortestPaths[Edge(startx,starty,destx,desty)]
+        #that are the onnly things that matters for us after all.
+        self.nodesIndexes = nodesIndexes
+        self.previousNodes = previousNodesTable
+
+    def getNextMove(self, startnode, destnode):
+        #TODO: Cos tu jest nie tak.
+        # sprobuje juro przerobic algorytm
+        # zeby sciezke zapisywal w 2 strone. Gdzies musialem sie walnąć.
+        print('Getting path from: [{copX}, {copY}] to [{komX}, {komY}].'.format(copX=startnode.x, copY = startnode.y, komX = destnode.x, komY = destnode.y))
+        node = self.indexesNodes[self.previousNodes[self.nodesIndexes[destnode]][self.nodesIndexes[startnode]]]
+        print(node.x, node.y)
+        while node.x != startnode.x and node.y != startnode.y:
+            node = self.indexesNodes[self.previousNodes[self.nodesIndexes[destnode]][self.nodesIndexes[node]]]
+            print(node.x, node.y)
+        print('end')
+        return self.indexesNodes[self.previousNodes[self.nodesIndexes[destnode]][self.nodesIndexes[startnode]]]

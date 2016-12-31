@@ -71,7 +71,7 @@ class GameManager:
         #TODO: usunac helpery - przeniesc je do osobnej klasy/klas builderow czy cos w tym stylu
         self.helperCreateBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
         self.helperCreateKomesMan()
-        self.helperCreateCop(200, 64)
+#        self.helperCreateCop(200, 64)
         self.helperCreateCop(400, 64)
         self.helperCreateBeer(0, 320)
         self.helperCreateDrug(448, 320)
@@ -173,9 +173,6 @@ class GameManager:
 
     def helperCreateBoard(self, predefinedboard):
         board = Board(predefinedboard, self.allSystems)
-        # DEBUG STUFF
-        # pf = Pathfinder(predefinedboard)
-        # pf.prepareAllStepsForShortestPaths()
-        # END DEBUG STUFF
-
-
+        pf = Pathfinder(predefinedboard)
+        pf.prepareAllStepsForShortestPaths()
+        self.aiMoveSystem.register(pf)
