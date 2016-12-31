@@ -19,7 +19,8 @@ class MenuSystem:
                 self.currentIndex = 0
             del self.menu[_entity]
         for _, options in self.menu.items():
-            options.remove(_entity) 
+            if _entity in options:
+                options.remove(_entity)
             
     def register(self, _object, _parent=None):
         if SpriteArtifact.NAME in _object.artifacts and MenuArtifact.NAME in _object.artifacts: 

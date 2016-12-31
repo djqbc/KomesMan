@@ -35,7 +35,7 @@ class BoardBuilder:
         self.createBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
         self.createKomesMan()
 #        self.helperCreateCop(200, 64)
-#         self.helperCreateCop(400, 64)
+        self.createCop(800, 64)
         self.createBeer(0, 320)
         self.createDrug(448, 320)
         self.createCap(640, 320)

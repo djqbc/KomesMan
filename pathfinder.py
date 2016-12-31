@@ -64,7 +64,7 @@ class Pathfinder(Entity):
 
         nodesCount = len(self.nodes)
         distanceTable = [ [float('inf') for x in range(nodesCount)] for y in range(nodesCount)]
-        previousNodesTable = [ [None for x in range(nodesCount)] for y in range(nodesCount)]
+        nextNodesTable = [ [None for x in range(nodesCount)] for y in range(nodesCount)]
 
         #initiate same nodes with zeros
         for x in range(nodesCount):
@@ -79,44 +79,37 @@ class Pathfinder(Entity):
                     xyNodeIndex = nodesIndexes[Node(x, y)]
                     if x>0 and self.board[y][x-1] == 0:
                         distanceTable[xyNodeIndex][nodesIndexes[Node(x-1, y)]] = 1
-                        previousNodesTable[xyNodeIndex][nodesIndexes[Node(x-1, y)]] = xyNodeIndex
+                        nextNodesTable[xyNodeIndex][nodesIndexes[Node(x-1, y)]] = nodesIndexes[Node(x-1, y)]
                     if x<maxX-1 and self.board[y][x+1] == 0:
                         distanceTable[xyNodeIndex][nodesIndexes[Node(x+1, y)]] = 1
-                        previousNodesTable[xyNodeIndex][nodesIndexes[Node(x+1, y)]] = xyNodeIndex
+                        nextNodesTable[xyNodeIndex][nodesIndexes[Node(x+1, y)]] = nodesIndexes[Node(x+1, y)]
                     if y>0 and self.board[y-1][x] == 0:
                         distanceTable[xyNodeIndex][nodesIndexes[Node(x, y-1)]] = 1
-                        previousNodesTable[xyNodeIndex][nodesIndexes[Node(x, y-1)]] = xyNodeIndex
+                        nextNodesTable[xyNodeIndex][nodesIndexes[Node(x, y-1)]] = nodesIndexes[Node(x, y-1)]
                     if y<maxY-1 and self.board[y+1][x] == 0:
                         distanceTable[xyNodeIndex][nodesIndexes[Node(x, y+1)]] = 1
-                        previousNodesTable[xyNodeIndex][nodesIndexes[Node(x, y+1)]] = xyNodeIndex
+                        nextNodesTable[xyNodeIndex][nodesIndexes[Node(x, y+1)]] = nodesIndexes[Node(x, y+1)]
                 x+=1
             y+=1
 
-        i = 0
-        totaltodo = len(self.nodes)**3
         for u in self.nodes:
             for v1 in self.nodes:
                 for v2 in self.nodes:
-                    possible_shorter_distance = distanceTable[nodesIndexes[v1]][nodesIndexes[u]] = distanceTable[nodesIndexes[u]][nodesIndexes[v2]]
-                    print(i/totaltodo, 'done...')
-                    i+=1
+                    if v1.x == v2.x:
+                        if v1.y == v2.y-1 or v1.y == v2.y+1 or v2.y == v1.y-1 or v2.y == v1.y+1:
+                            continue
+                    if v1.y == v2.y:
+                        if v1.x == v2.x-1 or v1.x == v2.x+1 or v2.x == v1.x-1 or v2.x == v1.x+1:
+                            continue
+
+                    possible_shorter_distance = distanceTable[nodesIndexes[v1]][nodesIndexes[u]] + distanceTable[nodesIndexes[u]][nodesIndexes[v2]]
                     if distanceTable[nodesIndexes[v1]][nodesIndexes[v2]] > possible_shorter_distance:
                         distanceTable[nodesIndexes[v1]][nodesIndexes[v2]] = possible_shorter_distance
-                        previousNodesTable[nodesIndexes[v1]][nodesIndexes[v2]] = previousNodesTable[nodesIndexes[u]][nodesIndexes[v2]]
+                        nextNodesTable[nodesIndexes[v1]][nodesIndexes[v2]] = nextNodesTable[nodesIndexes[v1]][nodesIndexes[u]]
 
         #that are the onnly things that matters for us after all.
         self.nodesIndexes = nodesIndexes
-        self.previousNodes = previousNodesTable
+        self.nextNodes = nextNodesTable
 
     def getNextMove(self, startnode, destnode):
-        #TODO: Cos tu jest nie tak.
-        # sprobuje juro przerobic algorytm
-        # zeby sciezke zapisywal w 2 strone. Gdzies musialem sie walnąć.
-        print('Getting path from: [{copX}, {copY}] to [{komX}, {komY}].'.format(copX=startnode.x, copY = startnode.y, komX = destnode.x, komY = destnode.y))
-        node = self.indexesNodes[self.previousNodes[self.nodesIndexes[destnode]][self.nodesIndexes[startnode]]]
-        print(node.x, node.y)
-        while node.x != startnode.x and node.y != startnode.y:
-            node = self.indexesNodes[self.previousNodes[self.nodesIndexes[destnode]][self.nodesIndexes[node]]]
-            print(node.x, node.y)
-        print('end')
-        return self.indexesNodes[self.previousNodes[self.nodesIndexes[destnode]][self.nodesIndexes[startnode]]]
+        return self.indexesNodes[self.nextNodes[self.nodesIndexes[startnode]][self.nodesIndexes[destnode]]]

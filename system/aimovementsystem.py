@@ -45,6 +45,9 @@ class AiMovementSystem:
 
                 nextMove = self.pathFinder.getNextMove(Node(copiX, copiY), Node(iX, iY))
 
+                if copiX == iX and copiY == iY:
+                    return
+
                 print('Cop is moving from: [{copX}, {copY}] to [{komX}, {komY}]. Next tile = [{nextX},{nextY}]'.format(copX = copiX, copY = copiY, komX = iX, komY = iY, nextX=nextMove.x, nextY=nextMove.y))
 
                 xToReach = nextMove.x * board.tileSize
