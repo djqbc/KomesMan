@@ -1,6 +1,6 @@
 from artifact.spriteartifact import SpriteArtifact, DRAW_NEVER
 from system.gamesystem import GameState
-from myevents import GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType
+from myevents import GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, ENTITY_EFFECT_EVENT, EntityEffect
 import pygame
 from artifact.menuartifact import MenuArtifact
 
@@ -49,6 +49,8 @@ class MenuSystem:
 #                 for element in self.menu[self.currentNode]:
 #                     element.artifacts[SpriteArtifact.NAME].draw = False
         elif _event.type == pygame.KEYUP:
+            if self.currentGameState == GameState.MENU:
+                pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
             if _event.key == pygame.K_DOWN and self.currentGameState == GameState.MENU:
                 self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.removeHighlight()
                 self.currentIndex = (self.currentIndex + 1) % len(self.menu[self.currentNode])

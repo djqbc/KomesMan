@@ -1,4 +1,5 @@
-from myevents import GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, startTimer, GameEventType
+from myevents import GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, startTimer, GameEventType, \
+    ENTITY_EFFECT_EVENT, EntityEffect
 from enum import IntEnum
 import pygame
 
@@ -23,6 +24,7 @@ class GameSystem:
             if _event.reason == GameEventType.LOST_GAME:
                 self.gameState = GameState.LOST_GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.LOST_GAME))
+                pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/youlose.wav"))
                 startTimer(2000, lambda : pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU)))
             elif _event.reason == GameEventType.WON_GAME:
                 self.gameState = GameState.WON_GAME
