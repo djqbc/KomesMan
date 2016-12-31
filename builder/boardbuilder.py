@@ -70,7 +70,7 @@ class BoardBuilder:
     def createCop(self, _x, _y):
         cop = Entity()
         cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y, GameState.GAME))
-        cop.addArtifact(MovementArtifact(0.3))
+        cop.addArtifact(MovementArtifact(1))
         cop.addArtifact(TagArtifact("Enemy", TagType.ENEMY))
         cop.addArtifact(BehaviorArtifact(SimpleCopBehavior()))
         self.systems[AiMovementSystem.NAME].register(cop)
