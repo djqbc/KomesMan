@@ -8,7 +8,7 @@ from system.tagsystem import TagSystem
 from system.gamesystem import GameState
 
 class Board(Entity):
-    def __init__(self, board, systems, tilesize=64):
+    def __init__(self, board, systems, registerList, tilesize=64):
         super(Board, self).__init__()
         self.map = [[Entity() for x in range(len(board))] for y in range(len(board[0]))]
         self.boardData = board
@@ -21,10 +21,12 @@ class Board(Entity):
                     tileSprite = WallSprite(cell)
                     self.map[iY][iX].addArtifact(SpriteArtifact(tileSprite, iY*tilesize, iX*tilesize, GameState.GAME))                    
                     systems[DrawSystem.NAME].register(self.map[iY][iX])
+                    registerList.append(self.map[iY][iX])
                 iY += 1
             iX += 1
         self.addArtifact(TagArtifact("Board"))
         systems[TagSystem.NAME].register(self)
+        registerList.append(self)
 
     def getPos(self, pos):
         return int(pos/self.tileSize)

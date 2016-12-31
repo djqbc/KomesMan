@@ -1,7 +1,8 @@
-from artifact.spriteartifact import SpriteArtifact
+from artifact.spriteartifact import SpriteArtifact, DRAW_NEVER
 from system.gamesystem import GameState
 from myevents import GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType
 import pygame
+from artifact.menuartifact import MenuArtifact
 
 class MenuSystem:
     NAME = "MenuSystem"
@@ -12,9 +13,16 @@ class MenuSystem:
     def __init__(self):
         pass
     def remove(self, _entity):
-        pass
+        if _entity in self.menu:
+            if self.currentNode == _entity:
+                self.currentNode = None
+                self.currentIndex = 0
+            del self.menu[_entity]
+        for _, options in self.menu.items():
+            options.remove(_entity) 
+            
     def register(self, _object, _parent=None):
-        if SpriteArtifact.NAME in _object.artifacts: 
+        if SpriteArtifact.NAME in _object.artifacts and MenuArtifact.NAME in _object.artifacts: 
             tmp = self.menu.get(_parent, None)
             if tmp != None:
                 self.menu[_parent].append(_object)
@@ -29,8 +37,12 @@ class MenuSystem:
             self.currentGameState = _event.state
             if _event.state == GameState.MENU:
                 self.currentNode = None
-#                 for element in self.menu[self.currentNode]:
-#                     element.artifacts[SpriteArtifact.NAME].drawStage = True
+                for node, options in self.menu.items():
+                    for option in options:
+                        if node == self.currentNode: 
+                            option.artifacts[SpriteArtifact.NAME].drawStage = GameState.MENU
+                        else:
+                            option.artifacts[SpriteArtifact.NAME].drawStage = DRAW_NEVER
             else:
                 self.currentNode = None
 #                 for element in self.menu[self.currentNode]:
@@ -47,8 +59,27 @@ class MenuSystem:
                     self.currentIndex = len(self.menu[self.currentNode]) + self.currentIndex
                 self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.addHighlight()
             elif _event.key == pygame.K_RETURN and self.currentGameState == GameState.MENU:
-                #narazie kazda opcja zaczyna gre
-                if self.currentIndex == 0:
-                    pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.START_NEW_GAME))
-                if self.currentIndex == 1:
-                    pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.QUIT))
+                currentAction = self.menu[self.currentNode][self.currentIndex].artifacts[MenuArtifact.NAME].action
+                if currentAction == MenuEventType.MENU_OUT:
+                    for node, options in self.menu.items():
+                        if self.currentNode in options:
+                            self.currentNode = node
+                            break
+                    self.currentIndex = 0
+                    for node, options in self.menu.items():
+                        for option in options:
+                            if node == self.currentNode: 
+                                option.artifacts[SpriteArtifact.NAME].drawStage = GameState.MENU
+                            else:
+                                option.artifacts[SpriteArtifact.NAME].drawStage = DRAW_NEVER
+                elif currentAction == MenuEventType.MENU_IN:
+                    self.currentNode = self.menu[self.currentNode][self.currentIndex]
+                    self.currentIndex = 0
+                    for node, options in self.menu.items():
+                        for option in options:
+                            if node == self.currentNode: 
+                                option.artifacts[SpriteArtifact.NAME].drawStage = GameState.MENU
+                            else:
+                                option.artifacts[SpriteArtifact.NAME].drawStage = DRAW_NEVER
+                else:
+                    pygame.event.post(pygame.event.Event(MENU_EVENT, action=currentAction))

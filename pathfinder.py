@@ -1,4 +1,4 @@
-from math import inf
+# from math import inf
 
 from artifact.tagartifact import TagArtifact
 from entity import Entity
@@ -63,7 +63,7 @@ class Pathfinder(Entity):
             y+=1
 
         nodesCount = len(self.nodes)
-        distanceTable = [ [inf for x in range(nodesCount)] for y in range(nodesCount)]
+        distanceTable = [ [float('inf') for x in range(nodesCount)] for y in range(nodesCount)]
         previousNodesTable = [ [None for x in range(nodesCount)] for y in range(nodesCount)]
 
         #initiate same nodes with zeros

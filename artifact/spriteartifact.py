@@ -1,4 +1,5 @@
 DRAW_ALWAYS = 0xFFFFFFFF
+DRAW_NEVER = 0x00000000
 
 class SpriteArtifact:
     NAME = "SpriteArtifact"

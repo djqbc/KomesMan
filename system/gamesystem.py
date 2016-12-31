@@ -1,5 +1,4 @@
-from myevents import LOST_GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT,\
-    MenuEventType, WON_GAME_EVENT
+from myevents import GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, startTimer, GameEventType
 from enum import IntEnum
 import pygame
 
@@ -9,6 +8,8 @@ class GameState(IntEnum):
     END = 2
     GAME = 4
     INIT = 8
+    LOST_GAME = 16
+    WON_GAME = 32
 
 class GameSystem:
     NAME = "GameSystem"
@@ -18,12 +19,15 @@ class GameSystem:
     def remove(self, _entity):
         pass
     def input(self, _event):
-        if _event.type == LOST_GAME_EVENT:
-            self.gameState = GameState.END
-            pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))
-        elif _event.type == WON_GAME_EVENT:
-            self.gameState = GameState.END
-            pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))
+        if _event.type == GAME_EVENT:
+            if _event.reason == GameEventType.LOST_GAME:
+                self.gameState = GameState.LOST_GAME
+                pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.LOST_GAME))
+                startTimer(2000, lambda : pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU)))
+            elif _event.reason == GameEventType.WON_GAME:
+                self.gameState = GameState.WON_GAME
+                pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.WON_GAME))
+                startTimer(2000, lambda : pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU)))
         elif _event.type == pygame.QUIT:
             self.gameState = GameState.END
             pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))

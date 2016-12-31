@@ -1,5 +1,5 @@
 from artifact.spriteartifact import SpriteArtifact
-from myevents import ENTITY_EFFECT_EVENT, EntityEffect, WON_GAME_EVENT, LOST_GAME_EVENT
+from myevents import ENTITY_EFFECT_EVENT, EntityEffect, GAME_EVENT, GameEventType
 import pygame
 
 class HUDSystem:#zmienic nazwe kiedys - nie chcialo mi sie myslec nad lepsza
@@ -11,7 +11,8 @@ class HUDSystem:#zmienic nazwe kiedys - nie chcialo mi sie myslec nad lepsza
     def __init__(self):
         self.observing = []
     def register(self, _object):
-        if SpriteArtifact.NAME in _object.artifacts:   
+        if SpriteArtifact.NAME in _object.artifacts:  
+            self.dirty = True 
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
@@ -28,6 +29,5 @@ class HUDSystem:#zmienic nazwe kiedys - nie chcialo mi sie myslec nad lepsza
                 self.currentPoints += 1
                 self.dirty = True
                 if self.currentPoints >= self.max_points:
-#                     pygame.event.post(pygame.event.Event(WON_GAME_EVENT))
-                    pygame.event.post(pygame.event.Event(LOST_GAME_EVENT))
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.WON_GAME))
                 

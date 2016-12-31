@@ -1,4 +1,4 @@
-from myevents import COLLISION_EVENT, LOST_GAME_EVENT
+from myevents import COLLISION_EVENT, GAME_EVENT, GameEventType
 from artifact.tagartifact import TagArtifact, TagType
 import pygame
 
@@ -7,4 +7,4 @@ class KomesManBehavior:
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             if entity.artifacts[TagArtifact.NAME].type == TagType.ENEMY:
-                _postEventCallback(pygame.event.Event(LOST_GAME_EVENT))                
+                _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.LOST_GAME))                
