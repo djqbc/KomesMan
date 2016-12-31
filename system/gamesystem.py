@@ -27,7 +27,7 @@ class GameSystem:
             elif _event.reason == GameEventType.WON_GAME:
                 self.gameState = GameState.WON_GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.WON_GAME))
-                startTimer(2000, lambda : pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU)))
+                startTimer(2000, lambda : pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.START_NEW_GAME)))
         elif _event.type == pygame.QUIT:
             self.gameState = GameState.END
             pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))
