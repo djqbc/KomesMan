@@ -2,6 +2,7 @@ from artifact.spriteartifact import SpriteArtifact
 import pygame
 from artifact.behaviorartifact import BehaviorArtifact
 from myevents import COLLISION_EVENT
+from system.gamesystem import GameSystem, GameState
 
 class CollisionSystem:
     NAME = "CollisionSystem"
@@ -16,6 +17,8 @@ class CollisionSystem:
     def input(self, _event):
         pass
     def update(self, _timeDelta, _systems):
+        if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
+            return
         x = 0
         for entity in self.observing:
             x += 1

@@ -10,6 +10,8 @@ from system.menusystem import MenuSystem
 from system.hudsystem import HUDSystem
 from builder.boardbuilder import BoardBuilder
 from builder.menubuilder import MenuBuilder
+from system.musicsystem import MusicSystem
+from system.playerprogresssystem import PlayerProgressSystem
 
 class GameManager:
     '''Class managing game state''' 
@@ -22,6 +24,8 @@ class GameManager:
     gameSystem = GameSystem()
     menuSystem = MenuSystem()
     hudSystem = HUDSystem()
+    musicSystem = MusicSystem()
+    playerProgressSystem = PlayerProgressSystem()
     allSystems = {
         hudSystem.NAME : hudSystem,
         tagSystem.NAME : tagSystem,
@@ -30,7 +34,9 @@ class GameManager:
         aiMoveSystem.NAME : aiMoveSystem, 
         drawSystem.NAME : drawSystem,
         gameSystem.NAME : gameSystem,
-        menuSystem.NAME : menuSystem
+        menuSystem.NAME : menuSystem,
+        musicSystem.NAME : musicSystem,
+        playerProgressSystem.NAME : playerProgressSystem
         }#kolejnosc moze byc wazna
     builders = [
         BoardBuilder(allSystems),

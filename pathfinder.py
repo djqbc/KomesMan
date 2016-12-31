@@ -112,4 +112,7 @@ class Pathfinder(Entity):
         self.nextNodes = nextNodesTable
 
     def getNextMove(self, startnode, destnode):
-        return self.indexesNodes[self.nextNodes[self.nodesIndexes[startnode]][self.nodesIndexes[destnode]]]
+        try:
+            return self.indexesNodes[self.nextNodes[self.nodesIndexes[startnode]][self.nodesIndexes[destnode]]]
+        except:
+            return Node(0,0)

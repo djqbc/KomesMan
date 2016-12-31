@@ -25,6 +25,8 @@ from system.tagsystem import TagSystem
 from system.usermovementsystem import UserMovementSystem
 from system.drawsystem import DrawSystem
 from myevents import MENU_EVENT, MenuEventType
+from generatedboard import GeneratedBoard
+from system.playerprogresssystem import PlayerProgressSystem
 
 class BoardBuilder:
     def __init__(self, _systems):
@@ -32,7 +34,10 @@ class BoardBuilder:
         self.elements = []
     def build(self):
         #TODO wyrzucic bezwzgledne pozycjonowanie
-        self.createBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
+        if self.systems[PlayerProgressSystem.NAME].currentLevel == 1:
+            self.createBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
+        else:
+			self.createBoard(BinaryBoardToSpritesConverter().convert(GeneratedBoard().get_board_binary()))
         self.createKomesMan()
 #        self.helperCreateCop(200, 64)
         self.createCop(800, 64)
