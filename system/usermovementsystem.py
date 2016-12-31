@@ -3,7 +3,8 @@ from artifact.spriteartifact import SpriteArtifact
 from sprite.mysprite import AnimationState
 from system.tagsystem import TagSystem
 import pygame
-from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, startTimer
+from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, startTimer,\
+    copyEvent
 from system.gamesystem import GameSystem, GameState
 
 class UserMovementSystem:
@@ -107,3 +108,9 @@ class UserMovementSystem:
                     for entity in self.observing:
                         if entity == _event.reference:
                                 entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
+                elif _event.reason == EventType.DELAYED:
+                    tmp = copyEvent(_event)
+                    tmp.reason = EventType.START
+                    #czemu kopiowanie referencji nie dzia³a poprawnie w copyEvent?
+                    tmp.reference = _event.reference
+                    startTimer(_event.delay, lambda : pygame.event.post(tmp))

@@ -1,6 +1,7 @@
 import pygame
 from enum import Enum
 from threading import Timer
+import copy
 
 #fajnie byoby to pozamieniac na enum ale mi sie nie chce
 #czemu mnie to nie dziwi?
@@ -20,6 +21,7 @@ class ScreenEffectEvent(Enum):
 class EventType(Enum):
     START = 0
     STOP = 1
+    DELAYED = 2
     
 class EntityEffect(Enum):
     SPEED_CHANGE = 0    
@@ -40,3 +42,7 @@ class GameEventType(Enum):
 def startTimer(_timeoutMs, _timeoutCallback):
     t = Timer(_timeoutMs / 1000, _timeoutCallback)
     t.start()
+    
+def copyEvent(_event):
+    tmp = copy.deepcopy(_event.dict)
+    return pygame.event.Event(_event.type, tmp)

@@ -27,6 +27,8 @@ from system.drawsystem import DrawSystem
 from myevents import MENU_EVENT, MenuEventType
 from generatedboard import GeneratedBoard
 from system.playerprogresssystem import PlayerProgressSystem
+from sprite.pillsprite import PillSprite
+from behavior.pillbehavior import PillBehavior
 
 class BoardBuilder:
     def __init__(self, _systems):
@@ -45,6 +47,7 @@ class BoardBuilder:
         self.createDrug(448, 320)
         self.createCap(640, 320)
         self.createCap(640, 448)
+        self.createPill(192, 576)
     def clear(self):
         for e in self.elements:
             for _, system in self.systems.items():
@@ -113,6 +116,16 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(cap)
         self.systems[CollisionSystem.NAME].register(cap)
         self.elements.append(cap)
+        
+    def createPill(self, _x, _y):
+        pill = Entity()
+        pill.addArtifact(SpriteArtifact(PillSprite(), _x, _y, GameState.GAME))
+        pill.addArtifact(TagArtifact("Item", TagType.ITEM))
+        pill.addArtifact(BehaviorArtifact(PillBehavior()))
+        self.systems[DrawSystem.NAME].register(pill)
+        self.systems[TagSystem.NAME].register(pill)
+        self.systems[CollisionSystem.NAME].register(pill)
+        self.elements.append(pill)
         
     def createBoard(self, predefinedboard):
         #kijowe bezposrednie przekazanie elements - mozna olac jak nikomu sie nie bedzie chcialo poprawic
