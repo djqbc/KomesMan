@@ -27,22 +27,29 @@ class EntityEffect(Enum):
     SPEED_CHANGE = 0    
     PICK_UP_CAP = 1
     PLAY_SOUND = 2
-    SET_MAX_POINTS = 3
 
 class MenuEventType(Enum):
-    START_NEW_GAME = 0
+    START_NEW_GAME = 0#start whole new game
     QUIT = 1
     MENU_IN = 2
     MENU_OUT = 3
+    MAXIMIZE = 4
+    RESTART_GAME = 5#after loss of life
+    CONTINUE_GAME = 6#next level
     
 class GameEventType(Enum):
     LOST_GAME = 0
     WON_GAME = 1
     REMOVE_OBJECT = 2
     REMOVE_ALL_OBJECTS = 3
+    SET_MAX_POINTS = 4
+    HUD_UPDATE = 5
+    LOST_LIFE = 6
+    
 def startTimer(_timeoutMs, _timeoutCallback):
     t = Timer(_timeoutMs / 1000, _timeoutCallback)
     t.start()
+    return t
     
 def copyEvent(_event):
     tmp = copy.deepcopy(_event.dict)

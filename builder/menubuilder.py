@@ -1,6 +1,6 @@
 from entity import Entity
 from artifact.spriteartifact import SpriteArtifact
-from sprite.textsprite import TextSprite, TextPosition
+from sprite.textsprite import TextSprite, Modifiers
 from sprite.simpleimagesprite import SimpleImageSprite
 from sprite.hudsprite import HUDSprite
 from system.gamesystem import GameState
@@ -20,11 +20,12 @@ class MenuBuilder:
         self.createMenuBackground(0, 0)
         self.createMenuElement(490, 550, "Play", MenuEventType.START_NEW_GAME, None)
         optionSettings = self.createMenuElement(490, 600, "Settings", MenuEventType.MENU_IN, None)
-        self.createMenuElement(490, 550, "Maximize window", None, optionSettings)
+        self.createMenuElement(490, 550, "Maximize window", MenuEventType.MAXIMIZE, optionSettings)
         self.createMenuElement(490, 600, "Back", MenuEventType.MENU_OUT, optionSettings)
         self.createMenuElement(490, 650, "Exit", MenuEventType.QUIT, None)
         self.createHUD(950, 10)
         self.createResult("You win!!!", GameState.WON_GAME)
+        self.createResult("You lost - restarting...!!!", GameState.LOST_LIFE)
         self.createResult("You lost!!!", GameState.LOST_GAME)
     def clear(self):
         for e in self.elements:
@@ -38,12 +39,15 @@ class MenuBuilder:
                 self.dirty = False
                 self.build()
         elif _event.type == MENU_EVENT:
-            if _event.action == MenuEventType.START_NEW_GAME:
+            if _event.action == MenuEventType.START_NEW_GAME or _event.action == MenuEventType.CONTINUE_GAME:
+                self.clear()
+                self.build()
+            elif _event.action == MenuEventType.RESTART_GAME:
                 self.clear()
                 self.build()
     def createMenuElement(self, _x, _y, _text, _type, _parent):
         menu = Entity()
-        menu.addArtifact(SpriteArtifact(TextSprite(_text, TextPosition.CENTER_H,), _x, _y, GameState.MENU))
+        menu.addArtifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H,), _x, _y, GameState.MENU))
         menu.addArtifact(MenuArtifact(_type))
         self.systems[DrawSystem.NAME].register(menu)
         self.systems[MenuSystem.NAME].register(menu, _parent)
@@ -58,13 +62,13 @@ class MenuBuilder:
         
     def createHUD(self, _x, _y):
         hud = Entity()
-        hud.addArtifact(SpriteArtifact(HUDSprite(), _x, _y, GameState.GAME))
+        hud.addArtifact(SpriteArtifact(HUDSprite(Modifiers.CENTER_H), _x, _y, GameState.GAME))
         self.systems[DrawSystem.NAME].register(hud)
         self.systems[HUDSystem.NAME].register(hud)
         self.elements.append(hud)
         
     def createResult(self, _text, _type):
         result = Entity()
-        result.addArtifact(SpriteArtifact(TextSprite(_text, TextPosition.CENTER_H | TextPosition.CENTER_V), 0, 0, _type))
+        result.addArtifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H | Modifiers.CENTER_V), 0, 0, _type))
         self.systems[DrawSystem.NAME].register(result)
         self.elements.append(result)

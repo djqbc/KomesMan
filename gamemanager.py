@@ -15,7 +15,6 @@ from system.playerprogresssystem import PlayerProgressSystem
 
 class GameManager:
     '''Class managing game state''' 
-    screen = None
     drawSystem = DrawSystem()
     userMoveSystem = UserMovementSystem()
     aiMoveSystem = AiMovementSystem()
@@ -44,8 +43,6 @@ class GameManager:
         ]
     def __init__(self):
         pygame.init()
-        self.screen = pygame.display.set_mode((1024, 768), 0, 32)
-        pygame.display.set_caption('KomesMan')        
         self.init()
     
     def update(self, _timeDelta):
@@ -58,9 +55,7 @@ class GameManager:
     
     def render(self, _updateMidstep):
         '''Renders currect scene'''
-        self.screen.fill(pygame.Color('black'))
-        self.drawSystem.draw(self.screen)
-        pygame.display.flip()
+        self.drawSystem.draw()
     
     def input(self, _event):
         for builder in self.builders:

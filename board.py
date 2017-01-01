@@ -1,11 +1,23 @@
 from artifact.spriteartifact import SpriteArtifact
 from artifact.tagartifact import TagArtifact
 from entity import Entity
-from sprite.wallsprite import WallSprite, WallKind, WallKindTrueTable, Direction, WallKindDirection
+from sprite.wallsprite import WallSprite
 
 from system.drawsystem import DrawSystem
 from system.tagsystem import TagSystem
 from system.gamesystem import GameState
+
+from enum import IntEnum
+
+class BoardElement(IntEnum):
+    EMPTY = 0
+    WALL = 1
+    CAP = 2
+    BEER = 3
+    DRUG = 4
+    PILL = 5
+    ENEMY = 6
+    KOMESMAN = 7
 
 class Board(Entity):
     def __init__(self, board, systems, registerList, tilesize=64):
@@ -35,20 +47,22 @@ class Board(Entity):
         return pos % self.tileSize != 0
 
     def checkMove(self, _posX, _posY, _dX, _dY):
-        if _dX < 0 : # left
-            if self.boardData[self.getPos(_posY)][self.getPos(_posX-1)] != 0 or ( (self.checkNext(_posY)) and (self.boardData[self.getPos(_posY)+1][self.getPos(_posX-1)] != 0)):
-                return False
-
-        if _dX > 0 : # right
-            if self.boardData[self.getPos(_posY)][self.getPos(_posX)+1] != 0 or ( (self.checkNext(_posY)) and (self.boardData[self.getPos(_posY)+1][self.getPos(_posX)+1] != 0)):
-                return False
-
-        if _dY < 0 : # up
-            if self.boardData[self.getPos(_posY-1)][self.getPos(_posX)] != 0 or ( (self.checkNext(_posX)) and (self.boardData[self.getPos(_posY-1)][self.getPos(_posX)+1] != 0) ):
-                return False
-
-        if _dY > 0 : # down
-            if self.boardData[self.getPos(_posY)+1][self.getPos(_posX)] != 0 or ( (self.checkNext(_posX)) and (self.boardData[self.getPos(_posY)+1][self.getPos(_posX)+1] != 0) ):
-                return False
-
+        try:
+            if _dX < 0 : # left
+                if self.boardData[self.getPos(_posY)][self.getPos(_posX-1)] != 0 or ( (self.checkNext(_posY)) and (self.boardData[self.getPos(_posY)+1][self.getPos(_posX-1)] != 0)):
+                    return False
+    
+            if _dX > 0 : # right
+                if self.boardData[self.getPos(_posY)][self.getPos(_posX)+1] != 0 or ( (self.checkNext(_posY)) and (self.boardData[self.getPos(_posY)+1][self.getPos(_posX)+1] != 0)):
+                    return False
+    
+            if _dY < 0 : # up
+                if self.boardData[self.getPos(_posY-1)][self.getPos(_posX)] != 0 or ( (self.checkNext(_posX)) and (self.boardData[self.getPos(_posY-1)][self.getPos(_posX)+1] != 0) ):
+                    return False
+    
+            if _dY > 0 : # down
+                if self.boardData[self.getPos(_posY)+1][self.getPos(_posX)] != 0 or ( (self.checkNext(_posX)) and (self.boardData[self.getPos(_posY)+1][self.getPos(_posX)+1] != 0) ):
+                    return False
+        except:
+            return False
         return True

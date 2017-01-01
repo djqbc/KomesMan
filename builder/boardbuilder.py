@@ -23,7 +23,7 @@ from sprite.capsprite import CapSprite
 from behavior.capbehavior import CapBehavior
 from system.aimovementsystem import AiMovementSystem
 from system.collisionsystem import CollisionSystem
-from myevents import GAME_EVENT, GameEventType, ENTITY_EFFECT_EVENT, EntityEffect
+from myevents import GAME_EVENT, GameEventType
 from system.tagsystem import TagSystem
 from system.usermovementsystem import UserMovementSystem
 from system.drawsystem import DrawSystem
@@ -37,20 +37,19 @@ class BoardBuilder:
     def __init__(self, _systems):
         self.systems = _systems
         self.elements = []
-    def build(self):
-        #TODO wyrzucic bezwzgledne pozycjonowanie
+    def build(self, _restart=False):
+        if not _restart:
+            if self.systems[PlayerProgressSystem.NAME].currentLevel == 1:
+                self.binaryboard = PredefinedBoard().get_board_binary()
+            else:
+                self.binaryboard = GeneratedBoard().get_board_binary()
 
-        if self.systems[PlayerProgressSystem.NAME].currentLevel == 1:
-            binaryboard = PredefinedBoard().get_board_binary()
-        else:
-            binaryboard = GeneratedBoard().get_board_binary()
-
-        self.createBoard(BinaryBoardToSpritesConverter().convert(binaryboard))
+        self.createBoard(BinaryBoardToSpritesConverter().convert(self.binaryboard))
 
         itemsgetter = BinaryBoardItemsGetter()
-        itemsgetter.loadItems(binaryboard)
+        itemsgetter.loadItems(self.binaryboard)
 
-        pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.SET_MAX_POINTS, maxPoints=len(itemsgetter.caps)))
+        pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.SET_MAX_POINTS, maxPoints=len(itemsgetter.caps)))
 
         tileSize = 64 #to da sie pewno skads wziac?
 
@@ -62,15 +61,10 @@ class BoardBuilder:
             self.createDrug(amph[0]*tileSize, amph[1]*tileSize)
         for beer in itemsgetter.beers:
             self.createBeer(beer[0]*tileSize, beer[1]*tileSize)
-
-        self.createKomesMan()
-        self.createCop(800, 64)
-        self.createCop(640, 640)
-#        self.createBeer(0, 320)
-#        self.createDrug(448, 320)
-#        self.createCap(640, 320)
-#        self.createCap(640, 448)
-#        self.createPill(192, 576)
+        for enemy in itemsgetter.enemies:
+            self.createCop(enemy[0]*tileSize, enemy[1]*tileSize)
+        self.createKomesMan(itemsgetter.komesman[0]*tileSize, itemsgetter.komesman[1]*tileSize)
+        
     def clear(self):
         for e in self.elements:
             for _, system in self.systems.items():
@@ -78,17 +72,20 @@ class BoardBuilder:
         self.elements.clear()
     def input(self, _event):
         if _event.type == MENU_EVENT:
-            if _event.action == MenuEventType.START_NEW_GAME:
+            if _event.action == MenuEventType.START_NEW_GAME or _event.action == MenuEventType.CONTINUE_GAME:
                 self.clear()
                 self.build()
+            elif _event.action == MenuEventType.RESTART_GAME:
+                self.clear()
+                self.build(True)
         elif _event.type == GAME_EVENT and _event.reason == GameEventType.REMOVE_OBJECT:
             self.elements.remove(_event.reference)
             for _, system in self.systems.items():
                 system.remove(_event.reference)
             
-    def createKomesMan(self):
+    def createKomesMan(self, x, y):
         komesMan = Entity()
-        komesMan.addArtifact(SpriteArtifact(KomesManSprite(), 64, 64, GameState.GAME))
+        komesMan.addArtifact(SpriteArtifact(KomesManSprite(), x, y, GameState.GAME))
         komesMan.addArtifact(MovementArtifact())
         komesMan.addArtifact(TagArtifact("KomesMan", TagType.KOMESMAN))
         komesMan.addArtifact(BehaviorArtifact(KomesManBehavior()))

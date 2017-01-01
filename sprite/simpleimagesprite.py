@@ -11,3 +11,7 @@ class SimpleImageSprite(MySprite):
         _screen.blit(self.image, (_positionX, _positionY))
     def update(self, _delta):
         MySprite.update(self, _delta)
+    def size(self):
+        return self.image.get_size()
+    def scale(self, _x, _y):
+        self.image = pygame.transform.scale(self.image, (_x, _y))
