@@ -5,7 +5,7 @@ import pygame
 class HUDSystem:#zmienic nazwe kiedys - nie chcialo mi sie myslec nad lepsza
     NAME = "HUDSystem"
     observing = []
-    max_points = 2# do poprawy - pobierac to a nie na sztywno - moze z board, moze z buildera jak powstanie
+    max_points = 0
     currentPoints = 0
     dirty = True
     def __init__(self):
@@ -25,6 +25,9 @@ class HUDSystem:#zmienic nazwe kiedys - nie chcialo mi sie myslec nad lepsza
                 entity.artifacts[SpriteArtifact.NAME].sprite.update(_timeDelta, str(self.currentPoints) + " / " + str(self.max_points))
     def input(self, _event):
         if _event.type == ENTITY_EFFECT_EVENT:
+            if _event.effect == EntityEffect.SET_MAX_POINTS:
+                self.max_points = _event.maxPoints
+                self.dirty = True
             if _event.effect == EntityEffect.PICK_UP_CAP:
                 self.currentPoints += 1
                 self.dirty = True

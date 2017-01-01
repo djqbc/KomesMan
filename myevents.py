@@ -27,6 +27,7 @@ class EntityEffect(Enum):
     SPEED_CHANGE = 0    
     PICK_UP_CAP = 1
     PLAY_SOUND = 2
+    SET_MAX_POINTS = 3
 
 class MenuEventType(Enum):
     START_NEW_GAME = 0

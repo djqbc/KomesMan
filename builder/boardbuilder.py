@@ -1,3 +1,6 @@
+import pygame
+
+from binaryboarditemsgetter import BinaryBoardItemsGetter
 from binaryboardtospritesconverter import BinaryBoardToSpritesConverter
 from board import Board
 from pathfinder import Pathfinder
@@ -20,7 +23,7 @@ from sprite.capsprite import CapSprite
 from behavior.capbehavior import CapBehavior
 from system.aimovementsystem import AiMovementSystem
 from system.collisionsystem import CollisionSystem
-from myevents import GAME_EVENT, GameEventType
+from myevents import GAME_EVENT, GameEventType, ENTITY_EFFECT_EVENT, EntityEffect
 from system.tagsystem import TagSystem
 from system.usermovementsystem import UserMovementSystem
 from system.drawsystem import DrawSystem
@@ -36,18 +39,38 @@ class BoardBuilder:
         self.elements = []
     def build(self):
         #TODO wyrzucic bezwzgledne pozycjonowanie
+
         if self.systems[PlayerProgressSystem.NAME].currentLevel == 1:
-            self.createBoard(BinaryBoardToSpritesConverter().convert(PredefinedBoard().get_board_binary()))
+            binaryboard = PredefinedBoard().get_board_binary()
         else:
-            self.createBoard(BinaryBoardToSpritesConverter().convert(GeneratedBoard().get_board_binary()))
+            binaryboard = GeneratedBoard().get_board_binary()
+
+        self.createBoard(BinaryBoardToSpritesConverter().convert(binaryboard))
+
+        itemsgetter = BinaryBoardItemsGetter()
+        itemsgetter.loadItems(binaryboard)
+
+        pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.SET_MAX_POINTS, maxPoints=len(itemsgetter.caps)))
+
+        tileSize = 64 #to da sie pewno skads wziac?
+
+        for pill in itemsgetter.pills:
+            self.createPill(pill[0]*tileSize, pill[1]*tileSize)
+        for cap in itemsgetter.caps:
+            self.createCap(cap[0]*tileSize, cap[1]*tileSize)
+        for amph in itemsgetter.amphs:
+            self.createDrug(amph[0]*tileSize, amph[1]*tileSize)
+        for beer in itemsgetter.beers:
+            self.createBeer(beer[0]*tileSize, beer[1]*tileSize)
+
         self.createKomesMan()
-#        self.helperCreateCop(200, 64)
         self.createCop(800, 64)
-        self.createBeer(0, 320)
-        self.createDrug(448, 320)
-        self.createCap(640, 320)
-        self.createCap(640, 448)
-        self.createPill(192, 576)
+        self.createCop(640, 640)
+#        self.createBeer(0, 320)
+#        self.createDrug(448, 320)
+#        self.createCap(640, 320)
+#        self.createCap(640, 448)
+#        self.createPill(192, 576)
     def clear(self):
         for e in self.elements:
             for _, system in self.systems.items():
