@@ -32,6 +32,7 @@ from generatedboard import GeneratedBoard
 from system.playerprogresssystem import PlayerProgressSystem
 from sprite.pillsprite import PillSprite
 from behavior.pillbehavior import PillBehavior
+import time
 
 class BoardBuilder:
     def __init__(self, _systems):
@@ -146,11 +147,12 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(pill)
         self.systems[CollisionSystem.NAME].register(pill)
         self.elements.append(pill)
-        
     def createBoard(self, predefinedboard):
         #kijowe bezposrednie przekazanie elements - mozna olac jak nikomu sie nie bedzie chcialo poprawic
         board = Board(predefinedboard, self.systems, self.elements)
+        start = int(round(time.time() * 1000))
         pf = Pathfinder(predefinedboard)
         pf.prepareAllStepsForShortestPaths()
+        print("Pathfinder time: ", int(round(time.time() * 1000)) - start)
         self.systems[AiMovementSystem.NAME].register(pf)
         self.elements.append(pf)
