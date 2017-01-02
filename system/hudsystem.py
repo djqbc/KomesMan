@@ -21,6 +21,6 @@ class HUDSystem:#zmienic nazwe kiedys - nie chcialo mi sie myslec nad lepsza
     def input(self, _event):
         if _event.type == GAME_EVENT and _event.reason == GameEventType.HUD_UPDATE:
             for entity in self.observing:
-                entity.artifacts[SpriteArtifact.NAME].sprite.updateHUD(_event.points, _event.lifes)
+                entity.artifacts[SpriteArtifact.NAME].sprite.updateHUD(_event.caps, _event.lifes, _event.points)
             self.dirty = True
                 

@@ -1,5 +1,5 @@
 from artifact.spriteartifact import SpriteArtifact
-from artifact.tagartifact import TagArtifact
+from artifact.tagartifact import TagArtifact, TagType, TagSubType
 from entity import Entity
 from sprite.wallsprite import WallSprite
 
@@ -18,6 +18,7 @@ class BoardElement(IntEnum):
     PILL = 5
     ENEMY = 6
     KOMESMAN = 7
+    TELEPORT = 8
 
 class Board(Entity):
     def __init__(self, board, systems, registerList, tilesize=64):
@@ -36,7 +37,7 @@ class Board(Entity):
                     registerList.append(self.map[iY][iX])
                 iY += 1
             iX += 1
-        self.addArtifact(TagArtifact("Board"))
+        self.addArtifact(TagArtifact(TagType.FIXED, TagSubType.BOARD))
         systems[TagSystem.NAME].register(self)
         registerList.append(self)
 
@@ -45,9 +46,15 @@ class Board(Entity):
 
     def checkNext(self, pos):
         return pos % self.tileSize != 0
-
+    
+    def isBeyondBorder(self, _x, _y):
+        if _x < 0 or _y < 0 or _x > len(self.boardData[0]) * self.tileSize or _y > len(self.boardData) * self.tileSize:
+            return True
+        return False
     def checkMove(self, _posX, _posY, _dX, _dY):
         try:
+            if self.isBeyondBorder(_posX + _dX, _posY + _dY):
+                return False
             if _dX < 0 : # left
                 if self.boardData[self.getPos(_posY)][self.getPos(_posX-1)] != 0 or ( (self.checkNext(_posY)) and (self.boardData[self.getPos(_posY)+1][self.getPos(_posX-1)] != 0)):
                     return False

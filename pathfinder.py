@@ -1,6 +1,6 @@
 # from math import inf
 
-from artifact.tagartifact import TagArtifact
+from artifact.tagartifact import TagArtifact, TagType, TagSubType
 from entity import Entity
 
 
@@ -39,7 +39,7 @@ class Pathfinder(Entity):
         self.board = board
         self.nodes = []
         self.shortestPaths = {}
-        self.addArtifact(TagArtifact("PathFinder"))
+        self.addArtifact(TagArtifact(TagType.OTHER, TagSubType.PATHFINDER))
 
     def prepareAllStepsForShortestPaths(self):
         #Generate all edges of graph

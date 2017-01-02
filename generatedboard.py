@@ -132,9 +132,9 @@ class GeneratedBoard:
         currentBoardValue = BOARD_VALUE
         print("BOARD_VALUE: ", BOARD_VALUE)
         prices = {
-            BoardElement.BEER : 100,
-            BoardElement.DRUG : 200,
-            BoardElement.PILL : 500
+            BoardElement.BEER : 200,
+            BoardElement.DRUG : 400,
+            BoardElement.PILL : 1000
             }
         while currentBoardValue > 0:
             availableItems = {item : price for item, price in prices.items() if price <= currentBoardValue}
@@ -156,7 +156,7 @@ class GeneratedBoard:
         #add enemies
         currentBoardValue = BOARD_VALUE
         prices = {#dodac rozroznionych przeciwnikow
-            BoardElement.ENEMY : 1000
+            BoardElement.ENEMY : 1500
             }
         while currentBoardValue > 0:
             availableEnemies = {item : price for item, price in prices.items() if price <= currentBoardValue}

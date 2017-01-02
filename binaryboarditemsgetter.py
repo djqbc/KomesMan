@@ -9,6 +9,7 @@ class BinaryBoardItemsGetter():
         self.pills = []
         self.enemies = []
         self.komesman = (0,0)
+        self.teleports = []
         y=0
         for row in board:
             x=0
@@ -25,5 +26,7 @@ class BinaryBoardItemsGetter():
                     self.enemies.append((x, y))
                 elif cell == BoardElement.KOMESMAN:
                     self.komesman = (x, y)
+                elif cell == BoardElement.TELEPORT:
+                    self.teleports.append((x, y))
                 x += 1
             y += 1

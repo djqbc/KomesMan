@@ -10,7 +10,7 @@ from sprite.copsprite import CopSprite
 from entity import Entity
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
-from artifact.tagartifact import TagArtifact, TagType
+from artifact.tagartifact import TagArtifact, TagType, TagSubType
 from artifact.behaviorartifact import BehaviorArtifact
 from behavior.simplecopbehavior import SimpleCopBehavior
 from behavior.komesmanbehavior import KomesManBehavior
@@ -33,6 +33,8 @@ from system.playerprogresssystem import PlayerProgressSystem
 from sprite.pillsprite import PillSprite
 from behavior.pillbehavior import PillBehavior
 import time
+from sprite.dummysprite import DummySprite
+from behavior.teleportbehavior import TeleportBehavior
 
 class BoardBuilder:
     def __init__(self, _systems):
@@ -65,6 +67,8 @@ class BoardBuilder:
         for enemy in itemsgetter.enemies:
             self.createCop(enemy[0]*tileSize, enemy[1]*tileSize)
         self.createKomesMan(itemsgetter.komesman[0]*tileSize, itemsgetter.komesman[1]*tileSize)
+        for teleport in itemsgetter.teleports:
+            self.createTeleport(teleport[0]*tileSize, teleport[1]*tileSize)
         
     def clear(self):
         for e in self.elements:
@@ -88,7 +92,7 @@ class BoardBuilder:
         komesMan = Entity()
         komesMan.addArtifact(SpriteArtifact(KomesManSprite(), x, y, GameState.GAME))
         komesMan.addArtifact(MovementArtifact())
-        komesMan.addArtifact(TagArtifact("KomesMan", TagType.KOMESMAN))
+        komesMan.addArtifact(TagArtifact(TagType.KOMESMAN))
         komesMan.addArtifact(BehaviorArtifact(KomesManBehavior()))
         self.systems[TagSystem.NAME].register(komesMan)
         self.systems[UserMovementSystem.NAME].register(komesMan)
@@ -100,7 +104,7 @@ class BoardBuilder:
         cop = Entity()
         cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y, GameState.GAME))
         cop.addArtifact(MovementArtifact(1))
-        cop.addArtifact(TagArtifact("Enemy", TagType.ENEMY))
+        cop.addArtifact(TagArtifact(TagType.ENEMY, TagSubType.SIMPLE_COP))
         cop.addArtifact(BehaviorArtifact(SimpleCopBehavior()))
         self.systems[AiMovementSystem.NAME].register(cop)
         self.systems[DrawSystem.NAME].register(cop)
@@ -111,7 +115,7 @@ class BoardBuilder:
     def createBeer(self, _x, _y):
         beer = Entity()
         beer.addArtifact(SpriteArtifact(BeerSprite(), _x, _y, GameState.GAME))
-        beer.addArtifact(TagArtifact("Item", TagType.ITEM))
+        beer.addArtifact(TagArtifact(TagType.ITEM, TagSubType.BEER))
         beer.addArtifact(BehaviorArtifact(BeerBehavior()))
         self.systems[DrawSystem.NAME].register(beer)
         self.systems[TagSystem.NAME].register(beer)
@@ -121,7 +125,7 @@ class BoardBuilder:
     def createDrug(self, _x, _y):
         drug = Entity()
         drug.addArtifact(SpriteArtifact(DrugSprite(), _x, _y, GameState.GAME))
-        drug.addArtifact(TagArtifact("Item", TagType.ITEM))
+        drug.addArtifact(TagArtifact(TagType.ITEM, TagSubType.DRUG))
         drug.addArtifact(BehaviorArtifact(DrugBehavior()))
         self.systems[DrawSystem.NAME].register(drug)
         self.systems[TagSystem.NAME].register(drug)
@@ -131,17 +135,27 @@ class BoardBuilder:
     def createCap(self, _x, _y):
         cap = Entity()
         cap.addArtifact(SpriteArtifact(CapSprite(), _x, _y, GameState.GAME))
-        cap.addArtifact(TagArtifact("Item", TagType.ITEM))
+        cap.addArtifact(TagArtifact(TagType.ITEM, TagSubType.CAP))
         cap.addArtifact(BehaviorArtifact(CapBehavior()))
         self.systems[DrawSystem.NAME].register(cap)
         self.systems[TagSystem.NAME].register(cap)
         self.systems[CollisionSystem.NAME].register(cap)
         self.elements.append(cap)
         
+    def createTeleport(self, _x, _y):
+        teleport = Entity()
+        teleport.addArtifact(SpriteArtifact(DummySprite(), _x, _y, GameState.GAME))
+        teleport.addArtifact(TagArtifact(TagType.FIXED, TagSubType.TELEPORT))
+        teleport.addArtifact(BehaviorArtifact(TeleportBehavior()))
+        self.systems[DrawSystem.NAME].register(teleport)
+        self.systems[TagSystem.NAME].register(teleport)
+        self.systems[CollisionSystem.NAME].register(teleport)
+        self.elements.append(teleport)
+        
     def createPill(self, _x, _y):
         pill = Entity()
         pill.addArtifact(SpriteArtifact(PillSprite(), _x, _y, GameState.GAME))
-        pill.addArtifact(TagArtifact("Item", TagType.ITEM))
+        pill.addArtifact(TagArtifact(TagType.ITEM, TagSubType.PILL))
         pill.addArtifact(BehaviorArtifact(PillBehavior()))
         self.systems[DrawSystem.NAME].register(pill)
         self.systems[TagSystem.NAME].register(pill)

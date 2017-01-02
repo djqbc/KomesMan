@@ -1,6 +1,6 @@
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
-from artifact.tagartifact import TagArtifact
+from artifact.tagartifact import TagArtifact, TagSubType, TagType
 from pathfinder import Node
 from sprite.mysprite import AnimationState
 from system.tagsystem import TagSystem
@@ -18,7 +18,7 @@ class AiMovementSystem:
     def register(self, _object):
         if SpriteArtifact.NAME in _object.artifacts and MovementArtifact.NAME in _object.artifacts:   
             self.observing.append(_object)
-        elif TagArtifact.NAME in _object.artifacts and _object.artifacts[TagArtifact.NAME].tag == "PathFinder":
+        elif TagArtifact.NAME in _object.artifacts and _object.artifacts[TagArtifact.NAME].subtype == TagSubType.PATHFINDER:
             self.pathFinder = _object
         else:
             raise NameError("ERROR!!!")
@@ -27,8 +27,8 @@ class AiMovementSystem:
         if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
             return
         tagSystem = _systems[TagSystem.NAME]
-        entities = tagSystem.getEntities("KomesMan")
-        board = tagSystem.getEntities("Board")[0]
+        entities = tagSystem.getEntities(TagType.KOMESMAN)
+        board = tagSystem.getEntities(TagType.FIXED, TagSubType.BOARD)[0]
         if entities != None:
             komesMan = entities[0]
             x = komesMan.artifacts[SpriteArtifact.NAME].positionX

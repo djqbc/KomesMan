@@ -6,6 +6,7 @@ import pygame
 from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, startTimer,\
     copyEvent
 from system.gamesystem import GameSystem, GameState
+from artifact.tagartifact import TagType, TagSubType
 
 class UserMovementSystem:
     NAME = "UserMovementSystem"
@@ -28,7 +29,7 @@ class UserMovementSystem:
         if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
             return
         tagSystem = _systems[TagSystem.NAME]
-        board = tagSystem.getEntities("Board")[0]
+        board = tagSystem.getEntities(TagType.FIXED, TagSubType.BOARD)[0]
         for entity in self.observing:
             movementArtifact = entity.artifacts[MovementArtifact.NAME]
             if movementArtifact.movementVector != [0, 0]:

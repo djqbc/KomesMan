@@ -32,7 +32,7 @@ class MenuBuilder:
             for _, system in self.systems.items():
                 system.remove(e)
         self.elements.clear()
-        self.systems[HUDSystem.NAME].currentPoints = 0#poprawic
+        self.systems[HUDSystem.NAME].currentCaps = 0#poprawic
     def input(self, _event):
         if _event.type == GAME_STATE_CHANGE_EVENT:
             if _event.state == GameState.MENU and self.dirty == True:
