@@ -1,6 +1,9 @@
 from myevents import GAME_EVENT, GameEventType, ENTITY_EFFECT_EVENT,\
     EntityEffect, MENU_EVENT, MenuEventType
 import pygame
+from artifact.tagartifact import TagType, TagSubType
+from system.tagsystem import TagSystem
+from artifact.spriteartifact import SpriteArtifact
 
 class PlayerProgressSystem:
     NAME = "PlayerProgressSystem"
@@ -15,7 +18,7 @@ class PlayerProgressSystem:
     def remove(self, _entity):
         pass
     def update(self, _timeDelta, _systems):
-        pass
+        self.systems = _systems
     def input(self, _event):
         if _event.type == GAME_EVENT:
             if _event.reason == GameEventType.WON_GAME:
@@ -49,6 +52,17 @@ class PlayerProgressSystem:
             elif _event.action == MenuEventType.CONTINUE_GAME:
                 self.currentCaps = 0
                 self.updateHUD()
+        elif _event.type == pygame.KEYUP:
+            if _event.key == pygame.K_b:
+                if self.overallPoints > 100:
+                    self.overallPoints -= 100
+                    self.updateHUD()
+                    tagSystem = self.systems[TagSystem.NAME]
+                    komesman = tagSystem.getEntities(TagType.KOMESMAN)[0]
+                    spriteArtifact = komesman.artifacts[SpriteArtifact.NAME]
+                    pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.SPAWN_OBJECT, spawntype=TagType.ITEM, 
+                                          spawnsubtype=TagSubType.BAIT, x=spriteArtifact.positionX, y=spriteArtifact.positionY))
+                    
     def updateHUD(self):
         currentCapsString = str(self.currentCaps) + "/" + str(self.currentMaxCaps)
         currentLifesString = str(self.currentLifes)

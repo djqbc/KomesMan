@@ -24,13 +24,13 @@ class TagSystem:
         typeDict = self.tags.get(_type, None)
         if typeDict != None:
             if _subtype != None:
-                return typeDict.get(_subtype, None)
+                return typeDict.get(_subtype, [])
             else:
                 result = []
                 for _, entityList in typeDict.items():
                     result += entityList
                 return result
-        return None
+        return []
     def update(self, _timeDelta, _systems):
         pass
     def input(self, _event):

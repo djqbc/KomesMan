@@ -13,11 +13,13 @@ class TagSubType(Enum):
     #---
     #ENEMY
     SIMPLE_COP = 5
+    SUPER_COP = 6
     #ITEM
     CAP = 20
     PILL = 21
     DRUG = 22
     BEER = 23
+    BAIT = 24
     #FIXED
     BOARD = 40
     TELEPORT = 41

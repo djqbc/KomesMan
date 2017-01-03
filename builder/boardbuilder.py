@@ -35,6 +35,8 @@ from behavior.pillbehavior import PillBehavior
 import time
 from sprite.dummysprite import DummySprite
 from behavior.teleportbehavior import TeleportBehavior
+from sprite.baitsprite import BaitSprite
+from behavior.baitbehavior import BaitBehavior
 
 class BoardBuilder:
     def __init__(self, _systems):
@@ -83,10 +85,16 @@ class BoardBuilder:
             elif _event.action == MenuEventType.RESTART_GAME:
                 self.clear()
                 self.build(True)
-        elif _event.type == GAME_EVENT and _event.reason == GameEventType.REMOVE_OBJECT:
-            self.elements.remove(_event.reference)
-            for _, system in self.systems.items():
-                system.remove(_event.reference)
+        elif _event.type == GAME_EVENT: 
+            if _event.reason == GameEventType.REMOVE_OBJECT:
+                self.elements.remove(_event.reference)
+                for _, system in self.systems.items():
+                    system.remove(_event.reference)
+            elif _event.reason == GameEventType.SPAWN_OBJECT:
+                if _event.spawntype == TagType.ENEMY and _event.spawnsubtype == TagSubType.SUPER_COP:
+                    self.createSuperCop(_event.x, _event.y)
+                elif _event.spawntype == TagType.ITEM and _event.spawnsubtype == TagSubType.BAIT:
+                    self.createBait(_event.x, _event.y)
             
     def createKomesMan(self, x, y):
         komesMan = Entity()
@@ -111,6 +119,18 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(cop)
         self.systems[CollisionSystem.NAME].register(cop)
         self.elements.append(cop)
+    
+    def createSuperCop(self, _x, _y):
+        cop = Entity()
+        cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y, GameState.GAME))
+        cop.addArtifact(MovementArtifact(1.5))
+        cop.addArtifact(TagArtifact(TagType.ENEMY, TagSubType.SUPER_COP))
+        cop.addArtifact(BehaviorArtifact(SimpleCopBehavior()))
+        self.systems[AiMovementSystem.NAME].register(cop)
+        self.systems[DrawSystem.NAME].register(cop)
+        self.systems[TagSystem.NAME].register(cop)
+        self.systems[CollisionSystem.NAME].register(cop)
+        self.elements.append(cop)
         
     def createBeer(self, _x, _y):
         beer = Entity()
@@ -121,6 +141,16 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(beer)
         self.systems[CollisionSystem.NAME].register(beer)
         self.elements.append(beer)
+        
+    def createBait(self, _x, _y):
+        bait = Entity()
+        bait.addArtifact(SpriteArtifact(BaitSprite(), _x, _y, GameState.GAME))
+        bait.addArtifact(TagArtifact(TagType.ITEM, TagSubType.BAIT))
+        bait.addArtifact(BehaviorArtifact(BaitBehavior()))
+        self.systems[DrawSystem.NAME].register(bait)
+        self.systems[TagSystem.NAME].register(bait)
+        self.systems[CollisionSystem.NAME].register(bait)
+        self.elements.append(bait)
     
     def createDrug(self, _x, _y):
         drug = Entity()

@@ -46,6 +46,7 @@ class GameEventType(Enum):
     SET_MAX_POINTS = 4
     HUD_UPDATE = 5
     LOST_LIFE = 6
+    SPAWN_OBJECT = 7
     
 def startTimer(_timeoutMs, _timeoutCallback):
     t = Timer(_timeoutMs / 1000, _timeoutCallback)

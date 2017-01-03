@@ -1,10 +1,24 @@
-from myevents import COLLISION_EVENT
-from artifact.tagartifact import TagArtifact, TagType
+from myevents import COLLISION_EVENT, GAME_EVENT, GameEventType
+from artifact.tagartifact import TagArtifact, TagType, TagSubType
+import pygame
+from artifact.spriteartifact import SpriteArtifact
+from artifact.behaviorartifact import BehaviorArtifact
+
 class SimpleCopBehavior:
     def input(self, _event, _postEventCallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
-            if entity.artifacts[TagArtifact.NAME].type == TagType.KOMESMAN:
-                #play some demonic laugh
-                #_postEventCallback(Event(PLAY_MUSIC, song="hahahaha.mp3"))
-                pass
+            tagArtifact = entity.artifacts[TagArtifact.NAME]
+            if tagArtifact.type == TagType.ENEMY and tagArtifact.subtype == TagSubType.SIMPLE_COP:
+                self.firstInformed = True
+                try:
+                    if entity.artifacts[BehaviorArtifact.NAME].behavior.firstInformed == True:
+                        self.firstInformed = False
+                except:
+                    pass
+                if self.firstInformed == True:
+                    spriteArtifact = entity.artifacts[SpriteArtifact.NAME]
+                    _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=_event.me))
+                    _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=entity))
+                    _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.SPAWN_OBJECT, spawntype=TagType.ENEMY, 
+                                          spawnsubtype=TagSubType.SUPER_COP, x=spriteArtifact.positionX, y=spriteArtifact.positionY))
