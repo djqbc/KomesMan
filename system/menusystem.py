@@ -1,4 +1,5 @@
 from artifact.spriteartifact import SpriteArtifact, DRAW_NEVER
+from highscoresmanager import HighscoresManager
 from system.gamesystem import GameState
 from myevents import GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, ENTITY_EFFECT_EVENT, EntityEffect
 import pygame
@@ -15,6 +16,7 @@ class MenuSystem:
     currentGameState = GameState.INIT
 
     def __init__(self):
+        self.highscoresmanager = HighscoresManager()
         pass
 
     def remove(self, _entity):
@@ -58,15 +60,24 @@ class MenuSystem:
         elif _event.type == pygame.KEYDOWN:
             if self.currentGameState == GameState.NEW_HIGHSCORE:
                 if _event.key == pygame.K_RETURN:
+                    self.highscoresmanager.load()
+
+                    #todo: somehow get points
+                    self.highscoresmanager.inserthighscore(self.currentNick, 90210)
+                    self.highscoresmanager.save()
                     pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
                 else:
                     if len(self.currentNick) > self.maxNick and _event.key != pygame.K_BACKSPACE:
                         return
+                    if len(_event.unicode) == 0:
+                        return
+                    if _event.key == pygame.K_BACKSPACE:
+                        self.currentNick = self.currentNick[:-1]
+                    else:
+                        self.currentNick.append(_event.unicode)
 
-                    #todo: input and show name
-                    #if(_event.key == pygame.K_BACKSPACE)
-                        
-                    self.currentNick.append(_event.unicode)
+                    #todo: somehow update screen...
+
                     print(self.currentNick)
                     pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
         elif _event.type == pygame.KEYUP:

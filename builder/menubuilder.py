@@ -89,3 +89,8 @@ class MenuBuilder:
         enter_your_name.addartifact(SpriteArtifact(TextSprite("Enter your name:", Modifiers.CENTER_H), 100, 200, GameState.NEW_HIGHSCORE))
         self.systems[DrawSystem.NAME].register(enter_your_name)
         self.elements.append(enter_your_name)
+
+        player_name = Entity()
+        player_name.addartifact(SpriteArtifact(TextSprite("", Modifiers.CENTER_H), 100, 300, GameState.NEW_HIGHSCORE))
+        self.systems[DrawSystem.NAME].register(player_name)
+        self.elements.append(player_name)
