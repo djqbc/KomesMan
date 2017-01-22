@@ -54,5 +54,10 @@ def startTimer(_timeoutMs, _timeoutCallback):
     return t
     
 def copyEvent(_event):
-    tmp = copy.deepcopy(_event.dict)
+    # todo: tu nie powinno byc dalej deepcopy ale na konkretnym elemencie ?
+
+    tmp = {}
+    for k, v in _event.dict.items():
+        tmp[k] = v
+
     return pygame.event.Event(_event.type, tmp)
