@@ -4,6 +4,7 @@ import pygame
 from artifact.spriteartifact import SpriteArtifact
 from artifact.behaviorartifact import BehaviorArtifact
 
+
 class SimpleCopBehavior:
     def __init__(self):
         self.firstInformed = None
@@ -21,7 +22,11 @@ class SimpleCopBehavior:
                     pass
                 if self.firstInformed:
                     spriteArtifact = entity.artifacts[SpriteArtifact.NAME]
-                    _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=_event.me))
-                    _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=entity))
-                    _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.SPAWN_OBJECT, spawntype=TagType.ENEMY, 
-                                          spawnsubtype=TagSubType.SUPER_COP, x=spriteArtifact.positionX, y=spriteArtifact.positionY))
+                    _postEventCallback(
+                        pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=_event.me))
+                    _postEventCallback(
+                        pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=entity))
+                    _postEventCallback(
+                        pygame.event.Event(GAME_EVENT, reason=GameEventType.SPAWN_OBJECT, spawntype=TagType.ENEMY,
+                                           spawnsubtype=TagSubType.SUPER_COP, x=spriteArtifact.positionX,
+                                           y=spriteArtifact.positionY))

@@ -3,25 +3,27 @@ from artifact.spriteartifact import SpriteArtifact
 from sprite.mysprite import AnimationState
 from system.tagsystem import TagSystem
 import pygame
-from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, startTimer,\
+from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, startTimer, \
     copyEvent
 from system.gamesystem import GameSystem, GameState
 from artifact.tagartifact import TagType, TagSubType
+
 
 class UserMovementSystem:
     NAME = "UserMovementSystem"
     observing = []
     activeKeys = {}
-    
+
     def __init__(self):
         self.previousdX = 0
         self.previousdY = 0
 
     def register(self, _object):
-        if SpriteArtifact.NAME in _object.artifacts and MovementArtifact.NAME in _object.artifacts:   
+        if SpriteArtifact.NAME in _object.artifacts and MovementArtifact.NAME in _object.artifacts:
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
+
     def remove(self, _entity):
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
 
@@ -39,8 +41,8 @@ class UserMovementSystem:
                 if board.checkMove(spriteArtifact.positionX, spriteArtifact.positionY, dX, dY):
                     spriteArtifact.positionX += dX
                     spriteArtifact.positionY += dY
-                    self.previousdX=dX
-                    self.previousdY=dY
+                    self.previousdX = dX
+                    self.previousdY = dY
                 else:
                     if dX != 0:  # left
                         if board.checkMove(spriteArtifact.positionX, spriteArtifact.positionY, 0, self.previousdY):
@@ -102,16 +104,17 @@ class UserMovementSystem:
                     for entity in self.observing:
                         if entity == _event.reference:
                             entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
-                            startTimer(_event.time, lambda : 
-                                       pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.SPEED_CHANGE, 
-                                                                            reason=EventType.STOP, modifier=1.0/_event.modifier, reference=_event.reference)))
+                            startTimer(_event.time, lambda:
+                            pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.SPEED_CHANGE,
+                                                                 reason=EventType.STOP, modifier=1.0 / _event.modifier,
+                                                                 reference=_event.reference)))
                 elif _event.reason == EventType.STOP:
                     for entity in self.observing:
                         if entity == _event.reference:
-                                entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
+                            entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
                 elif _event.reason == EventType.DELAYED:
                     tmp = copyEvent(_event)
                     tmp.reason = EventType.START
-                    #czemu kopiowanie referencji nie dzia�a poprawnie w copyEvent?
+                    # czemu kopiowanie referencji nie dzia�a poprawnie w copyEvent?
                     tmp.reference = _event.reference
-                    startTimer(_event.delay, lambda : pygame.event.post(tmp))
+                    startTimer(_event.delay, lambda: pygame.event.post(tmp))

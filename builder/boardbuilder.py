@@ -38,6 +38,7 @@ from behavior.teleportbehavior import TeleportBehavior
 from sprite.baitsprite import BaitSprite
 from behavior.baitbehavior import BaitBehavior
 
+
 class BoardBuilder:
     def __init__(self, _systems):
         self.systems = _systems
@@ -56,29 +57,31 @@ class BoardBuilder:
         itemsgetter = BinaryBoardItemsGetter()
         itemsgetter.loadItems(self.binaryboard)
 
-        pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.SET_MAX_POINTS, maxPoints=len(itemsgetter.caps)))
+        pygame.event.post(
+            pygame.event.Event(GAME_EVENT, reason=GameEventType.SET_MAX_POINTS, maxPoints=len(itemsgetter.caps)))
 
-        tileSize = 64 #to da sie pewno skads wziac?
+        tileSize = 64  # to da sie pewno skads wziac?
 
         for pill in itemsgetter.pills:
-            self.createPill(pill[0]*tileSize, pill[1]*tileSize)
+            self.createPill(pill[0] * tileSize, pill[1] * tileSize)
         for cap in itemsgetter.caps:
-            self.createCap(cap[0]*tileSize, cap[1]*tileSize)
+            self.createCap(cap[0] * tileSize, cap[1] * tileSize)
         for amph in itemsgetter.amphs:
-            self.createDrug(amph[0]*tileSize, amph[1]*tileSize)
+            self.createDrug(amph[0] * tileSize, amph[1] * tileSize)
         for beer in itemsgetter.beers:
-            self.createBeer(beer[0]*tileSize, beer[1]*tileSize)
+            self.createBeer(beer[0] * tileSize, beer[1] * tileSize)
         for enemy in itemsgetter.enemies:
-            self.createCop(enemy[0]*tileSize, enemy[1]*tileSize)
-        self.createKomesMan(itemsgetter.komesman[0]*tileSize, itemsgetter.komesman[1]*tileSize)
+            self.createCop(enemy[0] * tileSize, enemy[1] * tileSize)
+        self.createKomesMan(itemsgetter.komesman[0] * tileSize, itemsgetter.komesman[1] * tileSize)
         for teleport in itemsgetter.teleports:
-            self.createTeleport(teleport[0]*tileSize, teleport[1]*tileSize)
-        
+            self.createTeleport(teleport[0] * tileSize, teleport[1] * tileSize)
+
     def clear(self):
         for e in self.elements:
             for _, system in self.systems.items():
                 system.remove(e)
         self.elements.clear()
+
     def input(self, _event):
         if _event.type == MENU_EVENT:
             if _event.action == MenuEventType.START_NEW_GAME or _event.action == MenuEventType.CONTINUE_GAME:
@@ -87,7 +90,7 @@ class BoardBuilder:
             elif _event.action == MenuEventType.RESTART_GAME:
                 self.clear()
                 self.build(True)
-        elif _event.type == GAME_EVENT: 
+        elif _event.type == GAME_EVENT:
             if _event.reason == GameEventType.REMOVE_OBJECT:
                 self.elements.remove(_event.reference)
                 for _, system in self.systems.items():
@@ -97,7 +100,7 @@ class BoardBuilder:
                     self.createSuperCop(_event.x, _event.y)
                 elif _event.spawntype == TagType.ITEM and _event.spawnsubtype == TagSubType.BAIT:
                     self.createBait(_event.x, _event.y)
-            
+
     def createKomesMan(self, x, y):
         komesMan = Entity()
         komesMan.addArtifact(SpriteArtifact(KomesManSprite(), x, y, GameState.GAME))
@@ -109,7 +112,7 @@ class BoardBuilder:
         self.systems[DrawSystem.NAME].register(komesMan)
         self.systems[CollisionSystem.NAME].register(komesMan)
         self.elements.append(komesMan)
-        
+
     def createCop(self, _x, _y):
         cop = Entity()
         cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y, GameState.GAME))
@@ -121,7 +124,7 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(cop)
         self.systems[CollisionSystem.NAME].register(cop)
         self.elements.append(cop)
-    
+
     def createSuperCop(self, _x, _y):
         cop = Entity()
         cop.addArtifact(SpriteArtifact(CopSprite(), _x, _y, GameState.GAME))
@@ -133,7 +136,7 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(cop)
         self.systems[CollisionSystem.NAME].register(cop)
         self.elements.append(cop)
-        
+
     def createBeer(self, _x, _y):
         beer = Entity()
         beer.addArtifact(SpriteArtifact(BeerSprite(), _x, _y, GameState.GAME))
@@ -143,7 +146,7 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(beer)
         self.systems[CollisionSystem.NAME].register(beer)
         self.elements.append(beer)
-        
+
     def createBait(self, _x, _y):
         bait = Entity()
         bait.addArtifact(SpriteArtifact(BaitSprite(), _x, _y, GameState.GAME))
@@ -153,7 +156,7 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(bait)
         self.systems[CollisionSystem.NAME].register(bait)
         self.elements.append(bait)
-    
+
     def createDrug(self, _x, _y):
         drug = Entity()
         drug.addArtifact(SpriteArtifact(DrugSprite(), _x, _y, GameState.GAME))
@@ -163,7 +166,7 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(drug)
         self.systems[CollisionSystem.NAME].register(drug)
         self.elements.append(drug)
-        
+
     def createCap(self, _x, _y):
         cap = Entity()
         cap.addArtifact(SpriteArtifact(CapSprite(), _x, _y, GameState.GAME))
@@ -173,7 +176,7 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(cap)
         self.systems[CollisionSystem.NAME].register(cap)
         self.elements.append(cap)
-        
+
     def createTeleport(self, _x, _y):
         teleport = Entity()
         teleport.addArtifact(SpriteArtifact(DummySprite(), _x, _y, GameState.GAME))
@@ -183,7 +186,7 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(teleport)
         self.systems[CollisionSystem.NAME].register(teleport)
         self.elements.append(teleport)
-        
+
     def createPill(self, _x, _y):
         pill = Entity()
         pill.addArtifact(SpriteArtifact(PillSprite(), _x, _y, GameState.GAME))
@@ -195,7 +198,7 @@ class BoardBuilder:
         self.elements.append(pill)
 
     def createBoard(self, predefinedboard):
-        #kijowe bezposrednie przekazanie elements - mozna olac jak nikomu sie nie bedzie chcialo poprawic
+        # kijowe bezposrednie przekazanie elements - mozna olac jak nikomu sie nie bedzie chcialo poprawic
         Board(predefinedboard, self.systems, self.elements)
         start = int(round(time.time() * 1000))
         pf = Pathfinder(predefinedboard)

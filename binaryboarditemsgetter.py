@@ -1,7 +1,7 @@
 from board import BoardElement
 
-class BinaryBoardItemsGetter:
 
+class BinaryBoardItemsGetter:
     def __init__(self):
         self.caps = []
         self.beers = []
@@ -19,12 +19,12 @@ class BinaryBoardItemsGetter:
         self.enemies.clear()
         self.teleports.clear()
         self.komesman = (0, 0)
-        y=0
+        y = 0
         for row in board:
-            x=0
+            x = 0
             for cell in row:
                 if cell == BoardElement.CAP:
-                    self.caps.append((x, y)) 
+                    self.caps.append((x, y))
                 elif cell == BoardElement.BEER:
                     self.beers.append((x, y))
                 elif cell == BoardElement.DRUG:

@@ -7,6 +7,7 @@ from system.tagsystem import TagSystem
 from artifact.tagartifact import TagType, TagSubType
 import random
 
+
 class CollisionSystem:
     NAME = "CollisionSystem"
     observing = []
@@ -15,7 +16,7 @@ class CollisionSystem:
         self.systems = None
 
     def register(self, _object):
-        if SpriteArtifact.NAME in _object.artifacts and BehaviorArtifact.NAME in _object.artifacts:   
+        if SpriteArtifact.NAME in _object.artifacts and BehaviorArtifact.NAME in _object.artifacts:
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
@@ -24,7 +25,7 @@ class CollisionSystem:
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
 
     def input(self, _event):
-        #obsluga nie powinna byc w tym systemie ale nie mialem pomyslu gdzie to wrzucic zeby bylo globalnie
+        # obsluga nie powinna byc w tym systemie ale nie mialem pomyslu gdzie to wrzucic zeby bylo globalnie
         if _event.type == ENTITY_EFFECT_EVENT and _event.effect == EntityEffect.TELEPORT:
             teleports = self.systems[TagSystem.NAME].getEntities(TagType.FIXED, TagSubType.TELEPORT)
             teleports = [t for t in teleports if t != _event.teleport]
@@ -35,7 +36,7 @@ class CollisionSystem:
                 entitySpriteArtifact = _event.reference.artifacts[SpriteArtifact.NAME]
                 entitySpriteArtifact.positionX = targetTeleportSpriteArtifact.positionX
                 entitySpriteArtifact.positionY = targetTeleportSpriteArtifact.positionY
-                #poprawic tile size sztywny
+                # poprawic tile size sztywny
                 if board.checkMove(entitySpriteArtifact.positionX, entitySpriteArtifact.positionY, 0, -64):
                     entitySpriteArtifact.positionY -= 64
                 elif board.checkMove(entitySpriteArtifact.positionX, entitySpriteArtifact.positionY, 0, 64):
@@ -56,7 +57,7 @@ class CollisionSystem:
             x += 1
             for index in range(x, len(self.observing)):
                 entity2 = self.observing[index]
-#             for entity2 in self.observing:
+                #             for entity2 in self.observing:
                 if entity != entity2:
                     e1SpriteArtifact = entity.artifacts[SpriteArtifact.NAME]
                     e2SpriteArtifact = entity2.artifacts[SpriteArtifact.NAME]
@@ -65,5 +66,7 @@ class CollisionSystem:
                     e2SpriteArtifact.sprite.rect.x = e2SpriteArtifact.positionX
                     e2SpriteArtifact.sprite.rect.y = e2SpriteArtifact.positionY
                     if pygame.sprite.collide_rect(e1SpriteArtifact.sprite, e2SpriteArtifact.sprite):
-                        entity.artifacts[BehaviorArtifact.NAME].behavior.input(pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
-                        entity2.artifacts[BehaviorArtifact.NAME].behavior.input(pygame.event.Event(COLLISION_EVENT, me=entity2, colliding=entity), pygame.event.post)
+                        entity.artifacts[BehaviorArtifact.NAME].behavior.input(
+                            pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
+                        entity2.artifacts[BehaviorArtifact.NAME].behavior.input(
+                            pygame.event.Event(COLLISION_EVENT, me=entity2, colliding=entity), pygame.event.post)

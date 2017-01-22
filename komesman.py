@@ -1,5 +1,7 @@
+import pygame
+import time
+
 from gamemanager import GameManager
-import pygame, time
 
 game = GameManager()
 
@@ -14,7 +16,7 @@ while not game.quit():
     newTime = time.clock()
     frameTime = newTime - currentTime
     currentTime = newTime
-    
+
     accumulator += frameTime
     while accumulator >= TIME_DELTA:
         for event in pygame.event.get():

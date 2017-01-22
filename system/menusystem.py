@@ -4,14 +4,17 @@ from myevents import GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, ENTITY_
 import pygame
 from artifact.menuartifact import MenuArtifact
 
+
 class MenuSystem:
     NAME = "MenuSystem"
     menu = {}
     currentNode = None
     currentIndex = 0
     currentGameState = GameState.INIT
+
     def __init__(self):
         pass
+
     def remove(self, _entity):
         if _entity in self.menu:
             if self.currentNode == _entity:
@@ -21,9 +24,9 @@ class MenuSystem:
         for _, options in self.menu.items():
             if _entity in options:
                 options.remove(_entity)
-            
+
     def register(self, _object, _parent=None):
-        if SpriteArtifact.NAME in _object.artifacts and MenuArtifact.NAME in _object.artifacts: 
+        if SpriteArtifact.NAME in _object.artifacts and MenuArtifact.NAME in _object.artifacts:
             tmp = self.menu.get(_parent, None)
             if tmp is not None:
                 self.menu[_parent].append(_object)
@@ -31,8 +34,10 @@ class MenuSystem:
                 self.menu[_parent] = [_object]
         else:
             raise NameError("ERROR!!!")
+
     def update(self, _timeDelta, _systems):
         pass
+
     def input(self, _event):
         if _event.type == GAME_STATE_CHANGE_EVENT:
             self.currentGameState = _event.state
@@ -40,17 +45,18 @@ class MenuSystem:
                 self.currentNode = None
                 for node, options in self.menu.items():
                     for option in options:
-                        if node == self.currentNode: 
+                        if node == self.currentNode:
                             option.artifacts[SpriteArtifact.NAME].drawStage = GameState.MENU
                         else:
                             option.artifacts[SpriteArtifact.NAME].drawStage = DRAW_NEVER
             else:
                 self.currentNode = None
-#                 for element in self.menu[self.currentNode]:
-#                     element.artifacts[SpriteArtifact.NAME].draw = False
+            #                 for element in self.menu[self.currentNode]:
+            #                     element.artifacts[SpriteArtifact.NAME].draw = False
         elif _event.type == pygame.KEYUP:
             if self.currentGameState == GameState.MENU:
-                pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
+                pygame.event.post(
+                    pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
             if _event.key == pygame.K_DOWN and self.currentGameState == GameState.MENU:
                 self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.removeHighlight()
                 self.currentIndex = (self.currentIndex + 1) % len(self.menu[self.currentNode])
@@ -71,7 +77,7 @@ class MenuSystem:
                     self.currentIndex = 0
                     for node, options in self.menu.items():
                         for option in options:
-                            if node == self.currentNode: 
+                            if node == self.currentNode:
                                 option.artifacts[SpriteArtifact.NAME].drawStage = GameState.MENU
                             else:
                                 option.artifacts[SpriteArtifact.NAME].drawStage = DRAW_NEVER
@@ -80,7 +86,7 @@ class MenuSystem:
                     self.currentIndex = 0
                     for node, options in self.menu.items():
                         for option in options:
-                            if node == self.currentNode: 
+                            if node == self.currentNode:
                                 option.artifacts[SpriteArtifact.NAME].drawStage = GameState.MENU
                             else:
                                 option.artifacts[SpriteArtifact.NAME].drawStage = DRAW_NEVER

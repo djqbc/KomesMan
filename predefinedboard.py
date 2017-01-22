@@ -7,15 +7,15 @@ class PredefinedBoard:
 
         # todo: ja bym tutaj dodal rozmieszczenie itemkow na podlodze, ale moze zle mysle?
 
-#         EMPTY = 0
-#         WALL = 1
-#         CAP = 2
-#         BEER = 3
-#         DRUG = 4
-#         PILL = 5
-#         ENEMY = 6
-#         KOMESMAN = 7
-#         TELEPORT = 8
+        #         EMPTY = 0
+        #         WALL = 1
+        #         CAP = 2
+        #         BEER = 3
+        #         DRUG = 4
+        #         PILL = 5
+        #         ENEMY = 6
+        #         KOMESMAN = 7
+        #         TELEPORT = 8
 
         return [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],

@@ -13,6 +13,7 @@ from builder.menubuilder import MenuBuilder
 from system.musicsystem import MusicSystem
 from system.playerprogresssystem import PlayerProgressSystem
 
+
 class GameManager:
     """Class managing game state"""
     drawSystem = DrawSystem()
@@ -26,42 +27,43 @@ class GameManager:
     musicSystem = MusicSystem()
     playerProgressSystem = PlayerProgressSystem()
     allSystems = {
-        hudSystem.NAME : hudSystem,
-        tagSystem.NAME : tagSystem,
-        collisionSystem.NAME : collisionSystem,
-        userMoveSystem.NAME : userMoveSystem, 
-        aiMoveSystem.NAME : aiMoveSystem, 
-        drawSystem.NAME : drawSystem,
-        gameSystem.NAME : gameSystem,
-        menuSystem.NAME : menuSystem,
-        musicSystem.NAME : musicSystem,
-        playerProgressSystem.NAME : playerProgressSystem
-        }#kolejnosc moze byc wazna
+        hudSystem.NAME: hudSystem,
+        tagSystem.NAME: tagSystem,
+        collisionSystem.NAME: collisionSystem,
+        userMoveSystem.NAME: userMoveSystem,
+        aiMoveSystem.NAME: aiMoveSystem,
+        drawSystem.NAME: drawSystem,
+        gameSystem.NAME: gameSystem,
+        menuSystem.NAME: menuSystem,
+        musicSystem.NAME: musicSystem,
+        playerProgressSystem.NAME: playerProgressSystem
+    }  # kolejnosc moze byc wazna
     builders = [
         BoardBuilder(allSystems),
         MenuBuilder(allSystems)
-        ]
+    ]
+
     def __init__(self):
         pygame.init()
         self.init()
-    
+
     def update(self, _timeDelta):
         """Updates current game state"""
         for _, system in self.allSystems.items():
             system.update(_timeDelta, self.allSystems)
-    
+
     def init(self):
         self.gameSystem.endInit()
-    
+
     def render(self, _updateMidstep):
         """Renders currect scene"""
         self.drawSystem.draw()
-    
+
     def input(self, _event):
         for builder in self.builders:
             builder.input(_event)
         for _, system in self.allSystems.items():
             system.input(_event)
-    
+
     def quit(self):
         return self.gameSystem.quit()
