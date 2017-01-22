@@ -1,5 +1,5 @@
 from artifact.spriteartifact import SpriteArtifact
-from myevents import SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType, startTimer, \
+from myevents import SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType, starttimer, \
     GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType
 import pygame
 from system.gamesystem import GameState
@@ -13,9 +13,9 @@ class DrawSystem:
     currentGameState = GameState.INIT
 
     def __init__(self):
-        self.createDisplay()
+        self.createdisplay()
 
-    def createDisplay(self, _resolution=(1024, 768), _maximized=False):
+    def createdisplay(self, _resolution=(1024, 768), _maximized=False):
         if _maximized:
             self.screen = pygame.display.set_mode(_resolution, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF,
                                                   32)
@@ -35,9 +35,9 @@ class DrawSystem:
     def draw(self):
         self.screen.fill(pygame.Color('black'))
         for entity in self.observing:
-            spriteArtifact = entity.artifacts[SpriteArtifact.NAME]
-            if spriteArtifact.drawStage & int(self.currentGameState):
-                spriteArtifact.sprite.draw(self.screen, spriteArtifact.positionX, spriteArtifact.positionY)
+            sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
+            if sprite_artifact.drawStage & int(self.currentGameState):
+                sprite_artifact.sprite.draw(self.screen, sprite_artifact.positionX, sprite_artifact.positionY)
         if self.currentEffect is not None:
             if self.currentEffect.dict['type'] == ScreenEffectEvent.BLUR:  # czemu nie mog� dac .type
                 scale = 1.0 / float(10.0)
@@ -54,9 +54,9 @@ class DrawSystem:
                 self.screen.blit(surf, (0, 0))
         pygame.display.flip()
 
-    def update(self, _timeDelta, _systems):
+    def update(self, _timedelta, _systems):
         for entity in self.observing:
-            entity.artifacts[SpriteArtifact.NAME].sprite.update(_timeDelta)
+            entity.artifacts[SpriteArtifact.NAME].sprite.update(_timedelta)
 
     def input(self, _event):
         if _event.type == GAME_STATE_CHANGE_EVENT:
@@ -64,10 +64,10 @@ class DrawSystem:
         elif _event.type == SCREEN_EFFECT_EVENT:  # dodac obsluge wielu efektow na raz
             if _event.reason == EventType.START:
                 self.currentEffect = _event
-                startTimer(_event.time,
+                starttimer(_event.time,
                            lambda: pygame.event.post(pygame.event.Event(SCREEN_EFFECT_EVENT, reason=EventType.STOP)))
             elif _event.reason == EventType.STOP:
                 self.currentEffect = None
         elif _event.type == MENU_EVENT:
             if _event.action == MenuEventType.MAXIMIZE:
-                self.createDisplay(_maximized=True)
+                self.createdisplay(_maximized=True)

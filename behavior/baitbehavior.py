@@ -5,9 +5,9 @@ import pygame
 
 class BaitBehavior:
     @staticmethod
-    def input(_event, _postEventCallback):
+    def input(_event, _posteventcallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             if entity.artifacts[TagArtifact.NAME].type == TagType.ENEMY:
-                _postEventCallback(
+                _posteventcallback(
                     pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=_event.me))

@@ -23,7 +23,7 @@ class PlayerProgressSystem:
     def remove(self, _entity):
         pass
 
-    def update(self, _timeDelta, _systems):
+    def update(self, _timedelta, _systems):
         self.systems = _systems
 
     def input(self, _event):
@@ -32,7 +32,7 @@ class PlayerProgressSystem:
                 self.currentLevel += 1
                 self.overallPoints += 100  # bonus
                 self.currentCaps = 0
-                self.updateHUD()
+                self.updatehud()
             if _event.reason == GameEventType.LOST_LIFE:
                 self.currentLifes -= 1
                 self.currentCaps = 0
@@ -41,12 +41,12 @@ class PlayerProgressSystem:
                     pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.LOST_GAME))
             elif _event.reason == GameEventType.SET_MAX_POINTS:
                 self.currentMaxCaps = _event.maxPoints
-                self.updateHUD()
+                self.updatehud()
         elif _event.type == ENTITY_EFFECT_EVENT:
             if _event.effect == EntityEffect.PICK_UP_CAP:
                 self.currentCaps += 1
                 self.overallPoints += 10
-                self.updateHUD()
+                self.updatehud()
                 if self.currentCaps >= self.currentMaxCaps:
                     pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.WON_GAME))
         elif _event.type == MENU_EVENT:
@@ -55,26 +55,26 @@ class PlayerProgressSystem:
                 self.currentLifes = 3
                 self.currentLevel = 1
                 self.overallPoints = 0
-                self.updateHUD()
+                self.updatehud()
             elif _event.action == MenuEventType.CONTINUE_GAME:
                 self.currentCaps = 0
-                self.updateHUD()
+                self.updatehud()
         elif _event.type == pygame.KEYUP:
             if _event.key == pygame.K_b:
                 if self.overallPoints > 100:
                     self.overallPoints -= 100
-                    self.updateHUD()
-                    tagSystem = self.systems[TagSystem.NAME]
-                    komesman = tagSystem.getEntities(TagType.KOMESMAN)[0]
-                    spriteArtifact = komesman.artifacts[SpriteArtifact.NAME]
+                    self.updatehud()
+                    tag_system = self.systems[TagSystem.NAME]
+                    komesman = tag_system.getentities(TagType.KOMESMAN)[0]
+                    sprite_artifact = komesman.artifacts[SpriteArtifact.NAME]
                     pygame.event.post(
                         pygame.event.Event(GAME_EVENT, reason=GameEventType.SPAWN_OBJECT, spawntype=TagType.ITEM,
-                                           spawnsubtype=TagSubType.BAIT, x=spriteArtifact.positionX,
-                                           y=spriteArtifact.positionY))
+                                           spawnsubtype=TagSubType.BAIT, x=sprite_artifact.positionX,
+                                           y=sprite_artifact.positionY))
 
-    def updateHUD(self):
-        currentCapsString = str(self.currentCaps) + "/" + str(self.currentMaxCaps)
-        currentLifesString = str(self.currentLifes)
-        currentPointsString = str(self.overallPoints)
-        pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.HUD_UPDATE, caps=currentCapsString,
-                                             lifes=currentLifesString, points=currentPointsString))
+    def updatehud(self):
+        current_caps_string = str(self.currentCaps) + "/" + str(self.currentMaxCaps)
+        current_lifes_string = str(self.currentLifes)
+        current_points_string = str(self.overallPoints)
+        pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.HUD_UPDATE, caps=current_caps_string,
+                                             lifes=current_lifes_string, points=current_points_string))

@@ -43,13 +43,13 @@ class Pathfinder(Entity):
         self.indexesNodes = {}
         self.nodesIndexes = []
         self.nextNodes = []
-        self.addArtifact(TagArtifact(TagType.OTHER, TagSubType.PATHFINDER))
+        self.addartifact(TagArtifact(TagType.OTHER, TagSubType.PATHFINDER))
 
-    def prepareAllStepsForShortestPaths(self):
+    def prepareallstepsforshortestpaths(self):
         # Generate all edges of graph
-        maxY = len(self.board)
-        maxX = len(self.board[1])
-        nodesIndexes = [[0 for x in range(maxY)] for y in range(maxX)]
+        max_y = len(self.board)
+        max_x = len(self.board[1])
+        nodes_indexes = [[0 for x in range(max_y)] for y in range(max_x)]
         self.indexesNodes.clear()
 
         i = 0
@@ -60,19 +60,19 @@ class Pathfinder(Entity):
                 if cell == 0:
                     node = Node(x, y)
                     self.nodes.append(node)
-                    nodesIndexes[x][y] = i
+                    nodes_indexes[x][y] = i
                     self.indexesNodes[i] = node
                     i += 1
                 x += 1
             y += 1
 
-        nodesCount = len(self.nodes)
-        distanceTable = [[float('inf') for x in range(nodesCount)] for y in range(nodesCount)]
-        nextNodesTable = [[None for x in range(nodesCount)] for y in range(nodesCount)]
+        nodes_count = len(self.nodes)
+        distance_table = [[float('inf') for x in range(nodes_count)] for y in range(nodes_count)]
+        next_nodes_table = [[None for x in range(nodes_count)] for y in range(nodes_count)]
 
         # initiate same nodes with zeros
-        for x in range(nodesCount):
-            distanceTable[x][x] = 0
+        for x in range(nodes_count):
+            distance_table[x][x] = 0
 
         # now put neighbours with their value = 1
         y = 0
@@ -80,19 +80,19 @@ class Pathfinder(Entity):
             x = 0
             for cell in row:
                 if cell == 0:
-                    xyNodeIndex = nodesIndexes[x][y]
+                    xy_node_index = nodes_indexes[x][y]
                     if x > 0 and self.board[y][x - 1] == 0:
-                        distanceTable[xyNodeIndex][nodesIndexes[x - 1][y]] = 1
-                        nextNodesTable[xyNodeIndex][nodesIndexes[x - 1][y]] = nodesIndexes[x - 1][y]
-                    if x < maxX - 1 and self.board[y][x + 1] == 0:
-                        distanceTable[xyNodeIndex][nodesIndexes[x + 1][y]] = 1
-                        nextNodesTable[xyNodeIndex][nodesIndexes[x + 1][y]] = nodesIndexes[x + 1][y]
+                        distance_table[xy_node_index][nodes_indexes[x - 1][y]] = 1
+                        next_nodes_table[xy_node_index][nodes_indexes[x - 1][y]] = nodes_indexes[x - 1][y]
+                    if x < max_x - 1 and self.board[y][x + 1] == 0:
+                        distance_table[xy_node_index][nodes_indexes[x + 1][y]] = 1
+                        next_nodes_table[xy_node_index][nodes_indexes[x + 1][y]] = nodes_indexes[x + 1][y]
                     if y > 0 and self.board[y - 1][x] == 0:
-                        distanceTable[xyNodeIndex][nodesIndexes[x][y - 1]] = 1
-                        nextNodesTable[xyNodeIndex][nodesIndexes[x][y - 1]] = nodesIndexes[x][y - 1]
-                    if y < maxY - 1 and self.board[y + 1][x] == 0:
-                        distanceTable[xyNodeIndex][nodesIndexes[x][y + 1]] = 1
-                        nextNodesTable[xyNodeIndex][nodesIndexes[x][y + 1]] = nodesIndexes[x][y + 1]
+                        distance_table[xy_node_index][nodes_indexes[x][y - 1]] = 1
+                        next_nodes_table[xy_node_index][nodes_indexes[x][y - 1]] = nodes_indexes[x][y - 1]
+                    if y < max_y - 1 and self.board[y + 1][x] == 0:
+                        distance_table[xy_node_index][nodes_indexes[x][y + 1]] = 1
+                        next_nodes_table[xy_node_index][nodes_indexes[x][y + 1]] = nodes_indexes[x][y + 1]
                 x += 1
             y += 1
         for u in self.nodes:
@@ -104,19 +104,19 @@ class Pathfinder(Entity):
                     if v1.y == v2.y:
                         if v1.x == v2.x - 1 or v1.x == v2.x + 1 or v2.x == v1.x - 1 or v2.x == v1.x + 1:
                             continue
-                    indexV1 = nodesIndexes[v1.x][v1.y]
-                    indexV2 = nodesIndexes[v2.x][v2.y]
-                    indexU = nodesIndexes[u.x][u.y]
-                    possible_shorter_distance = distanceTable[indexV1][indexU] + distanceTable[indexU][indexV2]
-                    if distanceTable[indexV1][indexV2] > possible_shorter_distance:
-                        distanceTable[indexV1][indexV2] = possible_shorter_distance
-                        nextNodesTable[indexV1][indexV2] = nextNodesTable[indexV1][indexU]
+                    index_v1 = nodes_indexes[v1.x][v1.y]
+                    index_v2 = nodes_indexes[v2.x][v2.y]
+                    index_u = nodes_indexes[u.x][u.y]
+                    possible_shorter_distance = distance_table[index_v1][index_u] + distance_table[index_u][index_v2]
+                    if distance_table[index_v1][index_v2] > possible_shorter_distance:
+                        distance_table[index_v1][index_v2] = possible_shorter_distance
+                        next_nodes_table[index_v1][index_v2] = next_nodes_table[index_v1][index_u]
 
         # that are the only things that matters for us after all.
-        self.nodesIndexes = nodesIndexes
-        self.nextNodes = nextNodesTable
+        self.nodesIndexes = nodes_indexes
+        self.nextNodes = next_nodes_table
 
-    def getNextMove(self, startnode, destnode):
+    def getnextmove(self, startnode, destnode):
         try:
             return self.indexesNodes[
                 self.nextNodes[self.nodesIndexes[startnode.x][startnode.y]][self.nodesIndexes[destnode.x][destnode.y]]]

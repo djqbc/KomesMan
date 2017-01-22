@@ -5,9 +5,9 @@ import pygame
 
 class KomesManBehavior:
     @staticmethod
-    def input(_event, _postEventCallback):
+    def input(_event, _posteventcallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
-            tagArtifact = entity.artifacts[TagArtifact.NAME]
-            if tagArtifact.type == TagType.ENEMY:
-                _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.LOST_LIFE))
+            tag_artifact = entity.artifacts[TagArtifact.NAME]
+            if tag_artifact.type == TagType.ENEMY:
+                _posteventcallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.LOST_LIFE))

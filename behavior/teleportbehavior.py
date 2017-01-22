@@ -7,15 +7,15 @@ import pygame
 
 class TeleportBehavior:
     @staticmethod
-    def input(_event, _postEventCallback):
+    def input(_event, _posteventcallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
-            tagArtifact = entity.artifacts[TagArtifact.NAME]
-            if tagArtifact.type == TagType.ENEMY or tagArtifact.type == TagType.KOMESMAN:
-                mySpriteArtifact = _event.me.artifacts[SpriteArtifact.NAME]
-                entitySpriteArtifact = entity.artifacts[SpriteArtifact.NAME]
-                if math.hypot(mySpriteArtifact.positionX - entitySpriteArtifact.positionX,
-                              mySpriteArtifact.positionY - entitySpriteArtifact.positionY) < 3:
-                    _postEventCallback(
+            tag_artifact = entity.artifacts[TagArtifact.NAME]
+            if tag_artifact.type == TagType.ENEMY or tag_artifact.type == TagType.KOMESMAN:
+                my_sprite_artifact = _event.me.artifacts[SpriteArtifact.NAME]
+                entity_sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
+                if math.hypot(my_sprite_artifact.positionX - entity_sprite_artifact.positionX,
+                              my_sprite_artifact.positionY - entity_sprite_artifact.positionY) < 3:
+                    _posteventcallback(
                         pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.TELEPORT, teleport=_event.me,
                                            reference=entity))

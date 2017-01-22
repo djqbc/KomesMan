@@ -1,4 +1,4 @@
-from myevents import GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, startTimer, GameEventType, \
+from myevents import GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, starttimer, GameEventType, \
     ENTITY_EFFECT_EVENT, EntityEffect
 from enum import IntEnum
 import pygame
@@ -33,7 +33,7 @@ class GameSystem:
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.LOST_GAME))
                 if self.activeTimer is not None:
                     self.activeTimer.cancel()
-                self.activeTimer = startTimer(2000, lambda: pygame.event.post(
+                self.activeTimer = starttimer(2000, lambda: pygame.event.post(
                     pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU)))
             elif _event.reason == GameEventType.LOST_LIFE:
                 self.gameState = GameState.LOST_LIFE
@@ -42,14 +42,14 @@ class GameSystem:
                                                      path="res/sound/youlose.wav"))
                 if self.activeTimer is not None:
                     self.activeTimer.cancel()
-                self.activeTimer = startTimer(2000, lambda: pygame.event.post(
+                self.activeTimer = starttimer(2000, lambda: pygame.event.post(
                     pygame.event.Event(MENU_EVENT, action=MenuEventType.RESTART_GAME)))
             elif _event.reason == GameEventType.WON_GAME:
                 self.gameState = GameState.WON_GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.WON_GAME))
                 if self.activeTimer is not None:
                     self.activeTimer.cancel()
-                self.activeTimer = startTimer(2000, lambda: pygame.event.post(
+                self.activeTimer = starttimer(2000, lambda: pygame.event.post(
                     pygame.event.Event(MENU_EVENT, action=MenuEventType.CONTINUE_GAME)))
         elif _event.type == pygame.QUIT:
             self.gameState = GameState.END
@@ -67,15 +67,15 @@ class GameSystem:
                     self.gameState = GameState.MENU
                     pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
 
-    def update(self, _timeDelta, _systems):
+    def update(self, _timedelta, _systems):
         pass
 
     def quit(self):
         return self.gameState == GameState.END
 
-    def getCurrentGameState(self):
+    def getcurrentgamestate(self):
         return self.gameState
 
-    def endInit(self):
+    def endinit(self):
         self.gameState = GameState.MENU
         pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))

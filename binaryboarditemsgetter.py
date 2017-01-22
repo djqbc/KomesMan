@@ -11,7 +11,7 @@ class BinaryBoardItemsGetter:
         self.teleports = []
         self.komesman = (0, 0)
 
-    def loadItems(self, board):
+    def load_items(self, board):
         self.caps.clear()
         self.beers.clear()
         self.amphs.clear()

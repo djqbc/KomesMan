@@ -47,15 +47,15 @@ class GameManager:
         pygame.init()
         self.init()
 
-    def update(self, _timeDelta):
+    def update(self, _timedelta):
         """Updates current game state"""
         for _, system in self.allSystems.items():
-            system.update(_timeDelta, self.allSystems)
+            system.update(_timedelta, self.allSystems)
 
     def init(self):
-        self.gameSystem.endInit()
+        self.gameSystem.endinit()
 
-    def render(self, _updateMidstep):
+    def render(self, _updatemidstep):
         """Renders currect scene"""
         self.drawSystem.draw()
 

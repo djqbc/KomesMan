@@ -5,13 +5,13 @@ import pygame
 
 class CapBehavior:
     @staticmethod
-    def input(_event, _postEventCallback):
+    def input(_event, _posteventcallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             if entity.artifacts[TagArtifact.NAME].type == TagType.KOMESMAN:
-                _postEventCallback(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND,
+                _posteventcallback(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND,
                                                       path="res/sound/beer_szmitek.wav"))
-                _postEventCallback(
+                _posteventcallback(
                     pygame.event.Event(ENTITY_EFFECT_EVENT, reference=entity, effect=EntityEffect.PICK_UP_CAP))
-                _postEventCallback(
+                _posteventcallback(
                     pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=_event.me))

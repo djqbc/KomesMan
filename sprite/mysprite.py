@@ -25,12 +25,12 @@ class MySprite(pygame.sprite.Sprite):
         self.animations = {}
         self.modifiers = Modifiers.NONE
 
-    def draw(self, _screen, _positionX, _positionY):
+    def draw(self, _screen, _positionx, _positiony):
         pass
 
-    def changeAnimation(self, _newAnimation):
-        if _newAnimation != self.currentAnimation:
-            self.currentAnimation = _newAnimation
+    def changeanimation(self, _newanimation):
+        if _newanimation != self.currentAnimation:
+            self.currentAnimation = _newanimation
             self.timeElapsed = 0.0
 
     def update(self, _delta):

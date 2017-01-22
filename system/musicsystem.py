@@ -14,7 +14,7 @@ class MusicSystem:
     def remove(self, _entity):
         pass
 
-    def update(self, _timeDelta, _systems):
+    def update(self, _timedelta, _systems):
         pass
 
     @staticmethod

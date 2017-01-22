@@ -9,7 +9,7 @@ class DummySprite(MySprite):
         super(DummySprite, self).__init__()
         self.rect = pygame.Rect(0, 0, 64, 64)
 
-    def draw(self, _screen, _positionX, _positionY):
+    def draw(self, _screen, _positionx, _positiony):
         pass
 
     def update(self, _delta):

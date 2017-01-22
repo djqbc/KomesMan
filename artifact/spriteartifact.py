@@ -5,8 +5,8 @@ DRAW_NEVER = 0x00000000
 class SpriteArtifact:
     NAME = "SpriteArtifact"
 
-    def __init__(self, _sprite, _positionX=0, _positionY=0, _drawStage=DRAW_ALWAYS):
+    def __init__(self, _sprite, _positionx=0, _positiony=0, _drawstage=DRAW_ALWAYS):
         self.sprite = _sprite
-        self.positionX = _positionX
-        self.positionY = _positionY
-        self.drawStage = _drawStage
+        self.positionX = _positionx
+        self.positionY = _positiony
+        self.drawStage = _drawstage

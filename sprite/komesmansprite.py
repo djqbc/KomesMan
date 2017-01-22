@@ -33,14 +33,14 @@ class KomesManSprite(MySprite):
         self.image = self.animations[self.currentAnimation][0]
         self.rect = self.image.get_rect()
 
-    def draw(self, _screen, _positionX, _positionY):
+    def draw(self, _screen, _positionx, _positiony):
         diff = self.timeElapsed - floor(self.timeElapsed)
         if diff < 0.33:
-            _screen.blit(self.animations[self.currentAnimation][0], (_positionX, _positionY))
+            _screen.blit(self.animations[self.currentAnimation][0], (_positionx, _positiony))
         elif diff < 0.66:
-            _screen.blit(self.animations[self.currentAnimation][1], (_positionX, _positionY))
+            _screen.blit(self.animations[self.currentAnimation][1], (_positionx, _positiony))
         else:
-            _screen.blit(self.animations[self.currentAnimation][2], (_positionX, _positionY))
+            _screen.blit(self.animations[self.currentAnimation][2], (_positionx, _positiony))
 
     def update(self, _delta):
         MySprite.update(self, _delta)

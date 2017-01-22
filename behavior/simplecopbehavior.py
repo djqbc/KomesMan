@@ -9,11 +9,11 @@ class SimpleCopBehavior:
     def __init__(self):
         self.firstInformed = None
 
-    def input(self, _event, _postEventCallback):
+    def input(self, _event, _posteventcallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
-            tagArtifact = entity.artifacts[TagArtifact.NAME]
-            if tagArtifact.type == TagType.ENEMY and tagArtifact.subtype == TagSubType.SIMPLE_COP:
+            tag_artifact = entity.artifacts[TagArtifact.NAME]
+            if tag_artifact.type == TagType.ENEMY and tag_artifact.subtype == TagSubType.SIMPLE_COP:
                 self.firstInformed = True
                 try:
                     if entity.artifacts[BehaviorArtifact.NAME].behavior.firstInformed:
@@ -21,12 +21,12 @@ class SimpleCopBehavior:
                 except:
                     pass
                 if self.firstInformed:
-                    spriteArtifact = entity.artifacts[SpriteArtifact.NAME]
-                    _postEventCallback(
+                    sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
+                    _posteventcallback(
                         pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=_event.me))
-                    _postEventCallback(
+                    _posteventcallback(
                         pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=entity))
-                    _postEventCallback(
+                    _posteventcallback(
                         pygame.event.Event(GAME_EVENT, reason=GameEventType.SPAWN_OBJECT, spawntype=TagType.ENEMY,
-                                           spawnsubtype=TagSubType.SUPER_COP, x=spriteArtifact.positionX,
-                                           y=spriteArtifact.positionY))
+                                           spawnsubtype=TagSubType.SUPER_COP, x=sprite_artifact.positionX,
+                                           y=sprite_artifact.positionY))

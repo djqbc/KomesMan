@@ -27,29 +27,29 @@ class CollisionSystem:
     def input(self, _event):
         # obsluga nie powinna byc w tym systemie ale nie mialem pomyslu gdzie to wrzucic zeby bylo globalnie
         if _event.type == ENTITY_EFFECT_EVENT and _event.effect == EntityEffect.TELEPORT:
-            teleports = self.systems[TagSystem.NAME].getEntities(TagType.FIXED, TagSubType.TELEPORT)
+            teleports = self.systems[TagSystem.NAME].getentities(TagType.FIXED, TagSubType.TELEPORT)
             teleports = [t for t in teleports if t != _event.teleport]
             if len(teleports) > 0:
-                board = self.systems[TagSystem.NAME].getEntities(TagType.FIXED, TagSubType.BOARD)[0]
-                targetTeleport = random.choice(teleports)
-                targetTeleportSpriteArtifact = targetTeleport.artifacts[SpriteArtifact.NAME]
-                entitySpriteArtifact = _event.reference.artifacts[SpriteArtifact.NAME]
-                entitySpriteArtifact.positionX = targetTeleportSpriteArtifact.positionX
-                entitySpriteArtifact.positionY = targetTeleportSpriteArtifact.positionY
+                board = self.systems[TagSystem.NAME].getentities(TagType.FIXED, TagSubType.BOARD)[0]
+                target_teleport = random.choice(teleports)
+                target_teleport_sprite_artifact = target_teleport.artifacts[SpriteArtifact.NAME]
+                entity_sprite_artifact = _event.reference.artifacts[SpriteArtifact.NAME]
+                entity_sprite_artifact.positionX = target_teleport_sprite_artifact.positionX
+                entity_sprite_artifact.positionY = target_teleport_sprite_artifact.positionY
                 # poprawic tile size sztywny
-                if board.checkMove(entitySpriteArtifact.positionX, entitySpriteArtifact.positionY, 0, -64):
-                    entitySpriteArtifact.positionY -= 64
-                elif board.checkMove(entitySpriteArtifact.positionX, entitySpriteArtifact.positionY, 0, 64):
-                    entitySpriteArtifact.positionY += 64
-                elif board.checkMove(entitySpriteArtifact.positionX, entitySpriteArtifact.positionY, -64, 0):
-                    entitySpriteArtifact.positionX -= 64
-                elif board.checkMove(entitySpriteArtifact.positionX, entitySpriteArtifact.positionY, 64, 0):
-                    entitySpriteArtifact.positionX += 64
+                if board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, 0, -64):
+                    entity_sprite_artifact.positionY -= 64
+                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, 0, 64):
+                    entity_sprite_artifact.positionY += 64
+                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, -64, 0):
+                    entity_sprite_artifact.positionX -= 64
+                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, 64, 0):
+                    entity_sprite_artifact.positionX += 64
                 else:
                     print("Couldn't find teleport output cell")
 
-    def update(self, _timeDelta, _systems):
-        if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
+    def update(self, _timedelta, _systems):
+        if _systems[GameSystem.NAME].getcurrentgamestate() != GameState.GAME:
             return
         self.systems = _systems
         x = 0
@@ -59,13 +59,13 @@ class CollisionSystem:
                 entity2 = self.observing[index]
                 #             for entity2 in self.observing:
                 if entity != entity2:
-                    e1SpriteArtifact = entity.artifacts[SpriteArtifact.NAME]
-                    e2SpriteArtifact = entity2.artifacts[SpriteArtifact.NAME]
-                    e1SpriteArtifact.sprite.rect.x = e1SpriteArtifact.positionX
-                    e1SpriteArtifact.sprite.rect.y = e1SpriteArtifact.positionY
-                    e2SpriteArtifact.sprite.rect.x = e2SpriteArtifact.positionX
-                    e2SpriteArtifact.sprite.rect.y = e2SpriteArtifact.positionY
-                    if pygame.sprite.collide_rect(e1SpriteArtifact.sprite, e2SpriteArtifact.sprite):
+                    e1_sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
+                    e2_sprite_artifact = entity2.artifacts[SpriteArtifact.NAME]
+                    e1_sprite_artifact.sprite.rect.x = e1_sprite_artifact.positionX
+                    e1_sprite_artifact.sprite.rect.y = e1_sprite_artifact.positionY
+                    e2_sprite_artifact.sprite.rect.x = e2_sprite_artifact.positionX
+                    e2_sprite_artifact.sprite.rect.y = e2_sprite_artifact.positionY
+                    if pygame.sprite.collide_rect(e1_sprite_artifact.sprite, e2_sprite_artifact.sprite):
                         entity.artifacts[BehaviorArtifact.NAME].behavior.input(
                             pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
                         entity2.artifacts[BehaviorArtifact.NAME].behavior.input(

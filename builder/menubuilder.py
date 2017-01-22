@@ -19,16 +19,16 @@ class MenuBuilder:
 
     def build(self):
         # TODO wyrzucic bezwzgledne pozycjonowanie
-        self.createMenuBackground(0, 0)
-        self.createMenuElement(490, 550, "Play", MenuEventType.START_NEW_GAME, None)
-        optionSettings = self.createMenuElement(490, 600, "Settings", MenuEventType.MENU_IN, None)
-        self.createMenuElement(490, 550, "Maximize window", MenuEventType.MAXIMIZE, optionSettings)
-        self.createMenuElement(490, 600, "Back", MenuEventType.MENU_OUT, optionSettings)
-        self.createMenuElement(490, 650, "Exit", MenuEventType.QUIT, None)
-        self.createHUD(950, 10)
-        self.createResult("You win!!!", GameState.WON_GAME)
-        self.createResult("You lost - restarting...!!!", GameState.LOST_LIFE)
-        self.createResult("You lost!!!", GameState.LOST_GAME)
+        self.createmenubackground(0, 0)
+        self.createmenuelement(490, 550, "Play", MenuEventType.START_NEW_GAME, None)
+        option_settings = self.createmenuelement(490, 600, "Settings", MenuEventType.MENU_IN, None)
+        self.createmenuelement(490, 550, "Maximize window", MenuEventType.MAXIMIZE, option_settings)
+        self.createmenuelement(490, 600, "Back", MenuEventType.MENU_OUT, option_settings)
+        self.createmenuelement(490, 650, "Exit", MenuEventType.QUIT, None)
+        self.createhud(950, 10)
+        self.createresult("You win!!!", GameState.WON_GAME)
+        self.createresult("You lost - restarting...!!!", GameState.LOST_LIFE)
+        self.createresult("You lost!!!", GameState.LOST_GAME)
 
     def clear(self):
         for e in self.elements:
@@ -39,7 +39,7 @@ class MenuBuilder:
 
     def input(self, _event):
         if _event.type == GAME_STATE_CHANGE_EVENT:
-            if _event.state == GameState.MENU and self.dirty == True:
+            if _event.state == GameState.MENU and self.dirty:
                 self.dirty = False
                 self.build()
         elif _event.type == MENU_EVENT:
@@ -50,30 +50,30 @@ class MenuBuilder:
                 self.clear()
                 self.build()
 
-    def createMenuElement(self, _x, _y, _text, _type, _parent):
+    def createmenuelement(self, _x, _y, _text, _type, _parent):
         menu = Entity()
-        menu.addArtifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H, ), _x, _y, GameState.MENU))
-        menu.addArtifact(MenuArtifact(_type))
+        menu.addartifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H, ), _x, _y, GameState.MENU))
+        menu.addartifact(MenuArtifact(_type))
         self.systems[DrawSystem.NAME].register(menu)
         self.systems[MenuSystem.NAME].register(menu, _parent)
         self.elements.append(menu)
         return menu
 
-    def createMenuBackground(self, _x, _y):
+    def createmenubackground(self, _x, _y):
         bg = Entity()
-        bg.addArtifact(SpriteArtifact(SimpleImageSprite('res/img/logo.png'), _x, _y, GameState.MENU))
+        bg.addartifact(SpriteArtifact(SimpleImageSprite('res/img/logo.png'), _x, _y, GameState.MENU))
         self.systems[DrawSystem.NAME].register(bg)
         self.elements.append(bg)
 
-    def createHUD(self, _x, _y):
+    def createhud(self, _x, _y):
         hud = Entity()
-        hud.addArtifact(SpriteArtifact(HUDSprite(Modifiers.CENTER_H), _x, _y, GameState.GAME))
+        hud.addartifact(SpriteArtifact(HUDSprite(Modifiers.CENTER_H), _x, _y, GameState.GAME))
         self.systems[DrawSystem.NAME].register(hud)
         self.systems[HUDSystem.NAME].register(hud)
         self.elements.append(hud)
 
-    def createResult(self, _text, _type):
+    def createresult(self, _text, _type):
         result = Entity()
-        result.addArtifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H | Modifiers.CENTER_V), 0, 0, _type))
+        result.addartifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H | Modifiers.CENTER_V), 0, 0, _type))
         self.systems[DrawSystem.NAME].register(result)
         self.elements.append(result)

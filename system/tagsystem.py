@@ -9,14 +9,14 @@ class TagSystem:
 
     def register(self, _object):
         if TagArtifact.NAME in _object.artifacts:
-            tagArtifact = _object.artifacts[TagArtifact.NAME]
-            if tagArtifact.type in self.tags:
-                if tagArtifact.subtype in self.tags[tagArtifact.type]:
-                    self.tags[tagArtifact.type][tagArtifact.subtype].append(_object)
+            tag_artifact = _object.artifacts[TagArtifact.NAME]
+            if tag_artifact.type in self.tags:
+                if tag_artifact.subtype in self.tags[tag_artifact.type]:
+                    self.tags[tag_artifact.type][tag_artifact.subtype].append(_object)
                 else:
-                    self.tags[tagArtifact.type][tagArtifact.subtype] = [_object]
+                    self.tags[tag_artifact.type][tag_artifact.subtype] = [_object]
             else:
-                self.tags[tagArtifact.type] = {tagArtifact.subtype: [_object]}
+                self.tags[tag_artifact.type] = {tag_artifact.subtype: [_object]}
         else:
             raise NameError("ERROR!!!")
 
@@ -25,19 +25,19 @@ class TagSystem:
             for _, entityList in subtypeDict.items():
                 entityList[:] = [entity for entity in entityList if entity != _entity]
 
-    def getEntities(self, _type=TagType.KOMESMAN, _subtype=None):
-        typeDict = self.tags.get(_type, None)
-        if typeDict is not None:
+    def getentities(self, _type=TagType.KOMESMAN, _subtype=None):
+        type_dict = self.tags.get(_type, None)
+        if type_dict is not None:
             if _subtype is not None:
-                return typeDict.get(_subtype, [])
+                return type_dict.get(_subtype, [])
             else:
                 result = []
-                for _, entityList in typeDict.items():
+                for _, entityList in type_dict.items():
                     result += entityList
                 return result
         return []
 
-    def update(self, _timeDelta, _systems):
+    def update(self, _timedelta, _systems):
         pass
 
     def input(self, _event):

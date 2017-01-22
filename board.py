@@ -23,60 +23,60 @@ class BoardElement(IntEnum):
 
 
 class Board(Entity):
-    def __init__(self, board, systems, registerList, tilesize=64):
+    def __init__(self, board, systems, registerlist, tilesize=64):
         super(Board, self).__init__()
         self.map = [[Entity() for x in range(len(board))] for y in range(len(board[0]))]
         self.boardData = board
         self.tileSize = tilesize
-        iX = 0
+        i_x = 0
         for row in board:
-            iY = 0
+            i_y = 0
             for cell in row:
                 if cell != 0:
-                    tileSprite = WallSprite(cell)
-                    self.map[iY][iX].addArtifact(
-                        SpriteArtifact(tileSprite, iY * tilesize, iX * tilesize, GameState.GAME))
-                    systems[DrawSystem.NAME].register(self.map[iY][iX])
-                    registerList.append(self.map[iY][iX])
-                iY += 1
-            iX += 1
-        self.addArtifact(TagArtifact(TagType.FIXED, TagSubType.BOARD))
+                    tile_sprite = WallSprite(cell)
+                    self.map[i_y][i_x].addartifact(
+                        SpriteArtifact(tile_sprite, i_y * tilesize, i_x * tilesize, GameState.GAME))
+                    systems[DrawSystem.NAME].register(self.map[i_y][i_x])
+                    registerlist.append(self.map[i_y][i_x])
+                i_y += 1
+            i_x += 1
+        self.addartifact(TagArtifact(TagType.FIXED, TagSubType.BOARD))
         systems[TagSystem.NAME].register(self)
-        registerList.append(self)
+        registerlist.append(self)
 
-    def getPos(self, pos):
+    def getpos(self, pos):
         return int(pos / self.tileSize)
 
-    def checkNext(self, pos):
+    def checknext(self, pos):
         return pos % self.tileSize != 0
 
-    def isBeyondBorder(self, _x, _y):
+    def isbeyondborder(self, _x, _y):
         if _x < 0 or _y < 0 or _x > len(self.boardData[0]) * self.tileSize or _y > len(self.boardData) * self.tileSize:
             return True
         return False
 
-    def checkMove(self, _posX, _posY, _dX, _dY):
+    def checkmove(self, _posx, _posy, _dx, _dy):
         try:
-            if self.isBeyondBorder(_posX + _dX, _posY + _dY):
+            if self.isbeyondborder(_posx + _dx, _posy + _dy):
                 return False
-            if _dX < 0:  # left
-                if self.boardData[self.getPos(_posY)][self.getPos(_posX - 1)] != 0 or (
-                    (self.checkNext(_posY)) and (self.boardData[self.getPos(_posY) + 1][self.getPos(_posX - 1)] != 0)):
+            if _dx < 0:  # left
+                if self.boardData[self.getpos(_posy)][self.getpos(_posx - 1)] != 0 or (
+                    (self.checknext(_posy)) and (self.boardData[self.getpos(_posy) + 1][self.getpos(_posx - 1)] != 0)):
                     return False
 
-            if _dX > 0:  # right
-                if self.boardData[self.getPos(_posY)][self.getPos(_posX) + 1] != 0 or (
-                    (self.checkNext(_posY)) and (self.boardData[self.getPos(_posY) + 1][self.getPos(_posX) + 1] != 0)):
+            if _dx > 0:  # right
+                if self.boardData[self.getpos(_posy)][self.getpos(_posx) + 1] != 0 or (
+                    (self.checknext(_posy)) and (self.boardData[self.getpos(_posy) + 1][self.getpos(_posx) + 1] != 0)):
                     return False
 
-            if _dY < 0:  # up
-                if self.boardData[self.getPos(_posY - 1)][self.getPos(_posX)] != 0 or (
-                    (self.checkNext(_posX)) and (self.boardData[self.getPos(_posY - 1)][self.getPos(_posX) + 1] != 0)):
+            if _dy < 0:  # up
+                if self.boardData[self.getpos(_posy - 1)][self.getpos(_posx)] != 0 or (
+                    (self.checknext(_posx)) and (self.boardData[self.getpos(_posy - 1)][self.getpos(_posx) + 1] != 0)):
                     return False
 
-            if _dY > 0:  # down
-                if self.boardData[self.getPos(_posY) + 1][self.getPos(_posX)] != 0 or (
-                    (self.checkNext(_posX)) and (self.boardData[self.getPos(_posY) + 1][self.getPos(_posX) + 1] != 0)):
+            if _dy > 0:  # down
+                if self.boardData[self.getpos(_posy) + 1][self.getpos(_posx)] != 0 or (
+                    (self.checknext(_posx)) and (self.boardData[self.getpos(_posy) + 1][self.getpos(_posx) + 1] != 0)):
                     return False
         except:
             return False

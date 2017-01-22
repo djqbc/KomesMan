@@ -54,13 +54,13 @@ class GameEventType(Enum):
     SPAWN_OBJECT = 7
 
 
-def startTimer(_timeoutMs, _timeoutCallback):
-    t = Timer(_timeoutMs / 1000, _timeoutCallback)
+def starttimer(_timeoutms, _timeoutcallback):
+    t = Timer(_timeoutms / 1000, _timeoutcallback)
     t.start()
     return t
 
 
-def copyEvent(_event):
+def copyevent(_event):
     # todo: tu nie powinno byc dalej deepcopy ale na konkretnym elemencie ?
 
     tmp = {}
