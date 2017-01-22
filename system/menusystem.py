@@ -10,6 +10,8 @@ class MenuSystem:
     menu = {}
     currentNode = None
     currentIndex = 0
+    currentNick = []
+    maxNick = 10
     currentGameState = GameState.INIT
 
     def __init__(self):
@@ -53,6 +55,20 @@ class MenuSystem:
                 self.currentNode = None
             #                 for element in self.menu[self.currentNode]:
             #                     element.artifacts[SpriteArtifact.NAME].draw = False
+        elif _event.type == pygame.KEYDOWN:
+            if self.currentGameState == GameState.NEW_HIGHSCORE:
+                if _event.key == pygame.K_RETURN:
+                    pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
+                else:
+                    if len(self.currentNick) > self.maxNick and _event.key != pygame.K_BACKSPACE:
+                        return
+
+                    #todo: input and show name
+                    #if(_event.key == pygame.K_BACKSPACE)
+                        
+                    self.currentNick.append(_event.unicode)
+                    print(self.currentNick)
+                    pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
         elif _event.type == pygame.KEYUP:
             if self.currentGameState == GameState.MENU:
                 pygame.event.post(

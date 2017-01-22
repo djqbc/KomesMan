@@ -29,6 +29,7 @@ class MenuBuilder:
         self.createresult("You win!!!", GameState.WON_GAME)
         self.createresult("You lost - restarting...!!!", GameState.LOST_LIFE)
         self.createresult("You lost!!!", GameState.LOST_GAME)
+        self.createHighscores()
 
     def clear(self):
         for e in self.elements:
@@ -77,3 +78,14 @@ class MenuBuilder:
         result.addartifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H | Modifiers.CENTER_V), 0, 0, _type))
         self.systems[DrawSystem.NAME].register(result)
         self.elements.append(result)
+
+    def createHighscores(self):
+        new_highscore = Entity()
+        new_highscore.addartifact(SpriteArtifact(TextSprite("New highscore!", Modifiers.CENTER_H), 100, 100, GameState.NEW_HIGHSCORE))
+        self.systems[DrawSystem.NAME].register(new_highscore)
+        self.elements.append(new_highscore)
+
+        enter_your_name = Entity()
+        enter_your_name.addartifact(SpriteArtifact(TextSprite("Enter your name:", Modifiers.CENTER_H), 100, 200, GameState.NEW_HIGHSCORE))
+        self.systems[DrawSystem.NAME].register(enter_your_name)
+        self.elements.append(enter_your_name)

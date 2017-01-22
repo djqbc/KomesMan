@@ -1,3 +1,4 @@
+from highscoresmanager import HighscoresManager
 from myevents import GAME_EVENT, GameEventType, ENTITY_EFFECT_EVENT, \
     EntityEffect, MENU_EVENT, MenuEventType
 import pygame
@@ -10,6 +11,8 @@ class PlayerProgressSystem:
     NAME = "PlayerProgressSystem"
 
     def __init__(self):
+        self.highscoresmanager = HighscoresManager()
+        self.highscoresmanager.load()
         self.currentLevel = 1
         self.currentCaps = 0
         self.overallPoints = 0
@@ -38,7 +41,10 @@ class PlayerProgressSystem:
                 self.currentCaps = 0
                 if self.currentLifes == 0:
                     self.currentLevel = 1
-                    pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.LOST_GAME))
+                    if self.highscoresmanager.ishighscore(self.overallPoints):
+                        pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.NEW_HIGHSCORE))
+                    else:
+                        pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.LOST_GAME))
             elif _event.reason == GameEventType.SET_MAX_POINTS:
                 self.currentMaxCaps = _event.maxPoints
                 self.updatehud()

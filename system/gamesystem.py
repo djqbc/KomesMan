@@ -13,6 +13,7 @@ class GameState(IntEnum):
     LOST_GAME = 16
     WON_GAME = 32
     LOST_LIFE = 64
+    NEW_HIGHSCORE = 128
 
 
 class GameSystem:
@@ -28,12 +29,19 @@ class GameSystem:
 
     def input(self, _event):
         if _event.type == GAME_EVENT:
+            if _event.reason == GameEventType.NEW_HIGHSCORE:
+                self.gameState = GameState.LOST_GAME
+                pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.LOST_GAME))
+                if self.activeTimer is not None:
+                    self.activeTimer.cancel()
+                self.activeTimer = starttimer(1000, lambda: pygame.event.post(
+                    pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.NEW_HIGHSCORE)))
             if _event.reason == GameEventType.LOST_GAME:
                 self.gameState = GameState.LOST_GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.LOST_GAME))
                 if self.activeTimer is not None:
                     self.activeTimer.cancel()
-                self.activeTimer = starttimer(2000, lambda: pygame.event.post(
+                self.activeTimer = starttimer(1000, lambda: pygame.event.post(
                     pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU)))
             elif _event.reason == GameEventType.LOST_LIFE:
                 self.gameState = GameState.LOST_LIFE
@@ -42,14 +50,14 @@ class GameSystem:
                                                      path="res/sound/youlose.wav"))
                 if self.activeTimer is not None:
                     self.activeTimer.cancel()
-                self.activeTimer = starttimer(2000, lambda: pygame.event.post(
+                self.activeTimer = starttimer(1000, lambda: pygame.event.post(
                     pygame.event.Event(MENU_EVENT, action=MenuEventType.RESTART_GAME)))
             elif _event.reason == GameEventType.WON_GAME:
                 self.gameState = GameState.WON_GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.WON_GAME))
                 if self.activeTimer is not None:
                     self.activeTimer.cancel()
-                self.activeTimer = starttimer(2000, lambda: pygame.event.post(
+                self.activeTimer = starttimer(1000, lambda: pygame.event.post(
                     pygame.event.Event(MENU_EVENT, action=MenuEventType.CONTINUE_GAME)))
         elif _event.type == pygame.QUIT:
             self.gameState = GameState.END
