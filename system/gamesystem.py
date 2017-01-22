@@ -4,7 +4,7 @@ from enum import IntEnum
 import pygame
 
 class GameState(IntEnum):
-    '''Enum representing game state'''
+    """Enum representing game state"""
     MENU = 1
     END = 2
     GAME = 4
@@ -26,20 +26,20 @@ class GameSystem:
             if _event.reason == GameEventType.LOST_GAME:
                 self.gameState = GameState.LOST_GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.LOST_GAME))
-                if self.activeTimer != None:
+                if self.activeTimer is not None:
                     self.activeTimer.cancel()
                 self.activeTimer = startTimer(2000, lambda : pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU)))
             elif _event.reason == GameEventType.LOST_LIFE:
                 self.gameState = GameState.LOST_LIFE
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.LOST_LIFE))
                 pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/youlose.wav"))
-                if self.activeTimer != None:
+                if self.activeTimer is not None:
                     self.activeTimer.cancel()
                 self.activeTimer = startTimer(2000, lambda : pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.RESTART_GAME)))
             elif _event.reason == GameEventType.WON_GAME:
                 self.gameState = GameState.WON_GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.WON_GAME))
-                if self.activeTimer != None:
+                if self.activeTimer is not None:
                     self.activeTimer.cancel()
                 self.activeTimer = startTimer(2000, lambda : pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.CONTINUE_GAME)))
         elif _event.type == pygame.QUIT:
@@ -60,7 +60,7 @@ class GameSystem:
     def update(self, _timeDelta, _systems):
         pass
     def quit(self):
-        return (self.gameState == GameState.END)
+        return self.gameState == GameState.END
     def getCurrentGameState(self):
         return self.gameState
     def endInit(self):

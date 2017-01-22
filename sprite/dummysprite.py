@@ -2,7 +2,7 @@ from sprite.mysprite import MySprite
 import pygame
 
 class DummySprite(MySprite):
-    '''Dummy sprite'''
+    """Dummy sprite"""
     def __init__(self):
         super(DummySprite, self).__init__()
         self.rect = pygame.Rect(0, 0, 64, 64)

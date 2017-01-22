@@ -5,7 +5,8 @@ import math
 import pygame
 
 class TeleportBehavior:
-    def input(self, _event, _postEventCallback):
+    @staticmethod
+    def input(_event, _postEventCallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             tagArtifact = entity.artifacts[TagArtifact.NAME]

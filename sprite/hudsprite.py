@@ -3,7 +3,7 @@ from sprite.textsprite import TextSprite
 from sprite.simpleimagesprite import SimpleImageSprite
 
 class HUDSprite(MySprite):
-    '''HUDSprite'''
+    """HUDSprite"""
     def __init__(self, _modifiers=Modifiers.NONE):
         super(HUDSprite, self).__init__()
         self.modifiers = _modifiers

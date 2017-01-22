@@ -14,7 +14,7 @@ from system.musicsystem import MusicSystem
 from system.playerprogresssystem import PlayerProgressSystem
 
 class GameManager:
-    '''Class managing game state''' 
+    """Class managing game state"""
     drawSystem = DrawSystem()
     userMoveSystem = UserMovementSystem()
     aiMoveSystem = AiMovementSystem()
@@ -46,7 +46,7 @@ class GameManager:
         self.init()
     
     def update(self, _timeDelta):
-        '''Updates current game state'''
+        """Updates current game state"""
         for _, system in self.allSystems.items():
             system.update(_timeDelta, self.allSystems)
     
@@ -54,7 +54,7 @@ class GameManager:
         self.gameSystem.endInit()
     
     def render(self, _updateMidstep):
-        '''Renders currect scene'''
+        """Renders currect scene"""
         self.drawSystem.draw()
     
     def input(self, _event):

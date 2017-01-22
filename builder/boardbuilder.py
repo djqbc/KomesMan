@@ -42,6 +42,8 @@ class BoardBuilder:
     def __init__(self, _systems):
         self.systems = _systems
         self.elements = []
+        self.binaryboard = None
+
     def build(self, _restart=False):
         if not _restart:
             if self.systems[PlayerProgressSystem.NAME].currentLevel == 1:
@@ -191,9 +193,10 @@ class BoardBuilder:
         self.systems[TagSystem.NAME].register(pill)
         self.systems[CollisionSystem.NAME].register(pill)
         self.elements.append(pill)
+
     def createBoard(self, predefinedboard):
         #kijowe bezposrednie przekazanie elements - mozna olac jak nikomu sie nie bedzie chcialo poprawic
-        board = Board(predefinedboard, self.systems, self.elements)
+        Board(predefinedboard, self.systems, self.elements)
         start = int(round(time.time() * 1000))
         pf = Pathfinder(predefinedboard)
         pf.prepareAllStepsForShortestPaths()

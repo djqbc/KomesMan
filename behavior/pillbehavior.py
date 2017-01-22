@@ -4,7 +4,8 @@ from artifact.tagartifact import TagArtifact, TagType
 import pygame
 
 class PillBehavior:
-    def input(self, _event, _postEventCallback):
+    @staticmethod
+    def input(_event, _postEventCallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             if entity.artifacts[TagArtifact.NAME].type == TagType.KOMESMAN:

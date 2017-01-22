@@ -2,7 +2,7 @@ from sprite.mysprite import MySprite
 import pygame
 
 class SimpleImageSprite(MySprite):
-    '''SimpleImageSprite'''
+    """SimpleImageSprite"""
     def __init__(self, _path):
         super(SimpleImageSprite, self).__init__()
         self.image = pygame.image.load(_path)

@@ -2,7 +2,7 @@ from sprite.mysprite import MySprite
 import pygame
 
 class BaitSprite(MySprite):
-    '''Bait item'''
+    """Bait item"""
     def __init__(self):
         super(BaitSprite, self).__init__()
         self.image = pygame.image.load('res/img/bait.png')

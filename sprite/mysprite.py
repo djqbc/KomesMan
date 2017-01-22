@@ -3,7 +3,7 @@ from enum import IntEnum
 import pygame
 
 class AnimationState(Enum):
-    '''Enum representing animation state'''
+    """Enum representing animation state"""
     MOVE_UP = 0
     MOVE_LEFT = 1
     MOVE_RIGHT = 2

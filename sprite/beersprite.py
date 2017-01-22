@@ -2,7 +2,7 @@ from sprite.mysprite import MySprite
 import pygame
 
 class BeerSprite(MySprite):
-    '''Beer item - good, old Komes'''
+    """Beer item - good, old Komes"""
     def __init__(self):
         super(BeerSprite, self).__init__()
         self.image = pygame.image.load('res/img/bottle.png')

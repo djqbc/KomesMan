@@ -52,47 +52,47 @@ class UserMovementSystem:
     def input(self, _event):
         if _event.type == pygame.KEYDOWN:
             if _event.key == pygame.K_DOWN:
-                if self.activeKeys.get(pygame.K_DOWN, False) == False:
+                if not self.activeKeys.get(pygame.K_DOWN, False):
                     self.activeKeys[pygame.K_DOWN] = True
                     for entity in self.observing:
                         entity.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_DOWN
                         entity.artifacts[MovementArtifact.NAME].movementVector[1] = 1
             elif _event.key == pygame.K_UP:
-                if self.activeKeys.get(pygame.K_UP, False) == False:
+                if not self.activeKeys.get(pygame.K_UP, False):
                     self.activeKeys[pygame.K_UP] = True
                     for entity in self.observing:
                         entity.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_UP
                         entity.artifacts[MovementArtifact.NAME].movementVector[1] = -1
             elif _event.key == pygame.K_LEFT:
-                if self.activeKeys.get(pygame.K_LEFT, False) == False:
+                if not self.activeKeys.get(pygame.K_LEFT, False):
                     self.activeKeys[pygame.K_LEFT] = True
                     for entity in self.observing:
                         entity.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_LEFT
                         entity.artifacts[MovementArtifact.NAME].movementVector[0] = -1
             elif _event.key == pygame.K_RIGHT:
-                if self.activeKeys.get(pygame.K_RIGHT, False) == False:
+                if not self.activeKeys.get(pygame.K_RIGHT, False):
                     self.activeKeys[pygame.K_RIGHT] = True
                     for entity in self.observing:
                         entity.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_RIGHT
                         entity.artifacts[MovementArtifact.NAME].movementVector[0] = 1
         elif _event.type == pygame.KEYUP:
             if _event.key == pygame.K_DOWN:
-                if self.activeKeys[pygame.K_DOWN] == True:
+                if self.activeKeys[pygame.K_DOWN]:
                     self.activeKeys[pygame.K_DOWN] = False
                     for entity in self.observing:
                         entity.artifacts[MovementArtifact.NAME].movementVector[1] = 0
             elif _event.key == pygame.K_UP:
-                if self.activeKeys[pygame.K_UP] == True:
+                if self.activeKeys[pygame.K_UP]:
                     self.activeKeys[pygame.K_UP] = False
                     for entity in self.observing:
                         entity.artifacts[MovementArtifact.NAME].movementVector[1] = 0
             elif _event.key == pygame.K_LEFT:
-                if self.activeKeys[pygame.K_LEFT] == True:
+                if self.activeKeys[pygame.K_LEFT]:
                     self.activeKeys[pygame.K_LEFT] = False
                     for entity in self.observing:
                         entity.artifacts[MovementArtifact.NAME].movementVector[0] = 0
             elif _event.key == pygame.K_RIGHT:
-                if self.activeKeys[pygame.K_RIGHT] == True:
+                if self.activeKeys[pygame.K_RIGHT]:
                     self.activeKeys[pygame.K_RIGHT] = False
                     for entity in self.observing:
                         entity.artifacts[MovementArtifact.NAME].movementVector[0] = 0
@@ -112,6 +112,6 @@ class UserMovementSystem:
                 elif _event.reason == EventType.DELAYED:
                     tmp = copyEvent(_event)
                     tmp.reason = EventType.START
-                    #czemu kopiowanie referencji nie dzia³a poprawnie w copyEvent?
+                    #czemu kopiowanie referencji nie dziaï¿½a poprawnie w copyEvent?
                     tmp.reference = _event.reference
                     startTimer(_event.delay, lambda : pygame.event.post(tmp))

@@ -56,10 +56,10 @@ class Drill:
     def isFinished(self):
         return self.finished
     def isBorder(self, _x=None, _y=None):
-        if _x != None:
-            return (_x == 0 or _y == 0 or _x == len(self.board) - 1 or _y == len(self.board[0]) - 1)
+        if _x is not None:
+            return _x == 0 or _y == 0 or _x == len(self.board) - 1 or _y == len(self.board[0]) - 1
         else:
-            return (self.x == 0 or self.y == 0 or self.x == len(self.board) - 1 or self.y == len(self.board[0]) - 1)
+            return self.x == 0 or self.y == 0 or self.x == len(self.board) - 1 or self.y == len(self.board[0]) - 1
     def isCrossingBorder(self):
         if self.direction == DrillDirection.UP and self.y == 0:
             return True
@@ -104,13 +104,13 @@ class Builder:
                     drill.drill()
 
 class GeneratedBoard:
-    '''Class holding randomly generated board'''
+    """Class holding randomly generated board"""
 
-    def get_board_binary(self, _sX=16, _sY=12):
-        '''returns representation of randomly generated board'''
+    @staticmethod
+    def get_board_binary(_sX=16, _sY=12):
+        """returns representation of randomly generated board"""
 
-        board = [[BoardElement.WALL for _ in range(_sX)] for _ in range(_sY)] 
-        allCells = _sY * _sX
+        board = [[BoardElement.WALL for _ in range(_sX)] for _ in range(_sY)]
         builder = Builder(board, 2)
         builder.drill()
         emptyCells = []

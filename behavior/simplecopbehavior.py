@@ -5,6 +5,9 @@ from artifact.spriteartifact import SpriteArtifact
 from artifact.behaviorartifact import BehaviorArtifact
 
 class SimpleCopBehavior:
+    def __init__(self):
+        self.firstInformed = None
+
     def input(self, _event, _postEventCallback):
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
@@ -12,11 +15,11 @@ class SimpleCopBehavior:
             if tagArtifact.type == TagType.ENEMY and tagArtifact.subtype == TagSubType.SIMPLE_COP:
                 self.firstInformed = True
                 try:
-                    if entity.artifacts[BehaviorArtifact.NAME].behavior.firstInformed == True:
+                    if entity.artifacts[BehaviorArtifact.NAME].behavior.firstInformed:
                         self.firstInformed = False
                 except:
                     pass
-                if self.firstInformed == True:
+                if self.firstInformed:
                     spriteArtifact = entity.artifacts[SpriteArtifact.NAME]
                     _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=_event.me))
                     _postEventCallback(pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=entity))

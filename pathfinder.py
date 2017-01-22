@@ -39,6 +39,9 @@ class Pathfinder(Entity):
         self.board = board
         self.nodes = []
         self.shortestPaths = {}
+        self.indexesNodes = {}
+        self.nodesIndexes = []
+        self.nextNodes = []
         self.addArtifact(TagArtifact(TagType.OTHER, TagSubType.PATHFINDER))
 
     def prepareAllStepsForShortestPaths(self):
@@ -46,7 +49,7 @@ class Pathfinder(Entity):
         maxY = len(self.board)
         maxX = len(self.board[1])
         nodesIndexes = [ [0 for x in range(maxY)] for y in range(maxX)]
-        self.indexesNodes = {}
+        self.indexesNodes.clear()
 
         i=0
         y = 0
@@ -108,7 +111,7 @@ class Pathfinder(Entity):
                         distanceTable[indexV1][indexV2] = possible_shorter_distance
                         nextNodesTable[indexV1][indexV2] = nextNodesTable[indexV1][indexU]
 
-        #that are the onnly things that matters for us after all.
+        #that are the only things that matters for us after all.
         self.nodesIndexes = nodesIndexes
         self.nextNodes = nextNodesTable
 

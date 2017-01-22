@@ -10,13 +10,19 @@ import random
 class CollisionSystem:
     NAME = "CollisionSystem"
     observing = []
+
+    def __init__(self):
+        self.systems = None
+
     def register(self, _object):
         if SpriteArtifact.NAME in _object.artifacts and BehaviorArtifact.NAME in _object.artifacts:   
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
+
     def remove(self, _entity):
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
+
     def input(self, _event):
         #obsluga nie powinna byc w tym systemie ale nie mialem pomyslu gdzie to wrzucic zeby bylo globalnie
         if _event.type == ENTITY_EFFECT_EVENT and _event.effect == EntityEffect.TELEPORT:
@@ -40,6 +46,7 @@ class CollisionSystem:
                     entitySpriteArtifact.positionX += 64
                 else:
                     print("Couldn't find teleport output cell")
+
     def update(self, _timeDelta, _systems):
         if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
             return
@@ -57,6 +64,6 @@ class CollisionSystem:
                     e1SpriteArtifact.sprite.rect.y = e1SpriteArtifact.positionY
                     e2SpriteArtifact.sprite.rect.x = e2SpriteArtifact.positionX
                     e2SpriteArtifact.sprite.rect.y = e2SpriteArtifact.positionY
-                    if pygame.sprite.collide_rect(e1SpriteArtifact.sprite, e2SpriteArtifact.sprite) == True:
+                    if pygame.sprite.collide_rect(e1SpriteArtifact.sprite, e2SpriteArtifact.sprite):
                         entity.artifacts[BehaviorArtifact.NAME].behavior.input(pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
                         entity2.artifacts[BehaviorArtifact.NAME].behavior.input(pygame.event.Event(COLLISION_EVENT, me=entity2, colliding=entity), pygame.event.post)

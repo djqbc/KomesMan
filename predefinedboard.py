@@ -1,8 +1,9 @@
 class PredefinedBoard:
-    '''Class holding default predefined board'''
+    """Class holding default predefined board"""
 
-    def get_board_binary(self):
-        '''returns representation of default board'''
+    @staticmethod
+    def get_board_binary():
+        """returns representation of default board"""
 
         # todo: ja bym tutaj dodal rozmieszczenie itemkow na podlodze, ale moze zle mysle?
 

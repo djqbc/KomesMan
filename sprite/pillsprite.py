@@ -2,7 +2,7 @@ from sprite.mysprite import MySprite
 import pygame
 
 class PillSprite(MySprite):
-    '''Pill item'''
+    """Pill item"""
     def __init__(self):
         super(PillSprite, self).__init__()
         self.image = pygame.image.load('res/img/supermanpill.png')

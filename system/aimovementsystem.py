@@ -11,7 +11,7 @@ class AiMovementSystem:
     NAME = "AiMovementSystem"
     observing = []
     def __init__(self):
-        pass
+        self.pathFinder = None
     def remove(self, _entity):
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
                 
@@ -27,7 +27,6 @@ class AiMovementSystem:
         if _systems[GameSystem.NAME].getCurrentGameState() != GameState.GAME:
             return
         tagSystem = _systems[TagSystem.NAME]
-        target = None
         baits = tagSystem.getEntities(TagType.ITEM, TagSubType.BAIT)
         if len(baits) > 0:
             target = baits[0]
@@ -47,9 +46,9 @@ class AiMovementSystem:
             copiX = int(spriteArtifact.positionX / board.tileSize) # to jest kiepskie jezeli idziemy w góre
             copiY = int(spriteArtifact.positionY / board.tileSize) # to jest kiepskie, jezeli idziemy w lewo!!!
 
-            if(spriteArtifact.positionX % board.tileSize != 0 and movementArtifact.movementVector[0] < 0):
+            if spriteArtifact.positionX % board.tileSize != 0 and movementArtifact.movementVector[0] < 0:
                 copiX += 1
-            if(spriteArtifact.positionY % board.tileSize != 0 and movementArtifact.movementVector[1] < 0):
+            if spriteArtifact.positionY % board.tileSize != 0 and movementArtifact.movementVector[1] < 0:
                 copiY += 1
 
             nextMove = self.pathFinder.getNextMove(Node(copiX, copiY), Node(iX, iY))
@@ -66,28 +65,28 @@ class AiMovementSystem:
 
             movementArtifact.movementVector = [0, 0]
 
-            if(yToReach == int(spriteArtifact.positionY)):
+            if yToReach == int(spriteArtifact.positionY):
                 #Jestesmy w dobrym Y, musimy ruszac sie po X
                 if spriteArtifact.positionY != int(spriteArtifact.positionY):
 #                        print('Round Y!!!')
                     spriteArtifact.positionY = int(spriteArtifact.positionY)
                     return
-                if(xToReach < spriteArtifact.positionX):
+                if xToReach < spriteArtifact.positionX:
                     spriteArtifact.sprite.currentAnimation = AnimationState.MOVE_LEFT
                     movementArtifact.movementVector[0] = -1
-                if(xToReach > spriteArtifact.positionX):
+                if xToReach > spriteArtifact.positionX:
                     spriteArtifact.sprite.currentAnimation = AnimationState.MOVE_RIGHT
                     movementArtifact.movementVector[0] = 1
-            if(xToReach == int(spriteArtifact.positionX)):
+            if xToReach == int(spriteArtifact.positionX):
                 #jestesmy w dobrym X, musimy ruszac sie po Y
                 if spriteArtifact.positionX != int(spriteArtifact.positionX):
                     spriteArtifact.positionX = int(spriteArtifact.positionX)
 #                        print('Round X!!!')
                     return
-                if(yToReach < spriteArtifact.positionY):
+                if yToReach < spriteArtifact.positionY:
                     spriteArtifact.sprite.currentAnimation = AnimationState.MOVE_UP
                     movementArtifact.movementVector[1] = -1
-                if(yToReach > spriteArtifact.positionY):
+                if yToReach > spriteArtifact.positionY:
                     spriteArtifact.sprite.currentAnimation = AnimationState.MOVE_DOWN
                     movementArtifact.movementVector[1] = 1
 

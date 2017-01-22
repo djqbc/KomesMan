@@ -35,15 +35,15 @@ class DrawSystem:
             spriteArtifact = entity.artifacts[SpriteArtifact.NAME]
             if spriteArtifact.drawStage & int(self.currentGameState):
                 spriteArtifact.sprite.draw(self.screen, spriteArtifact.positionX, spriteArtifact.positionY)
-        if self.currentEffect != None:
-            if self.currentEffect.dict['type'] == ScreenEffectEvent.BLUR:#czemu nie mogê dac .type
+        if self.currentEffect is not None:
+            if self.currentEffect.dict['type'] == ScreenEffectEvent.BLUR:#czemu nie mogï¿½ dac .type
                 scale = 1.0/float(10.0)
                 surf_size = self.screen.get_size()
                 scale_size = (int(surf_size[0]*scale), int(surf_size[1]*scale))
                 surf = pygame.transform.smoothscale(self.screen, scale_size)
                 surf = pygame.transform.smoothscale(surf, surf_size)
                 self.screen.blit(surf, (0, 0))
-            elif self.currentEffect.dict['type'] == ScreenEffectEvent.COLOR_EXPLOSION:#czemu nie mogê dac .type
+            elif self.currentEffect.dict['type'] == ScreenEffectEvent.COLOR_EXPLOSION:#czemu nie mogï¿½ dac .type
                 surf = self.screen
                 array = pygame.surfarray.pixels3d(surf)
                 array[:,:,1:] = 0

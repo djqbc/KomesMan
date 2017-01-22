@@ -2,8 +2,9 @@ from sprite.mysprite import MySprite
 import pygame
 
 class TestSprite(MySprite):
-    '''Fake class used for testing purposes'''
+    """Fake class used for testing purposes"""
     def __init__(self):
+        super().__init__()
         self.image = pygame.Surface([20, 20])
         self.image.fill((255, 0, 0))
     def draw(self, _screen, _positionX, _positionY):

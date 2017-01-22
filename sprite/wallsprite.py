@@ -3,7 +3,7 @@ import pygame
 from sprite.mysprite import MySprite
 
 class WallKind(Enum):
-    '''Enum representing animation state'''
+    """Enum representing animation state"""
     NONE = 0
     CORNER_TOPLEFT = 1
     CORNER_BOTTOMLEFT = 2
@@ -49,7 +49,7 @@ class WallKindTrueTable:
 
 
 class WallSprite(MySprite):
-    '''Sprite of wall'''
+    """Sprite of wall"""
     wallkinds = {
         WallKind.CORNER_TOPLEFT : 'res/img/wall001.png',
         WallKind.CORNER_BOTTOMLEFT: 'res/img/wall002.png',
@@ -67,7 +67,7 @@ class WallSprite(MySprite):
     def __init__(self, wallkind):
         super(WallSprite, self).__init__()
         self.wallkind = wallkind
-        self.image = pygame.image.load(self.wallkinds[wallkind]);
+        self.image = pygame.image.load(self.wallkinds[wallkind])
 
     def draw(self, _screen, _positionX, _positionY):
         _screen.blit(self.image, (_positionX, _positionY))

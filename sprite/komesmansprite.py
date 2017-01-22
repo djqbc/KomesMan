@@ -3,7 +3,7 @@ from math import floor
 import pygame
 
 class KomesManSprite(MySprite):
-    '''KomesMan!!!!'''
+    """KomesMan!!!!"""
     def __init__(self):
         super(KomesManSprite, self).__init__()
         self.animations = {

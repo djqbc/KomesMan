@@ -24,6 +24,6 @@ while not game.quit():
         t += TIME_DELTA
     game.render(accumulator / TIME_DELTA)
     fps += 1
-    if (t > 1.0):
+    if t > 1.0:
         print(fps)
         fps = t = 0

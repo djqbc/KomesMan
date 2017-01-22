@@ -25,7 +25,7 @@ class MenuSystem:
     def register(self, _object, _parent=None):
         if SpriteArtifact.NAME in _object.artifacts and MenuArtifact.NAME in _object.artifacts: 
             tmp = self.menu.get(_parent, None)
-            if tmp != None:
+            if tmp is not None:
                 self.menu[_parent].append(_object)
             else:
                 self.menu[_parent] = [_object]
@@ -57,9 +57,9 @@ class MenuSystem:
                 self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.addHighlight()
             elif _event.key == pygame.K_UP and self.currentGameState == GameState.MENU:
                 self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.removeHighlight()
-                self.currentIndex = self.currentIndex - 1
+                self.currentIndex -= 1
                 if self.currentIndex < 0:
-                    self.currentIndex = len(self.menu[self.currentNode]) + self.currentIndex
+                    self.currentIndex += len(self.menu[self.currentNode])
                 self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.addHighlight()
             elif _event.key == pygame.K_RETURN and self.currentGameState == GameState.MENU:
                 currentAction = self.menu[self.currentNode][self.currentIndex].artifacts[MenuArtifact.NAME].action

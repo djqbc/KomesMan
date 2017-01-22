@@ -2,7 +2,7 @@ from sprite.mysprite import MySprite
 import pygame
 
 class DrugSprite(MySprite):
-    '''Drug item - one inhalation and everything is better ;)'''
+    """Drug item - one inhalation and everything is better ;)"""
     def __init__(self):
         super(DrugSprite, self).__init__()
         self.image = pygame.image.load('res/img/powderbag.png')

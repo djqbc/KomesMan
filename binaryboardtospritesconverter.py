@@ -1,8 +1,9 @@
 from sprite.wallsprite import WallKind
 
 
-class BinaryBoardToSpritesConverter():
-    def convert(self, board):
+class BinaryBoardToSpritesConverter:
+    @staticmethod
+    def convert(board):
         maxY = len(board)
         maxX = len(board[1])
 
@@ -33,7 +34,7 @@ class BinaryBoardToSpritesConverter():
                             or (x<maxX-1 and y < maxY-1 and board[y-1][x] == 1 and board[y+1][x]!=1 and board[y][x+1] != 1  and board[y][x-1] != 1) \
                             or (x==maxX-1 and y<maxY-1 and board[y-1][x] == 1 and board[y+1][x] != 1 and board[y][x - 1] != 1):
                         newRow.append(WallKind.END_BOTTOM)
-                    elif(x<maxX-1 and y<maxY-1 and board[y-1][x]!=1 and board[y+1][x]!=1 and board[y][x+1]!=1 and board[y][x-1]==1):
+                    elif x<maxX-1 and y<maxY-1 and board[y-1][x]!=1 and board[y+1][x]!=1 and board[y][x+1]!=1 and board[y][x-1]==1:
                         newRow.append(WallKind.END_RIGHT)
                     elif(x==0 and y<maxY-1 and board[y-1][x] != 1 and board[y+1][x] == 1 and board[y][x+1] != 1)\
                             or (x < maxX-1 and y<maxY-1 and board[y-1][x] != 1 and board[y+1][x] == 1 and board[y][x+1] != 1 and board[y][x-1] != 1) \

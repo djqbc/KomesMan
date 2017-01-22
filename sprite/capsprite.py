@@ -2,7 +2,7 @@ from sprite.mysprite import MySprite
 import pygame
 
 class CapSprite(MySprite):
-    '''Cap item - catch them all!!!'''
+    """Cap item - catch them all!!!"""
     def __init__(self):
         super(CapSprite, self).__init__()
         self.image = pygame.image.load('res/img/cap.png')

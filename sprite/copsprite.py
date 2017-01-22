@@ -3,7 +3,7 @@ from math import floor
 import pygame
 
 class CopSprite(MySprite):
-    '''Bad cop'''
+    """Bad cop"""
     def __init__(self):
         super(CopSprite, self).__init__()
         self.animations = {

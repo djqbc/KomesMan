@@ -1,15 +1,24 @@
 from board import BoardElement
 
-class BinaryBoardItemsGetter():
+class BinaryBoardItemsGetter:
 
-    def loadItems(self, board):
+    def __init__(self):
         self.caps = []
         self.beers = []
         self.amphs = []
         self.pills = []
         self.enemies = []
-        self.komesman = (0,0)
         self.teleports = []
+        self.komesman = (0, 0)
+
+    def loadItems(self, board):
+        self.caps.clear()
+        self.beers.clear()
+        self.amphs.clear()
+        self.pills.clear()
+        self.enemies.clear()
+        self.teleports.clear()
+        self.komesman = (0, 0)
         y=0
         for row in board:
             x=0

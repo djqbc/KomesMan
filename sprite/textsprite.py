@@ -10,7 +10,7 @@ class TextSprite(MySprite):
         self.color = (127,127,127)
         self.text = self.basicFont.render(_text, True, self.color)
     def draw(self, _screen, _positionX, _positionY):
-        if self.modifiers != None:
+        if self.modifiers is not None:
             x = _positionX
             y = _positionY
             textWidth, textHeight = self.basicFont.size(self.textContent)

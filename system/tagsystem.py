@@ -22,8 +22,8 @@ class TagSystem:
                 entityList[:] = [entity for entity in entityList if entity != _entity]
     def getEntities(self, _type=TagType.KOMESMAN, _subtype=None):
         typeDict = self.tags.get(_type, None)
-        if typeDict != None:
-            if _subtype != None:
+        if typeDict is not None:
+            if _subtype is not None:
                 return typeDict.get(_subtype, [])
             else:
                 result = []

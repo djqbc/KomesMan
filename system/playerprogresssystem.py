@@ -13,6 +13,7 @@ class PlayerProgressSystem:
         self.overallPoints = 0
         self.currentMaxCaps = 0
         self.currentLifes = 3
+        self.systems = None
     def register(self, _object):
         pass
     def remove(self, _entity):
