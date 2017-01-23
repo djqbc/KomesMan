@@ -43,30 +43,34 @@ class AiMovementSystem:
         i_y = int(round(y / board.tileSize))
         # print('komesman jest w ', iX, ' ', iY)
         for cop in self.observing:  # pozniej otagowac grupy wrogow i dla kazdej z nich miec mozliwosc innego kontrolera
-            sprite_artifact = cop.artifacts[SpriteArtifact.NAME]
             movement_artifact = cop.artifacts[MovementArtifact.NAME]
+            sprite_artifact = cop.artifacts[SpriteArtifact.NAME]
+            if movement_artifact.target == None:
+    
+                copi_x = int(sprite_artifact.positionX / board.tileSize)  # to jest kiepskie jezeli idziemy w góre
+                copi_y = int(sprite_artifact.positionY / board.tileSize)  # to jest kiepskie, jezeli idziemy w lewo!!!
+    
+                if sprite_artifact.positionX % board.tileSize != 0 and movement_artifact.movementVector[0] < 0:
+                    copi_x += 1
+                if sprite_artifact.positionY % board.tileSize != 0 and movement_artifact.movementVector[1] < 0:
+                    copi_y += 1
+    
+                next_move = self.pathFinder.getnextmove(Node(copi_x, copi_y), Node(i_x, i_y))
+    
+                if copi_x == i_x and copi_y == i_y:
+                    return
+    
+                # print('Cop is moving from: [{copX}, {copY}] to [{komX}, {komY}]. Next tile = [{nextX},{nextY}]'
+                # .format(copX = copiX, copY = copiY, komX = iX, komY = iY, nextX=nextMove.x, nextY=nextMove.y))
+    
+                x_to_reach = next_move.x * board.tileSize
+                y_to_reach = next_move.y * board.tileSize
+                movement_artifact.target = (x_to_reach, y_to_reach)
 
-            copi_x = int(sprite_artifact.positionX / board.tileSize)  # to jest kiepskie jezeli idziemy w góre
-            copi_y = int(sprite_artifact.positionY / board.tileSize)  # to jest kiepskie, jezeli idziemy w lewo!!!
-
-            if sprite_artifact.positionX % board.tileSize != 0 and movement_artifact.movementVector[0] < 0:
-                copi_x += 1
-            if sprite_artifact.positionY % board.tileSize != 0 and movement_artifact.movementVector[1] < 0:
-                copi_y += 1
-
-            next_move = self.pathFinder.getnextmove(Node(copi_x, copi_y), Node(i_x, i_y))
-
-            if copi_x == i_x and copi_y == i_y:
-                return
-
-            # print('Cop is moving from: [{copX}, {copY}] to [{komX}, {komY}]. Next tile = [{nextX},{nextY}]'
-            # .format(copX = copiX, copY = copiY, komX = iX, komY = iY, nextX=nextMove.x, nextY=nextMove.y))
-
-            x_to_reach = next_move.x * board.tileSize
-            y_to_reach = next_move.y * board.tileSize
-
-            # print('X TO REACH {x}. ACTUAL X {actx}. Y TO REACH. {y} ACTUAL Y {acty}'.
-            # format(actx=spriteArtifact.positionX,x=xToReach,acty=spriteArtifact.positionY,y=yToReach))
+                # print('X TO REACH {x}. ACTUAL X {actx}. Y TO REACH. {y} ACTUAL Y {acty}'.
+                # format(actx=spriteArtifact.positionX,x=xToReach,acty=spriteArtifact.positionY,y=yToReach))
+            else:
+                x_to_reach, y_to_reach = movement_artifact.target
 
             movement_artifact.movementVector = [0, 0]
 
@@ -101,6 +105,8 @@ class AiMovementSystem:
                 if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y):
                     sprite_artifact.positionX += d_x
                     sprite_artifact.positionY += d_y
+            else:
+                movement_artifact.target = None
 
     def input(self, _event):
         pass
