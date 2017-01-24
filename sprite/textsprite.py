@@ -32,6 +32,10 @@ class TextSprite(MySprite):
     def size(self):
         return self.basicFont.size(self.textContent)
 
+    def changetext(self, _text):
+        self.textContent = _text
+        self.text = self.basicFont.render(_text, True, self.color)
+
     def addhighlight(self):
         self.color = (255, 255, 255)
         self.text = self.basicFont.render(self.textContent, True, self.color)
