@@ -31,13 +31,14 @@ class GameManager:
         tagSystem.NAME: tagSystem,
         collisionSystem.NAME: collisionSystem,
         userMoveSystem.NAME: userMoveSystem,
-        aiMoveSystem.NAME: aiMoveSystem,
         drawSystem.NAME: drawSystem,
         gameSystem.NAME: gameSystem,
         menuSystem.NAME: menuSystem,
         musicSystem.NAME: musicSystem,
-        playerProgressSystem.NAME: playerProgressSystem
-    }  # kolejnosc moze byc wazna
+        playerProgressSystem.NAME: playerProgressSystem,
+        aiMoveSystem.NAME: aiMoveSystem,
+    }
+    allSystemsForIteration = [item for item in allSystems.items()]# kolejnosc moze byc wazna < ale to mozna ogarnac tu a nie w slowniku..
     builders = [
         BoardBuilder(allSystems),
         MenuBuilder(allSystems)
@@ -49,7 +50,7 @@ class GameManager:
 
     def update(self, _timedelta):
         """Updates current game state"""
-        for _, system in self.allSystems.items():
+        for _, system in self.allSystemsForIteration:
             system.update(_timedelta, self.allSystems)
 
     def init(self):
@@ -62,7 +63,7 @@ class GameManager:
     def input(self, _event):
         for builder in self.builders:
             builder.input(_event)
-        for _, system in self.allSystems.items():
+        for _, system in self.allSystemsForIteration:
             system.input(_event)
 
     def quit(self):

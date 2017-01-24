@@ -43,6 +43,7 @@ class MenuEventType(Enum):
     CONTINUE_GAME = 6  # next level
     CHANGE_TILE_SIZE = 7
     UPDATE_NAME = 8
+    SHOW_HIGHSCORES = 9
 
 
 class GameEventType(Enum):

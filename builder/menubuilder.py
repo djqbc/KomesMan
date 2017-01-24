@@ -2,6 +2,7 @@ from copy import copy
 
 from entity import Entity
 from artifact.spriteartifact import SpriteArtifact
+from highscoresmanager import HighscoresManager
 from sprite.textsprite import TextSprite, Modifiers
 from sprite.simpleimagesprite import SimpleImageSprite
 from sprite.hudsprite import HUDSprite
@@ -18,22 +19,29 @@ class MenuBuilder:
         self.dirty = True
         self.systems = _systems
         self.elements = []
+        self.highscorenames = []
+        self.highscorevalues = []
         self.player_name = None
+        self.highscoresManager = HighscoresManager()
+        self.screen_height = 768 #todo: gdzies wyciagnac.
+        self.margin = 10
 
     def build(self):
         # TODO wyrzucic bezwzgledne pozycjonowanie
         self.createmenubackground(0, 0)
         self.createmenuelement(490, 550, "Play", MenuEventType.START_NEW_GAME, None)
         option_settings = self.createmenuelement(490, 600, "Settings", MenuEventType.MENU_IN, None)
+        self.createmenuelement(490, 650, "Hall of fame", MenuEventType.SHOW_HIGHSCORES, None)
         self.createmenuelement(490, 550, "Maximize window", MenuEventType.MAXIMIZE, option_settings)
         self.createmenuelement(490, 600, "Change tile size", MenuEventType.CHANGE_TILE_SIZE, option_settings)
         self.createmenuelement(490, 660, "Back", MenuEventType.MENU_OUT, option_settings)
-        self.createmenuelement(490, 650, "Exit", MenuEventType.QUIT, None)
+        self.createmenuelement(490, 700, "Exit", MenuEventType.QUIT, None)
         self.createhud(950, 10)
         self.createresult("You win!!!", GameState.WON_GAME)
         self.createresult("You lost - restarting...!!!", GameState.LOST_LIFE)
         self.createresult("You lost!!!", GameState.LOST_GAME)
         self.createHighscores()
+        self.createhalloffame()
 
     def clear(self):
         for e in self.elements:
@@ -61,6 +69,13 @@ class MenuBuilder:
                     nick += underscores
 
                 self.player_name.artifacts[SpriteArtifact.NAME].sprite.changetext(''.join(nick))
+            elif _event.action == MenuEventType.SHOW_HIGHSCORES:
+                self.highscoresManager.load()
+                i = 0
+                for highscore in self.highscoresManager.highscores:
+                    self.highscorenames[i].artifacts[SpriteArtifact.NAME].sprite.changetext(str(i+1) + " " + highscore.name)
+                    self.highscorevalues[i].artifacts[SpriteArtifact.NAME].sprite.changetext(str(highscore.score))
+                    i += 1
 
 
     def createmenuelement(self, _x, _y, _text, _type, _parent):
@@ -106,3 +121,25 @@ class MenuBuilder:
         self.player_name.addartifact(SpriteArtifact(TextSprite('_'*30, Modifiers.CENTER_H), 100, 300, GameState.NEW_HIGHSCORE))
         self.systems[DrawSystem.NAME].register(self.player_name)
         self.elements.append(self.player_name)
+
+    def createhalloffame(self):
+        potential_size_of_one_line = (self.screen_height - 2*self.margin ) / (HighscoresManager.topscorescount) + 1
+        hall_of_fame = Entity()
+        hall_of_fame.addartifact(SpriteArtifact(TextSprite("HALL OF FAME!", Modifiers.CENTER_H), 0, self.margin, GameState.SHOW_HIGHSCORES))
+        self.systems[DrawSystem.NAME].register(hall_of_fame)
+        self.elements.append(hall_of_fame)
+
+        for i in range(HighscoresManager.topscorescount):
+            highscore_player = Entity()
+            highscore_player.addartifact(SpriteArtifact(TextSprite(""), self.margin, self.margin + (i+1) * potential_size_of_one_line, GameState.SHOW_HIGHSCORES))
+            self.systems[DrawSystem.NAME].register(highscore_player)
+            self.elements.append(highscore_player)
+            self.highscorenames.append(highscore_player)
+
+        for i in range(HighscoresManager.topscorescount):
+            highscore_value = Entity()
+            highscore_value.addartifact(SpriteArtifact(TextSprite(""), 900, self.margin + (i+1) * potential_size_of_one_line, GameState.SHOW_HIGHSCORES))
+            self.systems[DrawSystem.NAME].register(highscore_value)
+            self.elements.append(highscore_value)
+            self.highscorevalues.append(highscore_value)
+

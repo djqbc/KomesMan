@@ -14,6 +14,7 @@ class GameState(IntEnum):
     WON_GAME = 32
     LOST_LIFE = 64
     NEW_HIGHSCORE = 128
+    SHOW_HIGHSCORES = 256
 
 
 class GameSystem:
@@ -62,10 +63,14 @@ class GameSystem:
         elif _event.type == pygame.QUIT:
             self.gameState = GameState.END
             pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))
-        elif _event.type == MENU_EVENT:
-            if _event.action == MenuEventType.START_NEW_GAME or _event.action == MenuEventType.RESTART_GAME or _event.action == MenuEventType.CONTINUE_GAME:
+        elif _event.type == GAME_STATE_CHANGE_EVENT:
+            if _event.state == GameState.GAME:
                 self.gameState = GameState.GAME
-                pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME))
+                #to tylko na probe!!
+        elif _event.type == MENU_EVENT:
+#            if _event.action == MenuEventType.START_NEW_GAME or _event.action == MenuEventType.RESTART_GAME or _event.action == MenuEventType.CONTINUE_GAME:
+#                self.gameState = GameState.GAME
+#                pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME))
             if _event.action == MenuEventType.QUIT:
                 self.gameState = GameState.END
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))

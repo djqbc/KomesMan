@@ -23,7 +23,7 @@ from sprite.capsprite import CapSprite
 from behavior.capbehavior import CapBehavior
 from system.aimovementsystem import AiMovementSystem
 from system.collisionsystem import CollisionSystem
-from myevents import GAME_EVENT, GameEventType
+from myevents import GAME_EVENT, GameEventType, GAME_STATE_CHANGE_EVENT
 from system.tagsystem import TagSystem
 from system.usermovementsystem import UserMovementSystem
 from system.drawsystem import DrawSystem
@@ -79,6 +79,8 @@ class BoardBuilder:
         self.createkomesman(itemsgetter.komesman[0] * self.tile_size, itemsgetter.komesman[1] * self.tile_size)
         for teleport in itemsgetter.teleports:
             self.createteleport(teleport[0] * self.tile_size, teleport[1] * self.tile_size)
+
+        pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME))
 
     def clear(self):
         for e in self.elements:

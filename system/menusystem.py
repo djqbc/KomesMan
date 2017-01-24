@@ -49,6 +49,7 @@ class MenuSystem:
                 score = _systems[PlayerProgressSystem.NAME].overallPoints
                 self.highscoresmanager.inserthighscore(''.join(self.currentNick), score)
                 self.highscoresmanager.save()
+                self.currentNick = []
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
         pass
 
@@ -84,6 +85,9 @@ class MenuSystem:
                     pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.UPDATE_NAME, nick = self.currentNick, maxnick=self.max_nick))
                     pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
         elif _event.type == pygame.KEYUP:
+            if self.currentGameState == GameState.SHOW_HIGHSCORES:
+                if _event.key == pygame.K_RETURN:
+                    pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
             if self.currentGameState == GameState.MENU:
                 pygame.event.post(
                     pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
@@ -99,6 +103,10 @@ class MenuSystem:
                 self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.addhighlight()
             elif _event.key == pygame.K_RETURN and self.currentGameState == GameState.MENU:
                 current_action = self.menu[self.currentNode][self.currentIndex].artifacts[MenuArtifact.NAME].action
+                if current_action == MenuEventType.SHOW_HIGHSCORES:
+                    pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.SHOW_HIGHSCORES))
+                    pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.SHOW_HIGHSCORES))
+                    return
                 if current_action == MenuEventType.MENU_OUT:
                     for node, options in self.menu.items():
                         if self.currentNode in options:
