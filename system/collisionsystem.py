@@ -14,6 +14,7 @@ class CollisionSystem:
 
     def __init__(self):
         self.systems = None
+        self.tile_size = 64
 
     def register(self, _object):
         if SpriteArtifact.NAME in _object.artifacts and BehaviorArtifact.NAME in _object.artifacts:
@@ -37,14 +38,14 @@ class CollisionSystem:
                 entity_sprite_artifact.positionX = target_teleport_sprite_artifact.positionX
                 entity_sprite_artifact.positionY = target_teleport_sprite_artifact.positionY
                 # poprawic tile size sztywny
-                if board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, 0, -64):
-                    entity_sprite_artifact.positionY -= 64
-                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, 0, 64):
-                    entity_sprite_artifact.positionY += 64
-                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, -64, 0):
-                    entity_sprite_artifact.positionX -= 64
-                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, 64, 0):
-                    entity_sprite_artifact.positionX += 64
+                if board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, 0, -self.tile_size):
+                    entity_sprite_artifact.positionY -= self.tile_size
+                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, 0, self.tile_size):
+                    entity_sprite_artifact.positionY += self.tile_size
+                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, -self.tile_size, 0):
+                    entity_sprite_artifact.positionX -= self.tile_size
+                elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, self.tile_size, 0):
+                    entity_sprite_artifact.positionX += self.tile_size
                 else:
                     print("Couldn't find teleport output cell")
 

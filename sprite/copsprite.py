@@ -6,7 +6,7 @@ import pygame
 class CopSprite(MySprite):
     """Bad cop"""
 
-    def __init__(self):
+    def __init__(self, tilesize):
         super(CopSprite, self).__init__()
         self.animations = {
             AnimationState.MOVE_UP: [
@@ -30,6 +30,11 @@ class CopSprite(MySprite):
                 pygame.image.load('res/img/EneD_003.png')
             ]
         }
+        for k, v in self.animations.items():
+            tmp = []
+            for image in v:
+                tmp.append(pygame.transform.scale(image, (tilesize, tilesize)))
+            self.animations[k] = tmp
         self.image = self.animations[self.currentAnimation][0]
         self.rect = self.image.get_rect()
 

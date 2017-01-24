@@ -76,10 +76,11 @@ class WallSprite(MySprite):
         WallKind.SQUARE: 'res/img/wall011.png',
     }
 
-    def __init__(self, wallkind):
+    def __init__(self, wallkind, tilesize):
         super(WallSprite, self).__init__()
         self.wallkind = wallkind
         self.image = pygame.image.load(self.wallkinds[wallkind])
+        self.image = pygame.transform.scale(self.image, (tilesize, tilesize))
 
     def draw(self, _screen, _positionx, _positiony):
         _screen.blit(self.image, (_positionx, _positiony))

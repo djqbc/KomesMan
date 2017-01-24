@@ -5,9 +5,10 @@ import pygame
 class DrugSprite(MySprite):
     """Drug item - one inhalation and everything is better ;)"""
 
-    def __init__(self):
+    def __init__(self, tilesize):
         super(DrugSprite, self).__init__()
         self.image = pygame.image.load('res/img/powderbag.png')
+        self.image = pygame.transform.scale(self.image, (tilesize, tilesize))
         self.rect = self.image.get_rect()
 
     def draw(self, _screen, _positionx, _positiony):

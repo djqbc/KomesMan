@@ -44,37 +44,41 @@ class BoardBuilder:
         self.systems = _systems
         self.elements = []
         self.binaryboard = None
+        self.tile_size = 32  
 
     def build(self, _restart=False):
+        resolution_x, resolution_y = (1024, 768)
+        self.systems[CollisionSystem.NAME].tile_size = self.tile_size
+        
         if not _restart:
-            if self.systems[PlayerProgressSystem.NAME].currentLevel == 1:
+            if self.systems[PlayerProgressSystem.NAME].currentLevel == 0:
                 self.binaryboard = PredefinedBoard().get_board_binary()
             else:
-                self.binaryboard = GeneratedBoard().get_board_binary()
-
-        self.createboard(BinaryBoardToSpritesConverter().convert(self.binaryboard))
-
+                self.binaryboard = GeneratedBoard().get_board_binary(resolution_x // self.tile_size, resolution_y // self.tile_size)
+            self.createboard(BinaryBoardToSpritesConverter().convert(self.binaryboard), False)
+        else:
+            self.createboard(BinaryBoardToSpritesConverter().convert(self.binaryboard), True)
+            
         itemsgetter = BinaryBoardItemsGetter()
         itemsgetter.load_items(self.binaryboard)
 
         pygame.event.post(
             pygame.event.Event(GAME_EVENT, reason=GameEventType.SET_MAX_POINTS, maxPoints=len(itemsgetter.caps)))
 
-        tile_size = 64  # to da sie pewno skads wziac?
 
         for pill in itemsgetter.pills:
-            self.createpill(pill[0] * tile_size, pill[1] * tile_size)
+            self.createpill(pill[0] * self.tile_size, pill[1] * self.tile_size)
         for cap in itemsgetter.caps:
-            self.createcap(cap[0] * tile_size, cap[1] * tile_size)
+            self.createcap(cap[0] * self.tile_size, cap[1] * self.tile_size)
         for amph in itemsgetter.amphs:
-            self.createdrug(amph[0] * tile_size, amph[1] * tile_size)
+            self.createdrug(amph[0] * self.tile_size, amph[1] * self.tile_size)
         for beer in itemsgetter.beers:
-            self.createbeer(beer[0] * tile_size, beer[1] * tile_size)
+            self.createbeer(beer[0] * self.tile_size, beer[1] * self.tile_size)
         for enemy in itemsgetter.enemies:
-            self.createcop(enemy[0] * tile_size, enemy[1] * tile_size)
-        self.createkomesman(itemsgetter.komesman[0] * tile_size, itemsgetter.komesman[1] * tile_size)
+            self.createcop(enemy[0] * self.tile_size, enemy[1] * self.tile_size)
+        self.createkomesman(itemsgetter.komesman[0] * self.tile_size, itemsgetter.komesman[1] * self.tile_size)
         for teleport in itemsgetter.teleports:
-            self.createteleport(teleport[0] * tile_size, teleport[1] * tile_size)
+            self.createteleport(teleport[0] * self.tile_size, teleport[1] * self.tile_size)
 
     def clear(self):
         for e in self.elements:
@@ -90,6 +94,11 @@ class BoardBuilder:
             elif _event.action == MenuEventType.RESTART_GAME:
                 self.clear()
                 self.build(True)
+            elif _event.action == MenuEventType.CHANGE_TILE_SIZE:
+                if self.tile_size == 128:
+                    self.tile_size = 16
+                else:
+                    self.tile_size *= 2
         elif _event.type == GAME_EVENT:
             if _event.reason == GameEventType.REMOVE_OBJECT:
                 self.elements.remove(_event.reference)
@@ -103,7 +112,7 @@ class BoardBuilder:
 
     def createkomesman(self, x, y):
         komes_man = Entity()
-        komes_man.addartifact(SpriteArtifact(KomesManSprite(), x, y, GameState.GAME))
+        komes_man.addartifact(SpriteArtifact(KomesManSprite(self.tile_size), x, y, GameState.GAME))
         komes_man.addartifact(MovementArtifact())
         komes_man.addartifact(TagArtifact(TagType.KOMESMAN))
         komes_man.addartifact(BehaviorArtifact(KomesManBehavior()))
@@ -115,7 +124,7 @@ class BoardBuilder:
 
     def createcop(self, _x, _y):
         cop = Entity()
-        cop.addartifact(SpriteArtifact(CopSprite(), _x, _y, GameState.GAME))
+        cop.addartifact(SpriteArtifact(CopSprite(self.tile_size), _x, _y, GameState.GAME))
         cop.addartifact(MovementArtifact(1))
         cop.addartifact(TagArtifact(TagType.ENEMY, TagSubType.SIMPLE_COP))
         cop.addartifact(BehaviorArtifact(SimpleCopBehavior()))
@@ -127,7 +136,7 @@ class BoardBuilder:
 
     def createsupercop(self, _x, _y):
         cop = Entity()
-        cop.addartifact(SpriteArtifact(CopSprite(), _x, _y, GameState.GAME))
+        cop.addartifact(SpriteArtifact(CopSprite(self.tile_size), _x, _y, GameState.GAME))
         cop.addartifact(MovementArtifact(1.5))
         cop.addartifact(TagArtifact(TagType.ENEMY, TagSubType.SUPER_COP))
         cop.addartifact(BehaviorArtifact(SimpleCopBehavior()))
@@ -139,7 +148,7 @@ class BoardBuilder:
 
     def createbeer(self, _x, _y):
         beer = Entity()
-        beer.addartifact(SpriteArtifact(BeerSprite(), _x, _y, GameState.GAME))
+        beer.addartifact(SpriteArtifact(BeerSprite(self.tile_size), _x, _y, GameState.GAME))
         beer.addartifact(TagArtifact(TagType.ITEM, TagSubType.BEER))
         beer.addartifact(BehaviorArtifact(BeerBehavior()))
         self.systems[DrawSystem.NAME].register(beer)
@@ -149,7 +158,7 @@ class BoardBuilder:
 
     def createbait(self, _x, _y):
         bait = Entity()
-        bait.addartifact(SpriteArtifact(BaitSprite(), _x, _y, GameState.GAME))
+        bait.addartifact(SpriteArtifact(BaitSprite(self.tile_size), _x, _y, GameState.GAME))
         bait.addartifact(TagArtifact(TagType.ITEM, TagSubType.BAIT))
         bait.addartifact(BehaviorArtifact(BaitBehavior()))
         self.systems[DrawSystem.NAME].register(bait)
@@ -159,7 +168,7 @@ class BoardBuilder:
 
     def createdrug(self, _x, _y):
         drug = Entity()
-        drug.addartifact(SpriteArtifact(DrugSprite(), _x, _y, GameState.GAME))
+        drug.addartifact(SpriteArtifact(DrugSprite(self.tile_size), _x, _y, GameState.GAME))
         drug.addartifact(TagArtifact(TagType.ITEM, TagSubType.DRUG))
         drug.addartifact(BehaviorArtifact(DrugBehavior()))
         self.systems[DrawSystem.NAME].register(drug)
@@ -169,7 +178,7 @@ class BoardBuilder:
 
     def createcap(self, _x, _y):
         cap = Entity()
-        cap.addartifact(SpriteArtifact(CapSprite(), _x, _y, GameState.GAME))
+        cap.addartifact(SpriteArtifact(CapSprite(self.tile_size), _x, _y, GameState.GAME))
         cap.addartifact(TagArtifact(TagType.ITEM, TagSubType.CAP))
         cap.addartifact(BehaviorArtifact(CapBehavior()))
         self.systems[DrawSystem.NAME].register(cap)
@@ -179,7 +188,7 @@ class BoardBuilder:
 
     def createteleport(self, _x, _y):
         teleport = Entity()
-        teleport.addartifact(SpriteArtifact(DummySprite(), _x, _y, GameState.GAME))
+        teleport.addartifact(SpriteArtifact(DummySprite(self.tile_size), _x, _y, GameState.GAME))
         teleport.addartifact(TagArtifact(TagType.FIXED, TagSubType.TELEPORT))
         teleport.addartifact(BehaviorArtifact(TeleportBehavior()))
         self.systems[DrawSystem.NAME].register(teleport)
@@ -189,7 +198,7 @@ class BoardBuilder:
 
     def createpill(self, _x, _y):
         pill = Entity()
-        pill.addartifact(SpriteArtifact(PillSprite(), _x, _y, GameState.GAME))
+        pill.addartifact(SpriteArtifact(PillSprite(self.tile_size), _x, _y, GameState.GAME))
         pill.addartifact(TagArtifact(TagType.ITEM, TagSubType.PILL))
         pill.addartifact(BehaviorArtifact(PillBehavior()))
         self.systems[DrawSystem.NAME].register(pill)
@@ -197,12 +206,13 @@ class BoardBuilder:
         self.systems[CollisionSystem.NAME].register(pill)
         self.elements.append(pill)
 
-    def createboard(self, predefinedboard):
+    def createboard(self, predefinedboard, uselastdata):
         # kijowe bezposrednie przekazanie elements - mozna olac jak nikomu sie nie bedzie chcialo poprawic
-        Board(predefinedboard, self.systems, self.elements)
+        Board(predefinedboard, self.systems, self.elements, self.tile_size)
         start = int(round(time.time() * 1000))
-        pf = Pathfinder(predefinedboard)
-        pf.prepareallstepsforshortestpaths()
-        print("Pathfinder time: ", int(round(time.time() * 1000)) - start)
-        self.systems[AiMovementSystem.NAME].register(pf)
-        self.elements.append(pf)
+        if uselastdata == False:
+            self.lastData = Pathfinder(predefinedboard)
+            self.lastData.prepareallstepsforshortestpaths()
+            print("Pathfinder time: ", int(round(time.time() * 1000)) - start)
+        self.systems[AiMovementSystem.NAME].register(self.lastData)
+        self.elements.append(self.lastData)

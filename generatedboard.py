@@ -118,11 +118,11 @@ class GeneratedBoard:
     """Class holding randomly generated board"""
 
     @staticmethod
-    def get_board_binary(_sx=16, _sy=12):
+    def get_board_binary(_sx, _sy):
         """returns representation of randomly generated board"""
 
         board = [[BoardElement.WALL for _ in range(_sx)] for _ in range(_sy)]
-        builder = Builder(board, 2)
+        builder = Builder(board, 4)
         builder.drill()
         empty_cells = []
         for x in range(_sy):
@@ -167,7 +167,7 @@ class GeneratedBoard:
         # add enemies
         current_board_value = board_value
         prices = {  # dodac rozroznionych przeciwnikow
-            BoardElement.ENEMY: 1500
+            BoardElement.ENEMY: board_value
         }
         while current_board_value > 0:
             available_enemies = {item: price for item, price in prices.items() if price <= current_board_value}

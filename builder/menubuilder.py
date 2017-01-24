@@ -23,7 +23,8 @@ class MenuBuilder:
         self.createmenuelement(490, 550, "Play", MenuEventType.START_NEW_GAME, None)
         option_settings = self.createmenuelement(490, 600, "Settings", MenuEventType.MENU_IN, None)
         self.createmenuelement(490, 550, "Maximize window", MenuEventType.MAXIMIZE, option_settings)
-        self.createmenuelement(490, 600, "Back", MenuEventType.MENU_OUT, option_settings)
+        self.createmenuelement(490, 600, "Change tile size", MenuEventType.CHANGE_TILE_SIZE, option_settings)
+        self.createmenuelement(490, 660, "Back", MenuEventType.MENU_OUT, option_settings)
         self.createmenuelement(490, 650, "Exit", MenuEventType.QUIT, None)
         self.createhud(950, 10)
         self.createresult("You win!!!", GameState.WON_GAME)
@@ -53,7 +54,7 @@ class MenuBuilder:
 
     def createmenuelement(self, _x, _y, _text, _type, _parent):
         menu = Entity()
-        menu.addartifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H, ), _x, _y, GameState.MENU))
+        menu.addartifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H), _x, _y, GameState.MENU))
         menu.addartifact(MenuArtifact(_type))
         self.systems[DrawSystem.NAME].register(menu)
         self.systems[MenuSystem.NAME].register(menu, _parent)

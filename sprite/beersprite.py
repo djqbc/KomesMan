@@ -5,9 +5,10 @@ import pygame
 class BeerSprite(MySprite):
     """Beer item - good, old Komes"""
 
-    def __init__(self):
+    def __init__(self, tilesize):
         super(BeerSprite, self).__init__()
         self.image = pygame.image.load('res/img/bottle.png')
+        self.image = pygame.transform.scale(self.image, (tilesize, tilesize))
         self.rect = self.image.get_rect()
 
     def draw(self, _screen, _positionx, _positiony):

@@ -23,7 +23,7 @@ class BoardElement(IntEnum):
 
 
 class Board(Entity):
-    def __init__(self, board, systems, registerlist, tilesize=64):
+    def __init__(self, board, systems, registerlist, tilesize):
         super(Board, self).__init__()
         self.map = [[Entity() for x in range(len(board))] for y in range(len(board[0]))]
         self.boardData = board
@@ -33,7 +33,7 @@ class Board(Entity):
             i_y = 0
             for cell in row:
                 if cell != 0:
-                    tile_sprite = WallSprite(cell)
+                    tile_sprite = WallSprite(cell, tilesize)
                     self.map[i_y][i_x].addartifact(
                         SpriteArtifact(tile_sprite, i_y * tilesize, i_x * tilesize, GameState.GAME))
                     systems[DrawSystem.NAME].register(self.map[i_y][i_x])

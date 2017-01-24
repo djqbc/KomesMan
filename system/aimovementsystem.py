@@ -105,7 +105,7 @@ class AiMovementSystem:
                 d_x = movement_artifact.movementVector[0] * movement_artifact.speedModifier * _delta
                 d_y = movement_artifact.movementVector[1] * movement_artifact.speedModifier * _delta
                 if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y):
-                    print(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
+#                     print(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
                     diff1 = sprite_artifact.positionX - x_to_reach
                     diff2 = sprite_artifact.positionX + d_x - x_to_reach
                     if diff1 * diff2 < 0:
