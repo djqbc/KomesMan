@@ -41,6 +41,7 @@ class MenuEventType(Enum):
     MAXIMIZE = 4
     RESTART_GAME = 5  # after loss of life
     CONTINUE_GAME = 6  # next level
+    UPDATE_NAME = 7
 
 
 class GameEventType(Enum):

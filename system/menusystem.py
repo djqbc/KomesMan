@@ -4,6 +4,7 @@ from system.gamesystem import GameState
 from myevents import GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, ENTITY_EFFECT_EVENT, EntityEffect
 import pygame
 from artifact.menuartifact import MenuArtifact
+from system.playerprogresssystem import PlayerProgressSystem
 
 
 class MenuSystem:
@@ -12,7 +13,8 @@ class MenuSystem:
     currentNode = None
     currentIndex = 0
     currentNick = []
-    maxNick = 10
+    max_nick = 30
+    saveRequest = False
     currentGameState = GameState.INIT
 
     def __init__(self):
@@ -40,6 +42,14 @@ class MenuSystem:
             raise NameError("ERROR!!!")
 
     def update(self, _timedelta, _systems):
+        if self.currentGameState == GameState.NEW_HIGHSCORE:
+            if self.saveRequest:
+                self.saveRequest = False
+                self.highscoresmanager.load()
+                score = _systems[PlayerProgressSystem.NAME].overallPoints
+                self.highscoresmanager.inserthighscore(''.join(self.currentNick), score)
+                self.highscoresmanager.save()
+                pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
         pass
 
     def input(self, _event):
@@ -60,14 +70,10 @@ class MenuSystem:
         elif _event.type == pygame.KEYDOWN:
             if self.currentGameState == GameState.NEW_HIGHSCORE:
                 if _event.key == pygame.K_RETURN:
-                    self.highscoresmanager.load()
-
-                    #todo: somehow get points
-                    self.highscoresmanager.inserthighscore(self.currentNick, 90210)
-                    self.highscoresmanager.save()
-                    pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
+                    self.saveRequest = True
+                    return
                 else:
-                    if len(self.currentNick) > self.maxNick and _event.key != pygame.K_BACKSPACE:
+                    if len(self.currentNick) > self.max_nick and _event.key != pygame.K_BACKSPACE:
                         return
                     if len(_event.unicode) == 0:
                         return
@@ -75,10 +81,7 @@ class MenuSystem:
                         self.currentNick = self.currentNick[:-1]
                     else:
                         self.currentNick.append(_event.unicode)
-
-                    #todo: somehow update screen...
-
-                    print(self.currentNick)
+                    pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.UPDATE_NAME, nick = self.currentNick, maxnick=self.max_nick))
                     pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
         elif _event.type == pygame.KEYUP:
             if self.currentGameState == GameState.MENU:
