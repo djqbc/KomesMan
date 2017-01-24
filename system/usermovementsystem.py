@@ -47,9 +47,11 @@ class UserMovementSystem:
                     if d_x != 0:  # left
                         if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, self.previousdY):
                             sprite_artifact.positionY += self.previousdY
+                            sprite_artifact.positionY = int(sprite_artifact.positionY)
                     if d_y != 0:  # up
                         if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, self.previousdX, 0):
                             sprite_artifact.positionX += self.previousdX
+                            sprite_artifact.positionX = int(sprite_artifact.positionX)
 
     def input(self, _event):
         if _event.type == pygame.KEYDOWN:

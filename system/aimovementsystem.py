@@ -66,6 +66,7 @@ class AiMovementSystem:
                 x_to_reach = next_move.x * board.tileSize
                 y_to_reach = next_move.y * board.tileSize
                 movement_artifact.target = (x_to_reach, y_to_reach)
+                print('New target: ', movement_artifact.target, 'Current Pos: ', sprite_artifact.positionX, sprite_artifact.positionY)
 
                 # print('X TO REACH {x}. ACTUAL X {actx}. Y TO REACH. {y} ACTUAL Y {acty}'.
                 # format(actx=spriteArtifact.positionX,x=xToReach,acty=spriteArtifact.positionY,y=yToReach))
@@ -79,19 +80,20 @@ class AiMovementSystem:
                 if sprite_artifact.positionY != int(sprite_artifact.positionY):
                     #                        print('Round Y!!!')
                     sprite_artifact.positionY = int(sprite_artifact.positionY)
-                    return
+#                     return
                 if x_to_reach < sprite_artifact.positionX:
                     sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_LEFT
                     movement_artifact.movementVector[0] = -1
                 if x_to_reach > sprite_artifact.positionX:
                     sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_RIGHT
                     movement_artifact.movementVector[0] = 1
-            if x_to_reach == int(sprite_artifact.positionX):
+#             if x_to_reach == int(sprite_artifact.positionX):
+            else:
                 # jestesmy w dobrym X, musimy ruszac sie po Y
                 if sprite_artifact.positionX != int(sprite_artifact.positionX):
                     sprite_artifact.positionX = int(sprite_artifact.positionX)
                     #                        print('Round X!!!')
-                    return
+#                     return
                 if y_to_reach < sprite_artifact.positionY:
                     sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_UP
                     movement_artifact.movementVector[1] = -1
@@ -103,9 +105,24 @@ class AiMovementSystem:
                 d_x = movement_artifact.movementVector[0] * movement_artifact.speedModifier * _delta
                 d_y = movement_artifact.movementVector[1] * movement_artifact.speedModifier * _delta
                 if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y):
-                    sprite_artifact.positionX += d_x
-                    sprite_artifact.positionY += d_y
+                    print(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
+                    diff1 = sprite_artifact.positionX - x_to_reach
+                    diff2 = sprite_artifact.positionX + d_x - x_to_reach
+                    if diff1 * diff2 < 0:
+                        sprite_artifact.positionX = x_to_reach
+                    else:
+                        sprite_artifact.positionX += d_x
+                        
+                    diff1 = sprite_artifact.positionY - y_to_reach
+                    diff2 = sprite_artifact.positionY + d_y - y_to_reach
+                    if diff1 * diff2 < 0:
+                        sprite_artifact.positionY = y_to_reach
+                    else:
+                        sprite_artifact.positionY += d_y
+                else:
+                    print('Wrong move: ', sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
             else:
+                print("Erase target")
                 movement_artifact.target = None
 
     def input(self, _event):

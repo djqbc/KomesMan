@@ -28,5 +28,5 @@ class SimpleCopBehavior:
                         pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=entity))
                     _posteventcallback(
                         pygame.event.Event(GAME_EVENT, reason=GameEventType.SPAWN_OBJECT, spawntype=TagType.ENEMY,
-                                           spawnsubtype=TagSubType.SUPER_COP, x=sprite_artifact.positionX,
-                                           y=sprite_artifact.positionY))
+                                           spawnsubtype=TagSubType.SUPER_COP, x=int(sprite_artifact.positionX),
+                                           y=int(sprite_artifact.positionY)))
