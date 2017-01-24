@@ -167,7 +167,7 @@ class GeneratedBoard:
         # add enemies
         current_board_value = board_value
         prices = {  # dodac rozroznionych przeciwnikow
-            BoardElement.ENEMY: board_value
+            BoardElement.ENEMY: 1500
         }
         while current_board_value > 0:
             available_enemies = {item: price for item, price in prices.items() if price <= current_board_value}
