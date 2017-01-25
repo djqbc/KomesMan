@@ -74,32 +74,28 @@ class AiMovementSystem:
                 x_to_reach, y_to_reach = movement_artifact.target
 
             movement_artifact.movementVector = [0, 0]
-
+            maxShiftN = movement_artifact.speedModifier * _delta * -1;
+            maxShiftP = movement_artifact.speedModifier * _delta * 1;
             if y_to_reach == int(sprite_artifact.positionY):
-                # Jestesmy w dobrym Y, musimy ruszac sie po X
                 if sprite_artifact.positionY != int(sprite_artifact.positionY):
-                    #                        print('Round Y!!!')
                     sprite_artifact.positionY = int(sprite_artifact.positionY)
-#                     return
-                if x_to_reach < sprite_artifact.positionX:
-                    sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_LEFT
-                    movement_artifact.movementVector[0] = -1
-                if x_to_reach > sprite_artifact.positionX:
-                    sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_RIGHT
-                    movement_artifact.movementVector[0] = 1
-#             if x_to_reach == int(sprite_artifact.positionX):
-            else:
-                # jestesmy w dobrym X, musimy ruszac sie po Y
+            elif y_to_reach < sprite_artifact.positionY and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, maxShiftN):
+                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_UP
+                movement_artifact.movementVector[1] = -1
+            elif y_to_reach > sprite_artifact.positionY and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, maxShiftP):
+                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_DOWN
+                movement_artifact.movementVector[1] = 1
+                 
+            if x_to_reach == int(sprite_artifact.positionX):
                 if sprite_artifact.positionX != int(sprite_artifact.positionX):
                     sprite_artifact.positionX = int(sprite_artifact.positionX)
-                    #                        print('Round X!!!')
-#                     return
-                if y_to_reach < sprite_artifact.positionY:
-                    sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_UP
-                    movement_artifact.movementVector[1] = -1
-                if y_to_reach > sprite_artifact.positionY:
-                    sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_DOWN
-                    movement_artifact.movementVector[1] = 1
+            elif x_to_reach < sprite_artifact.positionX and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, maxShiftN, 0):
+                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_LEFT
+                movement_artifact.movementVector[0] = -1
+            elif x_to_reach > sprite_artifact.positionX and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, maxShiftP, 0):
+                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_RIGHT
+                movement_artifact.movementVector[0] = 1
+
 
             if movement_artifact.movementVector != [0, 0]:
                 d_x = movement_artifact.movementVector[0] * movement_artifact.speedModifier * _delta
@@ -120,7 +116,7 @@ class AiMovementSystem:
                     else:
                         sprite_artifact.positionY += d_y
                 else:
-                    print('Wrong move: ', sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
+                    print('Wrong move: ', sprite_artifact, movement_artifact.target, sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
             else:
                 print("Erase target")
                 movement_artifact.target = None

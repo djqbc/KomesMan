@@ -64,7 +64,7 @@ class GameManager:
         for builder in self.builders:
             builder.input(_event)
         for system in self.allSystemsForIteration:
-             system.input(_event)
+            system.input(_event)
 
     def quit(self):
         return self.gameSystem.quit()

@@ -6,11 +6,17 @@ from system.gamesystem import GameSystem, GameState
 from system.tagsystem import TagSystem
 from artifact.tagartifact import TagType, TagSubType
 import random
+from artifact.movementartifact import MovementArtifact
 
 
 class CollisionSystem:
     NAME = "CollisionSystem"
+    all = []
+    moveableIndexes = []
     observing = []
+    
+    sprites = []
+    behaviors = []
 
     def __init__(self):
         self.systems = None
@@ -19,10 +25,32 @@ class CollisionSystem:
     def register(self, _object):
         if SpriteArtifact.NAME in _object.artifacts and BehaviorArtifact.NAME in _object.artifacts:
             self.observing.append(_object)
+            e1_sprite_artifact = _object.artifacts[SpriteArtifact.NAME]
+            e1_behavior_artifact = _object.artifacts[BehaviorArtifact.NAME]
+            e1_sprite_artifact.sprite.rect.x = e1_sprite_artifact.positionX
+            e1_sprite_artifact.sprite.rect.y = e1_sprite_artifact.positionY
+            self.all.append(e1_sprite_artifact.sprite.rect)
+            self.sprites.append(e1_sprite_artifact)
+            self.behaviors.append(e1_behavior_artifact)
+            if MovementArtifact.NAME in _object.artifacts:
+                self.moveableIndexes.append(len(self.all) - 1)
         else:
             raise NameError("ERROR!!!")
 
     def remove(self, _entity):
+        x = 0
+        for e in self.observing:
+            if e == _entity:
+                del self.all[x]
+                del self.behaviors[x]
+                del self.sprites[x]
+                if x in self.moveableIndexes:
+                    self.moveableIndexes.remove(x)
+                for ind in range(len(self.moveableIndexes)):
+                    if self.moveableIndexes[ind] > x:
+                        self.moveableIndexes[ind] = self.moveableIndexes[ind] - 1
+                break
+            x += 1
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
 
     def input(self, _event):
@@ -53,21 +81,17 @@ class CollisionSystem:
         if _systems[GameSystem.NAME].getcurrentgamestate() != GameState.GAME:
             return
         self.systems = _systems
-        x = 0
-        for entity in self.observing:
-            x += 1
-            for index in range(x, len(self.observing)):
-                entity2 = self.observing[index]
-                #             for entity2 in self.observing:
-                if entity != entity2:
-                    e1_sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
-                    e2_sprite_artifact = entity2.artifacts[SpriteArtifact.NAME]
-                    e1_sprite_artifact.sprite.rect.x = e1_sprite_artifact.positionX
-                    e1_sprite_artifact.sprite.rect.y = e1_sprite_artifact.positionY
-                    e2_sprite_artifact.sprite.rect.x = e2_sprite_artifact.positionX
-                    e2_sprite_artifact.sprite.rect.y = e2_sprite_artifact.positionY
-                    if pygame.sprite.collide_rect(e1_sprite_artifact.sprite, e2_sprite_artifact.sprite):
-                        entity.artifacts[BehaviorArtifact.NAME].behavior.input(
-                            pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
-                        entity2.artifacts[BehaviorArtifact.NAME].behavior.input(
-                            pygame.event.Event(COLLISION_EVENT, me=entity2, colliding=entity), pygame.event.post)
+        for entityInd in self.moveableIndexes:
+            self.all[entityInd].x = self.sprites[entityInd].positionX
+            self.all[entityInd].y = self.sprites[entityInd].positionY
+            
+        for entityInd in self.moveableIndexes:
+            colliding = self.all[entityInd].collidelistall(self.all)
+            for index in colliding:
+                if index != entityInd:
+                    entity = self.observing[entityInd]
+                    entity2 = self.observing[index]
+                    self.behaviors[entityInd].behavior.input(
+                        pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
+                    self.behaviors[index].behavior.input(
+                        pygame.event.Event(COLLISION_EVENT, me=entity2, colliding=entity), pygame.event.post)

@@ -103,9 +103,12 @@ class BoardBuilder:
                     self.tile_size *= 2
         elif _event.type == GAME_EVENT:
             if _event.reason == GameEventType.REMOVE_OBJECT:
-                self.elements.remove(_event.reference)
-                for _, system in self.systems.items():
-                    system.remove(_event.reference)
+                try:
+                    self.elements.remove(_event.reference)
+                    for _, system in self.systems.items():
+                        system.remove(_event.reference)
+                except:
+                    pass
             elif _event.reason == GameEventType.SPAWN_OBJECT:
                 if _event.spawntype == TagType.ENEMY and _event.spawnsubtype == TagSubType.SUPER_COP:
                     self.createsupercop(_event.x, _event.y)
