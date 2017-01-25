@@ -69,6 +69,10 @@ class BinaryBoardToSpritesConverter:
                             or (x < max_x - 1 and y < max_y - 1 and board[y - 1][x] == 1 and board[y][x - 1] == 1 and
                                         board[y][x + 1] != 1 and board[y + 1][x] != 1):
                         new_row.append(WallKind.CORNER_BOTTOMRIGHT)
+                    elif (x > 0 and y > 0 and x < max_x - 1 and y < max_y - 1) and board[y-1][x] == 1 and board[y-1][x-1] == 1 \
+                            and board[y - 1][x+1] == 1 and board[y][x-1] == 1 and board[y][x+1] == 1 and board[y+1][x] == 1 \
+                            and board[y + 1][x-1] == 1 and board[y+1][x+1] == 1:
+                        new_row.append(WallKind.BLANK)
                     else:
                         new_row.append(WallKind.SQUARE)
                 else:

@@ -4,7 +4,7 @@ from artifact.behaviorartifact import BehaviorArtifact
 from myevents import COLLISION_EVENT, ENTITY_EFFECT_EVENT, EntityEffect
 from system.gamesystem import GameSystem, GameState
 from system.tagsystem import TagSystem
-from artifact.tagartifact import TagType, TagSubType
+from artifact.tagartifact import TagType, TagSubType, TagArtifact
 import random
 from artifact.movementartifact import MovementArtifact
 
@@ -38,20 +38,20 @@ class CollisionSystem:
             raise NameError("ERROR!!!")
 
     def remove(self, _entity):
-        x = 0
-        for e in self.observing:
-            if e == _entity:
-                del self.all[x]
-                del self.behaviors[x]
-                del self.sprites[x]
-                if x in self.moveableIndexes:
-                    self.moveableIndexes.remove(x)
-                for ind in range(len(self.moveableIndexes)):
-                    if self.moveableIndexes[ind] > x:
-                        self.moveableIndexes[ind] = self.moveableIndexes[ind] - 1
-                break
-            x += 1
-        self.observing[:] = [entity for entity in self.observing if entity != _entity]
+        try:
+            index = self.observing.index(_entity)
+        except:
+            return
+
+        del self.all[index]
+        del self.behaviors[index]
+        del self.sprites[index]
+        if index in self.moveableIndexes:
+            self.moveableIndexes.remove(index)
+        for ind in range(len(self.moveableIndexes)):
+            if self.moveableIndexes[ind] > index:
+                self.moveableIndexes[ind] = self.moveableIndexes[ind] - 1
+        self.observing.remove(_entity)
 
     def input(self, _event):
         # obsluga nie powinna byc w tym systemie ale nie mialem pomyslu gdzie to wrzucic zeby bylo globalnie
@@ -91,7 +91,10 @@ class CollisionSystem:
                 if index != entityInd:
                     entity = self.observing[entityInd]
                     entity2 = self.observing[index]
+
                     self.behaviors[entityInd].behavior.input(
                         pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
-                    self.behaviors[index].behavior.input(
-                        pygame.event.Event(COLLISION_EVENT, me=entity2, colliding=entity), pygame.event.post)
+
+                    if index not in self.moveableIndexes:
+                        self.behaviors[index].behavior.input(
+                            pygame.event.Event(COLLISION_EVENT, me=entity2, colliding=entity), pygame.event.post)

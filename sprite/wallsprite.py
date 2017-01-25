@@ -17,6 +17,11 @@ class WallKind(Enum):
     END_LEFT = 9
     END_TOP = 10
     SQUARE = 11
+    ONLY_TOP = 12
+    ONLY_RIGHT = 13
+    ONLY_BOTTOM = 14
+    ONLY_LEFT = 15
+    BLANK = 16
 
 
 class WallKindDirection(Enum):
@@ -74,6 +79,11 @@ class WallSprite(MySprite):
         WallKind.END_LEFT: 'res/img/wall009.png',
         WallKind.END_TOP: 'res/img/wall010.png',
         WallKind.SQUARE: 'res/img/wall011.png',
+        WallKind.ONLY_TOP: 'res/img/wall012.png',
+        WallKind.ONLY_RIGHT: 'res/img/wall013.png',
+        WallKind.ONLY_BOTTOM: 'res/img/wall014.png',
+        WallKind.ONLY_LEFT: 'res/img/wall015.png',
+        WallKind.BLANK: 'res/img/wall016.png'
     }
 
     def __init__(self, wallkind, tilesize):
