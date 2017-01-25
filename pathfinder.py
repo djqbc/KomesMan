@@ -40,7 +40,7 @@ class Pathfinder(Entity):
         self.board = board
         self.nodes = []
         #self.shortestPaths = {}
-        self.indexesNodes = []
+        self.indexesNodes = {}
         self.nodesIndexes = []
         self.nextNodes = []
         self.addartifact(TagArtifact(TagType.OTHER, TagSubType.PATHFINDER))
@@ -61,9 +61,9 @@ class Pathfinder(Entity):
                     node = Node(x, y)
                     self.nodes.append(node)
                     nodes_indexes[x][y] = i
-                    self.indexesNodes.append(node)
-                    #self.indexesNodes[i] = node
-                    #i += 1
+                    #self.indexesNodes.append(node)
+                    self.indexesNodes[i] = node
+                    i += 1
                 x += 1
             y += 1
 
