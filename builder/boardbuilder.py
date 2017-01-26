@@ -47,6 +47,7 @@ class BoardBuilder:
         self.tile_size = 32  
 
     def build(self, _restart=False):
+        print("Build")
         resolution_x, resolution_y = (1024, 768)
         self.systems[CollisionSystem.NAME].tile_size = self.tile_size
         
@@ -58,14 +59,14 @@ class BoardBuilder:
             self.createboard(BinaryBoardToSpritesConverter().convert(self.binaryboard), False)
         else:
             self.createboard(BinaryBoardToSpritesConverter().convert(self.binaryboard), True)
-            
+        print("Board created")
         itemsgetter = BinaryBoardItemsGetter()
         itemsgetter.load_items(self.binaryboard)
 
         pygame.event.post(
             pygame.event.Event(GAME_EVENT, reason=GameEventType.SET_MAX_POINTS, maxPoints=len(itemsgetter.caps)))
 
-
+        print("Creating items")
         for pill in itemsgetter.pills:
             self.createpill(pill[0] * self.tile_size, pill[1] * self.tile_size)
         for cap in itemsgetter.caps:
@@ -80,6 +81,7 @@ class BoardBuilder:
         for teleport in itemsgetter.teleports:
             self.createteleport(teleport[0] * self.tile_size, teleport[1] * self.tile_size)
 
+        print("Starting")
         pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME))
 
     def clear(self):

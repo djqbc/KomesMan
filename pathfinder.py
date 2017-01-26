@@ -2,6 +2,7 @@
 
 from artifact.tagartifact import TagArtifact, TagType, TagSubType
 from entity import Entity
+from threading import Thread
 
 
 class Node:
@@ -44,8 +45,14 @@ class Pathfinder(Entity):
         self.nodesIndexes = []
         self.nextNodes = []
         self.addartifact(TagArtifact(TagType.OTHER, TagSubType.PATHFINDER))
-
+        self.ready = False
     def prepareallstepsforshortestpaths(self):
+        self.ready = False
+        t = Thread(target=self.prepareallstepsforshortestpaths_, args=())
+        t.daemon = True
+        t.start()
+
+    def prepareallstepsforshortestpaths_(self):
         # Generate all edges of graph
         max_y = len(self.board)
         max_x = len(self.board[1])
@@ -116,10 +123,15 @@ class Pathfinder(Entity):
         # that are the only things that matters for us after all.
         self.nodesIndexes = nodes_indexes
         self.nextNodes = next_nodes_table
+        print("Finish")
+        self.ready = True
 
     def getnextmove(self, startnode, destnode):
         try:
-            return self.indexesNodes[
-                self.nextNodes[self.nodesIndexes[startnode.x][startnode.y]][self.nodesIndexes[destnode.x][destnode.y]]]
+            if self.ready:
+                return self.indexesNodes[
+                    self.nextNodes[self.nodesIndexes[startnode.x][startnode.y]][self.nodesIndexes[destnode.x][destnode.y]]]
+            else:
+                return destnode
         except:
             return Node(0, 0)

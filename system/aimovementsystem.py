@@ -66,7 +66,7 @@ class AiMovementSystem:
                 x_to_reach = next_move.x * board.tileSize
                 y_to_reach = next_move.y * board.tileSize
                 movement_artifact.target = (x_to_reach, y_to_reach)
-                print('New target: ', movement_artifact.target, 'Current Pos: ', sprite_artifact.positionX, sprite_artifact.positionY)
+#                 print('New target: ', movement_artifact.target, 'Current Pos: ', sprite_artifact.positionX, sprite_artifact.positionY)
 
                 # print('X TO REACH {x}. ACTUAL X {actx}. Y TO REACH. {y} ACTUAL Y {acty}'.
                 # format(actx=spriteArtifact.positionX,x=xToReach,acty=spriteArtifact.positionY,y=yToReach))
@@ -118,7 +118,7 @@ class AiMovementSystem:
                 else:
                     print('Wrong move: ', sprite_artifact, movement_artifact.target, sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
             else:
-                print("Erase target")
+#                 print("Erase target")
                 movement_artifact.target = None
 
     def input(self, _event):
