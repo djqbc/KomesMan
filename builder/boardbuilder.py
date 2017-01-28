@@ -144,7 +144,7 @@ class BoardBuilder:
     def createsupercop(self, _x, _y):
         cop = Entity()
         cop.addartifact(SpriteArtifact(CopSprite(self.tile_size), _x, _y, GameState.GAME))
-        cop.addartifact(MovementArtifact(1.5))
+        cop.addartifact(MovementArtifact(1.25))
         cop.addartifact(TagArtifact(TagType.ENEMY, TagSubType.SUPER_COP))
         cop.addartifact(BehaviorArtifact(SimpleCopBehavior()))
         self.systems[AiMovementSystem.NAME].register(cop)

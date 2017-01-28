@@ -3,7 +3,7 @@ import os
 
 class Highscore:
     """
-    Class representing one value of highscoers
+    Class representing one value of highscores
     """
     delimiter = '|'
 

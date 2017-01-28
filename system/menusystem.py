@@ -46,16 +46,13 @@ class MenuSystem:
         if self.focusFirstItem:
             self.focusFirstItem = False
             self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.addhighlight()
-        if self.currentGameState == GameState.NEW_HIGHSCORE:
-            if self.saveRequest:
-                self.saveRequest = False
-                self.highscoresmanager.load()
-                score = _systems[PlayerProgressSystem.NAME].overallPoints
-                self.highscoresmanager.inserthighscore(''.join(self.currentNick), score)
-                self.highscoresmanager.save()
-                self.currentNick = []
-                pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
-        pass
+        if self.saveRequest:
+            self.saveRequest = False
+            self.highscoresmanager.load()
+            score = _systems[PlayerProgressSystem.NAME].overallPoints
+            self.highscoresmanager.inserthighscore(''.join(self.currentNick), score)
+            self.highscoresmanager.save()
+            self.currentNick = []
 
     def input(self, _event):
         if _event.type == GAME_STATE_CHANGE_EVENT:
@@ -77,6 +74,7 @@ class MenuSystem:
             if self.currentGameState == GameState.NEW_HIGHSCORE:
                 if _event.key == pygame.K_RETURN:
                     self.saveRequest = True
+                    pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
                     return
                 else:
                     if len(self.currentNick) > self.max_nick and _event.key != pygame.K_BACKSPACE:
@@ -89,10 +87,10 @@ class MenuSystem:
                         self.currentNick.append(_event.unicode)
                     pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.UPDATE_NAME, nick = self.currentNick, maxnick=self.max_nick))
                     pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
-        elif _event.type == pygame.KEYUP:
             if self.currentGameState == GameState.SHOW_HIGHSCORES:
                 if _event.key == pygame.K_RETURN:
                     pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
+                    return
             if self.currentGameState == GameState.MENU:
                 pygame.event.post(
                     pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.PLAY_SOUND, path="res/sound/menu.wav"))
