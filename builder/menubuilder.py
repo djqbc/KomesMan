@@ -71,12 +71,7 @@ class MenuBuilder:
 
                 self.player_name.artifacts[SpriteArtifact.NAME].sprite.changetext(''.join(nick))
             elif _event.action == MenuEventType.SHOW_HIGHSCORES:
-                self.highscoresManager.load()
-                i = 0
-                for highscore in self.highscoresManager.highscores:
-                    self.highscorenames[i].artifacts[SpriteArtifact.NAME].sprite.changetext(str(i+1) + " " + highscore.name)
-                    self.highscorevalues[i].artifacts[SpriteArtifact.NAME].sprite.changetext(str(highscore.score))
-                    i += 1
+                self.reloadhighscores()
 
 
     def createmenuelement(self, _x, _y, _text, _type, _parent):
@@ -130,17 +125,30 @@ class MenuBuilder:
         self.systems[DrawSystem.NAME].register(hall_of_fame)
         self.elements.append(hall_of_fame)
 
+        self.highscorevalues.clear()
+        self.highscorenames.clear()
+
         for i in range(HighscoresManager.topscorescount):
             highscore_player = Entity()
-            highscore_player.addartifact(SpriteArtifact(TextSprite(""), self.margin, self.margin + (i+1) * potential_size_of_one_line, GameState.SHOW_HIGHSCORES))
+            highscore_player.addartifact(SpriteArtifact(TextSprite("x"), self.margin, self.margin + (i+1) * potential_size_of_one_line, GameState.SHOW_HIGHSCORES))
             self.systems[DrawSystem.NAME].register(highscore_player)
             self.elements.append(highscore_player)
             self.highscorenames.append(highscore_player)
 
         for i in range(HighscoresManager.topscorescount):
             highscore_value = Entity()
-            highscore_value.addartifact(SpriteArtifact(TextSprite(""), 900, self.margin + (i+1) * potential_size_of_one_line, GameState.SHOW_HIGHSCORES))
+            highscore_value.addartifact(SpriteArtifact(TextSprite("1"), 900, self.margin + (i+1) * potential_size_of_one_line, GameState.SHOW_HIGHSCORES))
             self.systems[DrawSystem.NAME].register(highscore_value)
             self.elements.append(highscore_value)
             self.highscorevalues.append(highscore_value)
+
+    def reloadhighscores(self):
+        self.highscoresManager.load()
+        i = 0
+        for highscore in self.highscoresManager.highscores:
+            self.highscorenames[i].artifacts[SpriteArtifact.NAME].sprite.changetext(
+                str(i + 1) + " " + highscore.name)
+            self.highscorevalues[i].artifacts[SpriteArtifact.NAME].sprite.changetext(str(highscore.score))
+            i += 1
+
 
