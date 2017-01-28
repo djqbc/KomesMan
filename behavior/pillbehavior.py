@@ -5,8 +5,18 @@ import pygame
 
 
 class PillBehavior:
+    """
+    Class defining behaviour of pill on incoming events
+    """
     @staticmethod
     def input(_event, _posteventcallback):
+        """
+        Reaction on incoming event.
+        Currently handles only collision (causes speed variations of player)
+        :param _event: event to process
+        :param _posteventcallback: function to evaluate after processing input
+        :return: nothing
+        """
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             if entity.artifacts[TagArtifact.NAME].type == TagType.KOMESMAN:

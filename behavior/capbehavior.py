@@ -4,8 +4,19 @@ import pygame
 
 
 class CapBehavior:
+    """
+    Class defining behaviour of cap on incoming events
+    """
     @staticmethod
     def input(_event, _posteventcallback):
+        """
+        Reaction on incoming event.
+        Currently handles only collision (deletes object from map, sends proper event,
+        and plays proper sound)
+        :param _event: event to process
+        :param _posteventcallback: function to evaluate after processing input
+        :return: nothing
+        """
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             if entity.artifacts[TagArtifact.NAME].type == TagType.KOMESMAN:

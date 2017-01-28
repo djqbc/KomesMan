@@ -6,10 +6,20 @@ from artifact.behaviorartifact import BehaviorArtifact
 
 
 class SimpleCopBehavior:
+    """
+    Class defining behaviour of standard cop on incoming events
+    """
     def __init__(self):
         self.firstInformed = None
 
     def input(self, _event, _posteventcallback):
+        """
+        Reaction on incoming event.
+        On collision with another cop, changes itself into new super-cop (which is faster)
+        :param _event: event to process
+        :param _posteventcallback: function to evaluate after processing input
+        :return: nothing
+        """
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             tag_artifact = entity.artifacts[TagArtifact.NAME]

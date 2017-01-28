@@ -6,8 +6,18 @@ import pygame
 
 
 class TeleportBehavior:
+    """
+    Class defining behaviour of teleport on incoming events
+    """
     @staticmethod
     def input(_event, _posteventcallback):
+        """
+        Reaction on incoming event.
+        Teleports player or enemy to the other side of screen.
+        :param _event: event to process
+        :param _posteventcallback: function to evaluate after processing input
+        :return: nothing
+        """
         if _event.type == COLLISION_EVENT:
             entity = _event.colliding
             tag_artifact = entity.artifacts[TagArtifact.NAME]

@@ -2,6 +2,9 @@ from enum import Enum
 
 
 class TagType(Enum):
+    """
+    Kind of displayed object.
+    """
     KOMESMAN = 0
     ENEMY = 1
     ITEM = 2
@@ -10,6 +13,9 @@ class TagType(Enum):
 
 
 class TagSubType(Enum):
+    """
+    Subtype of displayed object
+    """
     NO_TYPE = 0
     # KOMESMAN
     # ---
@@ -30,8 +36,16 @@ class TagSubType(Enum):
 
 
 class TagArtifact:
+    """
+    Container class for kind of displayed object
+    """
     NAME = "TagArtifact"
 
     def __init__(self, _type=TagType.FIXED, _subtype=TagSubType.NO_TYPE):
+        """
+        Constructor
+        :param _type: Main type of object
+        :param _subtype: Subtype of object
+        """
         self.subtype = _subtype
         self.type = _type
