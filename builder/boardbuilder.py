@@ -40,13 +40,29 @@ from behavior.baitbehavior import BaitBehavior
 
 
 class BoardBuilder:
+    """
+    Class responsible for preparing game board for play.
+    """
     def __init__(self, _systems):
+        """
+        Constructor
+        :param _systems: Reference to systems collection
+        """
         self.systems = _systems
         self.elements = []
         self.binaryboard = None
         self.tile_size = 32  
 
     def build(self, _restart=False):
+        """
+        Function responsible for building board for game:
+         - Generate board
+         - Convert board to sprites
+         - Insert items.
+        After finishing sends event starting game.
+        :param _restart: Defines whether board should be generated again (f.e. after continuing game)
+        :return:
+        """
         print("Build")
         resolution_x, resolution_y = (1024, 768)
         self.systems[CollisionSystem.NAME].tile_size = self.tile_size
@@ -85,12 +101,23 @@ class BoardBuilder:
         pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME | GameState.PAUSED))
 
     def clear(self):
+        """
+        Clears board elements from other systems.
+        :return: nothing
+        """
         for e in self.elements:
             for _, system in self.systems.items():
                 system.remove(e)
         self.elements.clear()
 
     def input(self, _event):
+        """
+        Processes input events for:
+         - recreating the board (MENU_EVENT)
+         - removing and adding objects (GAME_EVENT)
+        :param _event: event to process
+        :return: nothing
+        """
         if _event.type == MENU_EVENT:
             if _event.action == MenuEventType.START_NEW_GAME or _event.action == MenuEventType.CONTINUE_GAME:
                 self.clear()
@@ -118,6 +145,12 @@ class BoardBuilder:
                     self.createbait(_event.x, _event.y)
 
     def createkomesman(self, x, y):
+        """
+        Creates our hero - KomesMan
+        :param x: integer X position
+        :param y: integer Y position
+        :return: nothing
+        """
         komes_man = Entity()
         komes_man.addartifact(SpriteArtifact(KomesManSprite(self.tile_size), x, y, GameState.GAME))
         komes_man.addartifact(MovementArtifact())
@@ -130,6 +163,12 @@ class BoardBuilder:
         self.elements.append(komes_man)
 
     def createcop(self, _x, _y):
+        """
+        Creates cop.
+        :param _x: integer X position
+        :param _y: integer Y position
+        :return: nothing
+        """
         cop = Entity()
         cop.addartifact(SpriteArtifact(CopSprite(self.tile_size), _x, _y, GameState.GAME))
         cop.addartifact(MovementArtifact(1))
@@ -142,6 +181,12 @@ class BoardBuilder:
         self.elements.append(cop)
 
     def createsupercop(self, _x, _y):
+        """
+        Creates super cop.
+        :param _x: integer X position
+        :param _y: integer Y position
+        :return:
+        """
         cop = Entity()
         cop.addartifact(SpriteArtifact(CopSprite(self.tile_size), _x, _y, GameState.GAME))
         cop.addartifact(MovementArtifact(1.25))
@@ -154,6 +199,12 @@ class BoardBuilder:
         self.elements.append(cop)
 
     def createbeer(self, _x, _y):
+        """
+        Creates bottle of beer
+        :param _x: integer X position
+        :param _y: integer Y position
+        :return: nothing
+        """
         beer = Entity()
         beer.addartifact(SpriteArtifact(BeerSprite(self.tile_size), _x, _y, GameState.GAME))
         beer.addartifact(TagArtifact(TagType.ITEM, TagSubType.BEER))
@@ -164,6 +215,12 @@ class BoardBuilder:
         self.elements.append(beer)
 
     def createbait(self, _x, _y):
+        """
+        Creates bait for cops
+        :param _x: integer X position
+        :param _y: integer Y position
+        :return: nothing
+        """
         bait = Entity()
         bait.addartifact(SpriteArtifact(BaitSprite(self.tile_size), _x, _y, GameState.GAME))
         bait.addartifact(TagArtifact(TagType.ITEM, TagSubType.BAIT))
@@ -174,6 +231,12 @@ class BoardBuilder:
         self.elements.append(bait)
 
     def createdrug(self, _x, _y):
+        """
+        Creates drug (powder)
+        :param _x: integer X position
+        :param _y: integer Y position
+        :return:
+        """
         drug = Entity()
         drug.addartifact(SpriteArtifact(DrugSprite(self.tile_size), _x, _y, GameState.GAME))
         drug.addartifact(TagArtifact(TagType.ITEM, TagSubType.DRUG))
@@ -184,6 +247,12 @@ class BoardBuilder:
         self.elements.append(drug)
 
     def createcap(self, _x, _y):
+        """
+        Creates beer cap
+        :param _x: integer X position
+        :param _y: integer Y position
+        :return:
+        """
         cap = Entity()
         cap.addartifact(SpriteArtifact(CapSprite(self.tile_size), _x, _y, GameState.GAME))
         cap.addartifact(TagArtifact(TagType.ITEM, TagSubType.CAP))
@@ -194,6 +263,12 @@ class BoardBuilder:
         self.elements.append(cap)
 
     def createteleport(self, _x, _y):
+        """
+        Creates teleport
+        :param _x: integer X position
+        :param _y: integer Y position
+        :return:
+        """
         teleport = Entity()
         teleport.addartifact(SpriteArtifact(DummySprite(self.tile_size), _x, _y, GameState.GAME))
         teleport.addartifact(TagArtifact(TagType.FIXED, TagSubType.TELEPORT))
@@ -204,6 +279,12 @@ class BoardBuilder:
         self.elements.append(teleport)
 
     def createpill(self, _x, _y):
+        """
+        Creates pill
+        :param _x: integer X position
+        :param _y: integer Y position
+        :return:
+        """
         pill = Entity()
         pill.addartifact(SpriteArtifact(PillSprite(self.tile_size), _x, _y, GameState.GAME))
         pill.addartifact(TagArtifact(TagType.ITEM, TagSubType.PILL))
@@ -214,6 +295,12 @@ class BoardBuilder:
         self.elements.append(pill)
 
     def createboard(self, predefinedboard, uselastdata):
+        """
+        Creates board and prepares paths if not prepared.
+        :param predefinedboard: Array of sprites
+        :param uselastdata: Bool value determining if paths have already been calculated.
+        :return: nothing
+        """
         # kijowe bezposrednie przekazanie elements - mozna olac jak nikomu sie nie bedzie chcialo poprawic
         Board(predefinedboard, self.systems, self.elements, self.tile_size)
         start = int(round(time.time() * 1000))

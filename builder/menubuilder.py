@@ -15,7 +15,14 @@ from myevents import MenuEventType, GAME_STATE_CHANGE_EVENT, MENU_EVENT
 
 
 class MenuBuilder:
+    """
+    Class handling building of menu
+    """
     def __init__(self, _systems):
+        """
+        Constructor
+        :param _systems: Reference to other systems collection.
+        """
         self.dirty = True
         self.systems = _systems
         self.elements = []
@@ -27,6 +34,10 @@ class MenuBuilder:
         self.margin = 10
 
     def build(self):
+        """
+        Creates menu items, and large messages (f.e. after deatH)
+        :return: nothing
+        """
         # TODO wyrzucic bezwzgledne pozycjonowanie
         self.createmenubackground(0, 0)
         self.createmenuelement(490, 550, "Play", MenuEventType.START_NEW_GAME, None)
@@ -45,6 +56,10 @@ class MenuBuilder:
         self.createhalloffame()
 
     def clear(self):
+        """
+        Cleanup of menu items in other systems.
+        :return: nothing
+        """
         for e in self.elements:
             for _, system in self.systems.items():
                 system.remove(e)
@@ -52,6 +67,12 @@ class MenuBuilder:
         self.systems[HUDSystem.NAME].currentCaps = 0  # poprawic
 
     def input(self, _event):
+        """
+        Handles rebuilding menu elements on ceratin events
+        Handles entering of name for highscores.
+        :param _event: event to process
+        :return: nothing
+        """
         if _event.type == GAME_STATE_CHANGE_EVENT:
             if _event.state == GameState.MENU and self.dirty:
                 self.dirty = False
@@ -75,6 +96,15 @@ class MenuBuilder:
 
 
     def createmenuelement(self, _x, _y, _text, _type, _parent):
+        """
+        Creates single menu element
+        :param _x: X position of text
+        :param _y: Y position of text
+        :param _text: Text of element
+        :param _type: Type of menu event
+        :param _parent: Parent menu element.
+        :return: menu entity
+        """
         menu = Entity()
         menu.addartifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H), _x, _y, GameState.MENU))
         menu.addartifact(MenuArtifact(_type))
@@ -84,12 +114,24 @@ class MenuBuilder:
         return menu
 
     def createmenubackground(self, _x, _y):
+        """
+        Creates large KomesMan logo
+        :param _x: X position of logo
+        :param _y: Y position of logo
+        :return: nothing
+        """
         bg = Entity()
         bg.addartifact(SpriteArtifact(SimpleImageSprite('res/img/logo.png'), _x, _y, GameState.MENU))
         self.systems[DrawSystem.NAME].register(bg)
         self.elements.append(bg)
 
     def createhud(self, _x, _y):
+        """
+        Creates HUD (points, lives, cap status)
+        :param _x: X position in pixels
+        :param _y: Y position in pixels
+        :return: nothing
+        """
         hud = Entity()
         hud.addartifact(SpriteArtifact(HUDSprite(Modifiers.CENTER_H), _x, _y, GameState.GAME))
         self.systems[DrawSystem.NAME].register(hud)
@@ -97,12 +139,22 @@ class MenuBuilder:
         self.elements.append(hud)
 
     def createresult(self, _text, _type):
+        """
+        Creates black board with specified text
+        :param _text: text to display
+        :param _type: GameState in which board should be displayed.
+        :return: nothing
+        """
         result = Entity()
         result.addartifact(SpriteArtifact(TextSprite(_text, Modifiers.CENTER_H | Modifiers.CENTER_V), 0, 0, _type))
         self.systems[DrawSystem.NAME].register(result)
         self.elements.append(result)
 
     def createHighscores(self):
+        """
+        Creates labels for highscore entering, and placeholder for entering player name.
+        :return: nothing
+        """
         new_highscore = Entity()
         new_highscore.addartifact(SpriteArtifact(TextSprite("New highscore!", Modifiers.CENTER_H), 100, 100, GameState.NEW_HIGHSCORE))
         self.systems[DrawSystem.NAME].register(new_highscore)
@@ -119,6 +171,10 @@ class MenuBuilder:
         self.elements.append(self.player_name)
 
     def createhalloffame(self):
+        """
+        Creates labels and placeholders for loading highscore values.
+        :return: nothing
+        """
         potential_size_of_one_line = (self.screen_height - 2*self.margin ) / (HighscoresManager.topscorescount) + 1
         hall_of_fame = Entity()
         hall_of_fame.addartifact(SpriteArtifact(TextSprite("HALL OF FAME!", Modifiers.CENTER_H), 0, self.margin, GameState.SHOW_HIGHSCORES))
@@ -143,6 +199,10 @@ class MenuBuilder:
             self.highscorevalues.append(highscore_value)
 
     def reloadhighscores(self):
+        """
+        Loads highscores using highscoresManager into menu entities.
+        :return: nothing
+        """
         self.highscoresManager.load()
         i = 0
         for highscore in self.highscoresManager.highscores:
