@@ -112,7 +112,49 @@ class Builder:
                 if not drill.isfinished():
                     work_to_do = True
                     drill.drill()
-
+                    
+    def getNeighbours(self, _v):
+        maxY = len(self.board[0])
+        maxX = len(self.board)
+        x, y = _v
+        result = []
+        if x > 0 and self.board[x - 1][y] == BoardElement.EMPTY:
+            result.append((x - 1, y))
+        if y > 0 and self.board[x][y - 1] == BoardElement.EMPTY:
+            result.append((x, y - 1))
+        if x + 1 < maxX and self.board[x + 1][y] == BoardElement.EMPTY:
+            result.append((x + 1, y))
+        if y + 1 < maxY and self.board[x][y + 1] == BoardElement.EMPTY:
+            result.append((x, y + 1))
+        return result
+                    
+    def isConnected(self):
+        maxY = len(self.board[0])
+        maxX = len(self.board)
+        graph = []
+        for x in range(maxX):
+            for y in range(maxY):
+                if self.board[x][y] == BoardElement.EMPTY:
+                    graph += [(x, y)]
+        n = len(graph)
+        visited = [False for _ in range(n)]
+        stack = []
+        vc = 0
+        stack.append(graph[0])
+        visited[0] = True
+        while len(stack) > 0:
+            v = stack.pop()
+            vc += 1
+            for u in self.getNeighbours(v):
+                i = graph.index(u)
+                if visited[i] == False:
+                    visited[i] = True
+                    stack.append(u)
+        if vc == n:
+            return True
+        else:
+            return False
+            
 
 class GeneratedBoard:
     """Class holding randomly generated board"""
@@ -124,6 +166,12 @@ class GeneratedBoard:
         board = [[BoardElement.WALL for _ in range(_sx)] for _ in range(_sy)]
         builder = Builder(board, 4)
         builder.drill()
+        while builder.isConnected() == False:
+            print("Unconnected graph - generating again....")
+            board = [[BoardElement.WALL for _ in range(_sx)] for _ in range(_sy)]
+            builder = Builder(board, 4)
+            builder.drill()
+        
         empty_cells = []
         for x in range(_sy):
             for y in range(_sx):
