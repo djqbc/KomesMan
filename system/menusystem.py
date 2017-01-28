@@ -16,6 +16,7 @@ class MenuSystem:
     max_nick = 30
     saveRequest = False
     currentGameState = GameState.INIT
+    focusFirstItem = True
 
     def __init__(self):
         self.highscoresmanager = HighscoresManager()
@@ -42,6 +43,9 @@ class MenuSystem:
             raise NameError("ERROR!!!")
 
     def update(self, _timedelta, _systems):
+        if self.focusFirstItem:
+            self.focusFirstItem = False
+            self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.addhighlight()
         if self.currentGameState == GameState.NEW_HIGHSCORE:
             if self.saveRequest:
                 self.saveRequest = False
@@ -108,6 +112,8 @@ class MenuSystem:
                     pygame.event.post(pygame.event.Event(MENU_EVENT, action=MenuEventType.SHOW_HIGHSCORES))
                     return
                 if current_action == MenuEventType.MENU_OUT:
+                    self.focusFirstItem = True
+                    self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.removehighlight()
                     for node, options in self.menu.items():
                         if self.currentNode in options:
                             self.currentNode = node
@@ -120,6 +126,8 @@ class MenuSystem:
                             else:
                                 option.artifacts[SpriteArtifact.NAME].drawStage = DRAW_NEVER
                 elif current_action == MenuEventType.MENU_IN:
+                    self.focusFirstItem = True
+                    self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.removehighlight()
                     self.currentNode = self.menu[self.currentNode][self.currentIndex]
                     self.currentIndex = 0
                     for node, options in self.menu.items():
