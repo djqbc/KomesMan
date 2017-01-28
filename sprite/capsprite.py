@@ -12,6 +12,13 @@ class CapSprite(MySprite):
         self.rect = self.image.get_rect()
 
     def draw(self, _screen, _positionx, _positiony):
+        """
+        Draw item
+        :param _screen: screen surface
+        :param _positionx: X position to draw item
+        :param _positiony: Y position to draw item
+        :return: nothing
+        """
         _screen.blit(self.image, (_positionx, _positiony))
 
     def update(self, _delta):

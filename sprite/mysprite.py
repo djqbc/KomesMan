@@ -26,6 +26,13 @@ class MySprite(pygame.sprite.Sprite):
         self.modifiers = Modifiers.NONE
 
     def draw(self, _screen, _positionx, _positiony):
+        """
+        Draw method stub
+        :param _screen: unused
+        :param _positionx: unused
+        :param _positiony: unused
+        :return: nothing
+        """
         pass
 
     def changeanimation(self, _newanimation):

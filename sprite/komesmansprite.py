@@ -39,6 +39,13 @@ class KomesManSprite(MySprite):
         self.rect = self.image.get_rect()
 
     def draw(self, _screen, _positionx, _positiony):
+        """
+        Draw KomesMan (animated)
+        :param _screen: screen surface
+        :param _positionx: X position to draw item
+        :param _positiony: Y position to draw item
+        :return: nothing
+        """
         diff = self.timeElapsed - floor(self.timeElapsed)
         if diff < 0.33:
             _screen.blit(self.animations[self.currentAnimation][0], (_positionx, _positiony))

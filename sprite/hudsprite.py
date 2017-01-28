@@ -19,6 +19,13 @@ class HUDSprite(MySprite):
         self.textPoints = TextSprite("")
 
     def draw(self, _screen, _positionx, _positiony):
+        """
+        Draw HUD (Points, caps status, lifes) - with images.
+        :param _screen: screen surface
+        :param _positionx: X position to draw item
+        :param _positiony: Y position to draw item
+        :return: nothing
+        """
         text_caps_width, _ = self.textCaps.size()
         image_lifes_width, _ = self.imageLifes.size()
         text_lifes_width, _ = self.textLifes.size()

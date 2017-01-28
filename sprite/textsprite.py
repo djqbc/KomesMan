@@ -12,6 +12,14 @@ class TextSprite(MySprite):
         self.text = self.basicFont.render(_text, True, self.color)
 
     def draw(self, _screen, _positionx, _positiony):
+        """
+        Draw text. If self.modifiers contains Modifiers.CENTER_H, text is centered
+        horizontally. In case of Modifiers.CENTER_V, text is centered vertically.
+        :param _screen: screen surface
+        :param _positionx: X position to draw item
+        :param _positiony: Y position to draw item
+        :return: nothing
+        """
         if self.modifiers is not None:
             x = _positionx
             y = _positiony

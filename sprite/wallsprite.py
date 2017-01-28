@@ -93,6 +93,13 @@ class WallSprite(MySprite):
         self.image = pygame.transform.scale(self.image, (tilesize, tilesize))
 
     def draw(self, _screen, _positionx, _positiony):
+        """
+        Draws wall item, depending on set wall kind.
+        :param _screen: screen surface
+        :param _positionx: X position to draw item
+        :param _positiony: Y position to draw item
+        :return: nothing
+        """
         _screen.blit(self.image, (_positionx, _positiony))
 
     def update(self, _delta):

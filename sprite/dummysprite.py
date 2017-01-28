@@ -10,6 +10,13 @@ class DummySprite(MySprite):
         self.rect = pygame.Rect(0, 0, tilesize, tilesize)
 
     def draw(self, _screen, _positionx, _positiony):
+        """
+        Dummy sprite item
+        :param _screen: unused
+        :param _positionx: unused
+        :param _positiony: unused
+        :return: nothing
+        """
         pass
 
     def update(self, _delta):
