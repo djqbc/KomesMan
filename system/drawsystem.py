@@ -2,7 +2,7 @@ import numpy
 
 from artifact.spriteartifact import SpriteArtifact
 from myevents import SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType, starttimer, \
-    GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType
+    GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, GAME_EVENT
 import pygame
 from system.gamesystem import GameState
 
@@ -73,6 +73,7 @@ class DrawSystem:
     def input(self, _event):
         if _event.type == GAME_STATE_CHANGE_EVENT:
             self.currentGameState = _event.state
+            self.currentEffect = None
         elif _event.type == SCREEN_EFFECT_EVENT:  # dodac obsluge wielu efektow na raz
             if _event.reason == EventType.START:
                 self.currentEffect = _event

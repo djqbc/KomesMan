@@ -61,6 +61,7 @@ class MenuSystem:
         if _event.type == GAME_STATE_CHANGE_EVENT:
             self.currentGameState = _event.state
             if _event.state == GameState.MENU:
+                self.focusFirstItem = True
                 self.currentNode = None
                 for node, options in self.menu.items():
                     for option in options:
