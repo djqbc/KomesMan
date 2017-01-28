@@ -1,6 +1,6 @@
 from highscoresmanager import HighscoresManager
 from myevents import GAME_EVENT, GameEventType, ENTITY_EFFECT_EVENT, \
-    EntityEffect, MENU_EVENT, MenuEventType
+    EntityEffect, MENU_EVENT, MenuEventType, SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType
 import pygame
 from artifact.tagartifact import TagType, TagSubType
 from system.tagsystem import TagSystem
@@ -66,7 +66,9 @@ class PlayerProgressSystem:
                 self.currentCaps = 0
                 self.updatehud()
         elif _event.type == pygame.KEYUP:
-            if _event.key == pygame.K_b:
+            if _event.key == pygame.K_p:
+                pygame.event.post(pygame.event.Event(GAME_EVENT, reason=GameEventType.PAUSE_GAME))
+            elif _event.key == pygame.K_b:
                 if self.overallPoints > 100:
                     self.overallPoints -= 100
                     self.updatehud()

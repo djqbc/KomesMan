@@ -1,5 +1,5 @@
 from myevents import GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, starttimer, GameEventType, \
-    ENTITY_EFFECT_EVENT, EntityEffect
+    ENTITY_EFFECT_EVENT, EntityEffect, SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType
 from enum import IntEnum
 import pygame
 
@@ -15,14 +15,14 @@ class GameState(IntEnum):
     LOST_LIFE = 64
     NEW_HIGHSCORE = 128
     SHOW_HIGHSCORES = 256
-
+    PAUSED = 512
 
 class GameSystem:
     NAME = "GameSystem"
     gameState = GameState.GAME
 
     def __init__(self):
-        self.gameState = GameState.GAME
+        self.gameState = GameState.MENU
         self.activeTimer = None
 
     def remove(self, _entity):
@@ -37,7 +37,17 @@ class GameSystem:
                     self.activeTimer.cancel()
                 self.activeTimer = starttimer(1000, lambda: pygame.event.post(
                     pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.NEW_HIGHSCORE)))
-            if _event.reason == GameEventType.LOST_GAME:
+            elif _event.reason == GameEventType.PAUSE_GAME:
+                if self.gameState == GameState.GAME:
+                    self.gameState = GameState.PAUSED
+                    pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME | GameState.PAUSED))
+                    pygame.event.post(pygame.event.Event(SCREEN_EFFECT_EVENT, type=ScreenEffectEvent.PAUSE_EFFECT,
+                                                         time = None, reason=EventType.START))
+                elif self.gameState == GameState.PAUSED or self.gameState == GameState.PAUSED | GameState.GAME:
+                    self.gameState = GameState.GAME
+                    pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME))
+                    pygame.event.post(pygame.event.Event(SCREEN_EFFECT_EVENT, reason=EventType.STOP))
+            elif _event.reason == GameEventType.LOST_GAME:
                 self.gameState = GameState.LOST_GAME
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.LOST_GAME))
                 if self.activeTimer is not None:
@@ -64,6 +74,8 @@ class GameSystem:
             self.gameState = GameState.END
             pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.END))
         elif _event.type == GAME_STATE_CHANGE_EVENT:
+            if _event.state == GameState.GAME | GameState.PAUSED:
+                self.gameState = GameState.GAME | GameState.PAUSED
             if _event.state == GameState.GAME:
                 self.gameState = GameState.GAME
                 #to tylko na probe!!

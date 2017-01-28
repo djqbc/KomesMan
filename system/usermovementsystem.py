@@ -17,6 +17,7 @@ class UserMovementSystem:
     def __init__(self):
         self.previousdX = 0
         self.previousdY = 0
+        self.paused = False
 
     def register(self, _object):
         if SpriteArtifact.NAME in _object.artifacts and MovementArtifact.NAME in _object.artifacts:
@@ -29,7 +30,9 @@ class UserMovementSystem:
 
     def update(self, _delta, _systems):
         if _systems[GameSystem.NAME].getcurrentgamestate() != GameState.GAME:
+            self.paused = True
             return
+        self.paused = False
         tag_system = _systems[TagSystem.NAME]
         board = tag_system.getentities(TagType.FIXED, TagSubType.BOARD)[0]
         for entity in self.observing:
@@ -54,6 +57,9 @@ class UserMovementSystem:
                             sprite_artifact.positionX = int(sprite_artifact.positionX)
 
     def input(self, _event):
+# nie wiem czemu, ale dodanie returna tutaj wywala..
+#        if self.paused:
+#            return
         if _event.type == pygame.KEYDOWN:
             if _event.key == pygame.K_DOWN:
                 if not self.activeKeys.get(pygame.K_DOWN, False):

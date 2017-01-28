@@ -40,6 +40,7 @@ class MenuBuilder:
         self.createresult("You win!!!", GameState.WON_GAME)
         self.createresult("You lost - restarting...!!!", GameState.LOST_LIFE)
         self.createresult("You lost!!!", GameState.LOST_GAME)
+        self.createresult("Press 'P' to play!", GameState.PAUSED)
         self.createHighscores()
         self.createhalloffame()
 

@@ -82,7 +82,7 @@ class BoardBuilder:
             self.createteleport(teleport[0] * self.tile_size, teleport[1] * self.tile_size)
 
         print("Starting")
-        pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME))
+        pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.GAME | GameState.PAUSED))
 
     def clear(self):
         for e in self.elements:

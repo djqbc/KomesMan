@@ -1,3 +1,5 @@
+import numpy
+
 from artifact.spriteartifact import SpriteArtifact
 from myevents import SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType, starttimer, \
     GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType
@@ -11,6 +13,7 @@ class DrawSystem:
     observing = []
     currentEffect = None
     currentGameState = GameState.INIT
+    col = 0
 
     def __init__(self):
         self.createdisplay()
@@ -40,13 +43,22 @@ class DrawSystem:
                 sprite_artifact.sprite.draw(self.screen, sprite_artifact.positionX, sprite_artifact.positionY)
         if self.currentEffect is not None:
             if self.currentEffect.dict['type'] == ScreenEffectEvent.BLUR:  # czemu nie mog� dac .type
-                scale = 1.0 / float(10.0)
+                scale = 1.0 / float(20.0)
                 surf_size = self.screen.get_size()
                 scale_size = (int(surf_size[0] * scale), int(surf_size[1] * scale))
                 surf = pygame.transform.smoothscale(self.screen, scale_size)
                 surf = pygame.transform.smoothscale(surf, surf_size)
                 self.screen.blit(surf, (0, 0))
             elif self.currentEffect.dict['type'] == ScreenEffectEvent.COLOR_EXPLOSION:  # czemu nie mog� dac .type
+                surf = self.screen
+                array = pygame.surfarray.pixels3d(surf)
+                array[:, :, self.col:] = 0
+                del array
+                self.col+=1
+                if self.col == 3:
+                    self.col = 0
+                self.screen.blit(surf, (0, 0))
+            elif self.currentEffect.dict['type'] == ScreenEffectEvent.PAUSE_EFFECT:
                 surf = self.screen
                 array = pygame.surfarray.pixels3d(surf)
                 array[:, :, 1:] = 0
@@ -64,7 +76,8 @@ class DrawSystem:
         elif _event.type == SCREEN_EFFECT_EVENT:  # dodac obsluge wielu efektow na raz
             if _event.reason == EventType.START:
                 self.currentEffect = _event
-                starttimer(_event.time,
+                if _event.time is not None:
+                    starttimer(_event.time,
                            lambda: pygame.event.post(pygame.event.Event(SCREEN_EFFECT_EVENT, reason=EventType.STOP)))
             elif _event.reason == EventType.STOP:
                 self.currentEffect = None

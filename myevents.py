@@ -18,7 +18,7 @@ MENU_EVENT = pygame.USEREVENT + 5
 class ScreenEffectEvent(Enum):
     BLUR = 0
     COLOR_EXPLOSION = 1
-
+    PAUSE_EFFECT = 2
 
 class EventType(Enum):
     START = 0
@@ -56,6 +56,7 @@ class GameEventType(Enum):
     LOST_LIFE = 6
     SPAWN_OBJECT = 7
     NEW_HIGHSCORE = 8
+    PAUSE_GAME = 9
 
 
 def starttimer(_timeoutms, _timeoutcallback):
