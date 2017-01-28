@@ -3,9 +3,16 @@ import pygame
 
 
 class BeerSprite(MySprite):
-    """Beer item - good, old Komes"""
+    """
+    Sprite of beer item - good, old Komes.
+    OK... - actually it's Kasztelan...
+    """
 
     def __init__(self, tilesize):
+        """
+        Constructor
+        :param tilesize: desired width and height of tile in pixels.
+        """
         super(BeerSprite, self).__init__()
         self.image = pygame.image.load('res/img/bottle.png')
         self.image = pygame.transform.scale(self.image, (tilesize, tilesize))
@@ -22,4 +29,9 @@ class BeerSprite(MySprite):
         _screen.blit(self.image, (_positionx, _positiony))
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)

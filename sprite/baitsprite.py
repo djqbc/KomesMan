@@ -3,9 +3,15 @@ import pygame
 
 
 class BaitSprite(MySprite):
-    """Bait item"""
+    """
+    Sprite of bait item
+    """
 
     def __init__(self, tilesize):
+        """
+        Constructor
+        :param tilesize: desired width and height of tile in pixels.
+        """
         super(BaitSprite, self).__init__()
         self.image = pygame.image.load('res/img/bait.png')
         self.image = pygame.transform.scale(self.image, (tilesize, tilesize))
@@ -22,4 +28,9 @@ class BaitSprite(MySprite):
         _screen.blit(self.image, (_positionx, _positiony))
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)

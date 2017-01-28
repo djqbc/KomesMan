@@ -6,6 +6,10 @@ class DummySprite(MySprite):
     """Dummy sprite"""
 
     def __init__(self, tilesize):
+        """
+        Constructor.
+        :param tilesize: desired width and height of tile in pixels.
+        """
         super(DummySprite, self).__init__()
         self.rect = pygame.Rect(0, 0, tilesize, tilesize)
 
@@ -20,4 +24,9 @@ class DummySprite(MySprite):
         pass
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)

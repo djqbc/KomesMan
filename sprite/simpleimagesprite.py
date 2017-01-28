@@ -6,6 +6,10 @@ class SimpleImageSprite(MySprite):
     """SimpleImageSprite"""
 
     def __init__(self, _path):
+        """
+        Constructor
+        :param _path: Path to image
+        """
         super(SimpleImageSprite, self).__init__()
         self.image = pygame.image.load(_path)
         self.rect = self.image.get_rect()
@@ -21,10 +25,25 @@ class SimpleImageSprite(MySprite):
         _screen.blit(self.image, (_positionx, _positiony))
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)
 
     def size(self):
+        """
+        Get size of image
+        :return: size of image
+        """
         return self.image.get_size()
 
     def scale(self, _x, _y):
+        """
+        Scale image.
+        :param _x: X dimension in pixels
+        :param _y: Y dimension in pixels
+        :return: nothing
+        """
         self.image = pygame.transform.scale(self.image, (_x, _y))

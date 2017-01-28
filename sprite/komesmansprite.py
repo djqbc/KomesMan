@@ -4,9 +4,15 @@ import pygame
 
 
 class KomesManSprite(MySprite):
-    """KomesMan!!!!"""
+    """
+    KomesMan!!!!
+    """
 
     def __init__(self, tilesize):
+        """
+        Constructor
+        :param tilesize: desired width and height of tile in pixels.
+        """
         super(KomesManSprite, self).__init__()
         self.animations = {
             AnimationState.MOVE_UP: [
@@ -55,4 +61,9 @@ class KomesManSprite(MySprite):
             _screen.blit(self.animations[self.currentAnimation][2], (_positionx, _positiony))
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)

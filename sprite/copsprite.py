@@ -7,6 +7,10 @@ class CopSprite(MySprite):
     """Bad cop"""
 
     def __init__(self, tilesize):
+        """
+        Constructor. Creates animation for each direction of movement.
+        :param tilesize: desired width and height of tile in pixels.
+        """
         super(CopSprite, self).__init__()
         self.animations = {
             AnimationState.MOVE_UP: [
@@ -55,4 +59,9 @@ class CopSprite(MySprite):
             _screen.blit(self.animations[self.currentAnimation][2], (_positionx, _positiony))
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)

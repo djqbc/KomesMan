@@ -4,7 +4,9 @@ from sprite.mysprite import MySprite
 
 
 class WallKind(Enum):
-    """Enum representing animation state"""
+    """
+    Enum representing kind of wall.
+    """
     NONE = 0
     CORNER_TOPLEFT = 1
     CORNER_BOTTOMLEFT = 2
@@ -25,11 +27,17 @@ class WallKind(Enum):
 
 
 class WallKindDirection(Enum):
+    """
+    Enum representing wall kind.
+    """
     IN = 0
     OUT = 1
 
 
 class Direction(Enum):
+    """
+    Enum representing direction
+    """
     LEFT = 0
     RIGHT = 1
     UP = 2
@@ -37,6 +45,9 @@ class Direction(Enum):
 
 
 class WallKindTrueTable:
+    """
+    Class holding table of wall kinds.
+    """
     table = {
         Direction.LEFT: {
             WallKindDirection.IN: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_BOTTOMLEFT, WallKind.HORIZONTAL_WALL,
@@ -66,7 +77,9 @@ class WallKindTrueTable:
 
 
 class WallSprite(MySprite):
-    """Sprite of wall"""
+    """
+    Sprite of wall
+    """
     wallkinds = {
         WallKind.CORNER_TOPLEFT: 'res/img/wall001.png',
         WallKind.CORNER_BOTTOMLEFT: 'res/img/wall002.png',
@@ -87,6 +100,11 @@ class WallSprite(MySprite):
     }
 
     def __init__(self, wallkind, tilesize):
+        """
+        Constructor
+        :param wallkind: Kind of wall to create
+        :param tilesize: Desired tile size
+        """
         super(WallSprite, self).__init__()
         self.wallkind = wallkind
         self.image = pygame.image.load(self.wallkinds[wallkind])
@@ -103,4 +121,9 @@ class WallSprite(MySprite):
         _screen.blit(self.image, (_positionx, _positiony))
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)

@@ -4,9 +4,15 @@ from sprite.simpleimagesprite import SimpleImageSprite
 
 
 class HUDSprite(MySprite):
-    """HUDSprite"""
+    """
+    Sprite of on-screen display of points, caps and life
+    """
 
     def __init__(self, _modifiers=Modifiers.NONE):
+        """
+        Constructor for HUD
+        :param tilesize: desired width and height of tile in pixels.
+        """
         super(HUDSprite, self).__init__()
         self.modifiers = _modifiers
         self.SEPARATOR_WIDTH = 10
@@ -58,9 +64,21 @@ class HUDSprite(MySprite):
             self.textPoints.draw(_screen, _positionx + shift, _positiony)
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)
 
     def updatehud(self, _caps, _lifes, _points):
+        """
+        Updates HUD with specified number of caps, lifes, and points
+        :param _caps: Collected caps
+        :param _lifes: Lifes left
+        :param _points: Collected points
+        :return:
+        """
         self.textCaps = TextSprite(_caps)
         self.imageLifes.scale(self.textCaps.size()[1], self.textCaps.size()[1])
         self.textLifes = TextSprite(_lifes)

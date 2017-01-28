@@ -3,9 +3,14 @@ import pygame
 
 
 class TestSprite(MySprite):
-    """Fake class used for testing purposes"""
+    """
+    Fake class used for testing purposes
+    """
 
     def __init__(self):
+        """
+        Constructor
+        """
         super().__init__()
         self.image = pygame.Surface([20, 20])
         self.image.fill((255, 0, 0))
@@ -21,4 +26,9 @@ class TestSprite(MySprite):
         _screen.blit(self.image, (_positionx, _positiony))
 
     def update(self, _delta):
+        """
+        Update sprite
+        :param _delta:
+        :return: nothing
+        """
         MySprite.update(self, _delta)
