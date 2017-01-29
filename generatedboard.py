@@ -164,13 +164,13 @@ class Builder:
         maxX = len(self.board)
         x, y = _v
         result = []
-        if x > 0 and self.board[x - 1][y] == BoardElement.EMPTY:
+        if x > 0 and self.board[x - 1][y] != BoardElement.WALL:
             result.append((x - 1, y))
-        if y > 0 and self.board[x][y - 1] == BoardElement.EMPTY:
+        if y > 0 and self.board[x][y - 1] != BoardElement.WALL:
             result.append((x, y - 1))
-        if x + 1 < maxX and self.board[x + 1][y] == BoardElement.EMPTY:
+        if x + 1 < maxX and self.board[x + 1][y] != BoardElement.WALL:
             result.append((x + 1, y))
-        if y + 1 < maxY and self.board[x][y + 1] == BoardElement.EMPTY:
+        if y + 1 < maxY and self.board[x][y + 1] != BoardElement.WALL:
             result.append((x, y + 1))
         return result
                     
@@ -184,7 +184,7 @@ class Builder:
         graph = []
         for x in range(maxX):
             for y in range(maxY):
-                if self.board[x][y] == BoardElement.EMPTY:
+                if self.board[x][y] != BoardElement.WALL:
                     graph += [(x, y)]
         n = len(graph)
         visited = [False for _ in range(n)]
