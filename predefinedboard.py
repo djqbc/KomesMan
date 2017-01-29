@@ -1,21 +1,26 @@
 class PredefinedBoard:
-    """Class holding default predefined board"""
+    """
+    Class holding default predefined board
+    """
 
     @staticmethod
     def get_board_binary():
+        """
+        Gets default board
+        Short handout for editing (Enum values not used for ease of editing)
+        EMPTY = 0
+        WALL = 1
+        CAP = 2
+        BEER = 3
+        DRUG = 4
+        PILL = 5
+        ENEMY = 6
+        KOMESMAN = 7
+        TELEPORT = 8
+        :return: 2d BoardItems array representing board
+        """
         """returns representation of default board"""
 
-        # todo: ja bym tutaj dodal rozmieszczenie itemkow na podlodze, ale moze zle mysle?
-
-        #         EMPTY = 0
-        #         WALL = 1
-        #         CAP = 2
-        #         BEER = 3
-        #         DRUG = 4
-        #         PILL = 5
-        #         ENEMY = 6
-        #         KOMESMAN = 7
-        #         TELEPORT = 8
 
         return [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
