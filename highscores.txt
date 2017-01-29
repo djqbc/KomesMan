@@ -1,4 +1,5 @@
 J.B.K. PROJECT|2140
+J.B.K. PROJECT|1610
 J.B.K. PROJECT|1550
 J.B.K. PROJECT|1470
 J.B.K. PROJECT|1160
@@ -7,4 +8,3 @@ Mateusz III Wielki|860
 aaa|530
 MaTueSz!!|490
 jojo|450
-jjj|430
