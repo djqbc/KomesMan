@@ -8,16 +8,32 @@ from system.tagsystem import TagSystem
 
 
 class AiMovementSystem:
+    """
+    System repsonsible for moves of computer players.
+    """
     NAME = "AiMovementSystem"
     observing = []
 
     def __init__(self):
+        """
+        COnstructor
+        """
         self.pathFinder = None
 
     def remove(self, _entity):
+        """
+        Remove entity from entities observed by system.
+        :param _entity:  Entity to remove
+        :return: nothing
+        """
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
 
     def register(self, _object):
+        """
+        Add object to system
+        :param _object: Movable object, or Pathginder
+        :return: nothing
+        """
         if SpriteArtifact.NAME in _object.artifacts and MovementArtifact.NAME in _object.artifacts:
             self.observing.append(_object)
         elif TagArtifact.NAME in _object.artifacts and _object.artifacts[
@@ -27,6 +43,16 @@ class AiMovementSystem:
             raise NameError("ERROR!!!")
 
     def update(self, _delta, _systems):
+        """
+        Creates move for AI players.
+        If any bait exists, it is considered as a target, otherwise KomesMan is chased
+        Another step is taken from Pathfinder, from tile to desired other tile.
+        Movement vector is created, and later altered by modifiers (power-ups).
+        At the end step is executed.
+        :param _delta: Game loop delta.
+        :param _systems: Collection of all game systems
+        :return:
+        """
         if _systems[GameSystem.NAME].getcurrentgamestate() != GameState.GAME:
             return
         tag_system = _systems[TagSystem.NAME]

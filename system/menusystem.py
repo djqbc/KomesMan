@@ -8,6 +8,9 @@ from system.playerprogresssystem import PlayerProgressSystem
 
 
 class MenuSystem:
+    """
+    System repsonsible for managing all game menus and dialogs.
+    """
     NAME = "MenuSystem"
     menu = {}
     currentNode = None
@@ -19,10 +22,18 @@ class MenuSystem:
     focusFirstItem = True
 
     def __init__(self):
+        """
+        Constructor. Creates Highscore Manager.
+        """
         self.highscoresmanager = HighscoresManager()
         pass
 
     def remove(self, _entity):
+        """
+        Removes entity from system
+        :param _entity: Entity to be removed
+        :return: nothing
+        """
         if _entity in self.menu:
             if self.currentNode == _entity:
                 self.currentNode = None
@@ -33,6 +44,12 @@ class MenuSystem:
                 options.remove(_entity)
 
     def register(self, _object, _parent=None):
+        """
+        Registers entity to the system
+        :param _object: object to be added
+        :param _parent: parent of selected menu item, if applicable.
+        :return:
+        """
         if SpriteArtifact.NAME in _object.artifacts and MenuArtifact.NAME in _object.artifacts:
             tmp = self.menu.get(_parent, None)
             if tmp is not None:
@@ -43,6 +60,12 @@ class MenuSystem:
             raise NameError("ERROR!!!")
 
     def update(self, _timedelta, _systems):
+        """
+        Updates system. Responsible for saving highscore and focusing first item.
+        :param _timedelta: game loop time delta
+        :param _systems: collection of all systems.
+        :return:
+        """
         if self.focusFirstItem:
             self.focusFirstItem = False
             self.menu[self.currentNode][self.currentIndex].artifacts[SpriteArtifact.NAME].sprite.addhighlight()
@@ -55,6 +78,12 @@ class MenuSystem:
             self.currentNick = []
 
     def input(self, _event):
+        """
+        Responsible for processing events connected with menu, highscores.
+        Allows adding name to highscores, allows navigation through menu.
+        :param _event: event to be processed
+        :return: nothing
+        """
         if _event.type == GAME_STATE_CHANGE_EVENT:
             self.currentGameState = _event.state
             if _event.state == GameState.MENU:

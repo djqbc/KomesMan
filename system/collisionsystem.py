@@ -10,6 +10,9 @@ from artifact.movementartifact import MovementArtifact
 
 
 class CollisionSystem:
+    """
+    System responsible for handling collisions
+    """
     NAME = "CollisionSystem"
     all = []
     moveableIndexes = []
@@ -19,10 +22,18 @@ class CollisionSystem:
     behaviors = []
 
     def __init__(self):
+        """
+        Constructor
+        """
         self.systems = None
         self.tile_size = 64
 
     def register(self, _object):
+        """
+        Registers objects for collision detection system. Holds positions, sprites and behaviours.
+        :param _object: Object to be added to collision processing system
+        :return: nothing
+        """
         if SpriteArtifact.NAME in _object.artifacts and BehaviorArtifact.NAME in _object.artifacts:
             self.observing.append(_object)
             e1_sprite_artifact = _object.artifacts[SpriteArtifact.NAME]
@@ -38,6 +49,11 @@ class CollisionSystem:
             raise NameError("ERROR!!!")
 
     def remove(self, _entity):
+        """
+        Removes entity from system
+        :param _entity: entity to remove
+        :return: nothing
+        """
         try:
             index = self.observing.index(_entity)
         except:
@@ -54,7 +70,11 @@ class CollisionSystem:
         self.observing.remove(_entity)
 
     def input(self, _event):
-        # obsluga nie powinna byc w tym systemie ale nie mialem pomyslu gdzie to wrzucic zeby bylo globalnie
+        """
+        Processing of player's teleporation when reached border of screen.
+        :param _event: event to process
+        :return: nothing
+        """
         if _event.type == ENTITY_EFFECT_EVENT and _event.effect == EntityEffect.TELEPORT:
             teleports = self.systems[TagSystem.NAME].getentities(TagType.FIXED, TagSubType.TELEPORT)
             teleports = [t for t in teleports if t != _event.teleport]
@@ -78,6 +98,12 @@ class CollisionSystem:
                     print("Couldn't find teleport output cell")
 
     def update(self, _timedelta, _systems):
+        """
+        Verifies if items are colliding, and creates collision events, for both entities.
+        :param _timedelta: game loop delta
+        :param _systems: all system collection
+        :return: nothing
+        """
         if _systems[GameSystem.NAME].getcurrentgamestate() != GameState.GAME:
             return
         self.systems = _systems

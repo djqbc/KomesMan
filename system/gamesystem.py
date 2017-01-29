@@ -5,7 +5,9 @@ import pygame
 
 
 class GameState(IntEnum):
-    """Enum representing game state"""
+    """
+    Enum representing game state
+    """
     MENU = 1
     END = 2
     GAME = 4
@@ -18,17 +20,35 @@ class GameState(IntEnum):
     PAUSED = 512
 
 class GameSystem:
+    """
+    System responsible for maintaining game state.
+    """
     NAME = "GameSystem"
     gameState = GameState.GAME
 
     def __init__(self):
+        """
+        Constructor
+        """
         self.gameState = GameState.MENU
         self.activeTimer = None
 
     def remove(self, _entity):
+        """
+        Stub method
+        :param _entity: unused
+        :return: nothing
+        """
         pass
 
     def input(self, _event):
+        """
+        Processes events connected with game state.
+        Porcesses GAME_EVENT such as: NEW_HIGHSCORE, PAUSE_GAME, LOST_GAME, LOST_LIFE, WON_GAME
+        Processes breaking game by pressing ESC
+        :param _event: event to be processed
+        :return: nothing
+        """
         if _event.type == GAME_EVENT:
             if _event.reason == GameEventType.NEW_HIGHSCORE:
                 self.gameState = GameState.LOST_GAME
@@ -93,14 +113,32 @@ class GameSystem:
                     pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))
 
     def update(self, _timedelta, _systems):
+        """
+        Stub method for updating systems.
+        :param _timedelta: time delta of game loop
+        :param _systems: all systems
+        :return: nothing
+        """
         pass
 
     def quit(self):
+        """
+        Ends game.
+        :return: nothing
+        """
         return self.gameState == GameState.END
 
     def getcurrentgamestate(self):
+        """
+        Game state getter
+        :return: game state
+        """
         return self.gameState
 
     def endinit(self):
+        """
+        Finishes initialization of system.
+        :return: nothing
+        """
         self.gameState = GameState.MENU
         pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.MENU))

@@ -10,25 +10,47 @@ from artifact.tagartifact import TagType, TagSubType
 
 
 class UserMovementSystem:
+    """
+    System responsible for humant movement.
+    """
     NAME = "UserMovementSystem"
     observing = []
     activeKeys = {}
 
     def __init__(self):
+        """
+        Constructor
+        """
         self.previousdX = 0
         self.previousdY = 0
         self.paused = False
 
     def register(self, _object):
+        """
+        Register movable object for system
+        :param _object: Movable entity
+        :return: nothing
+        """
         if SpriteArtifact.NAME in _object.artifacts and MovementArtifact.NAME in _object.artifacts:
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
 
     def remove(self, _entity):
+        """
+        Remove entity from system
+        :param _entity: Entity to be removed
+        :return: Nothing
+        """
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
 
     def update(self, _delta, _systems):
+        """
+        Update observed entities based on received events. Works only when unpaused
+        :param _delta: game loop delta
+        :param _systems: all systems collection
+        :return: nothing
+        """
         if _systems[GameSystem.NAME].getcurrentgamestate() != GameState.GAME:
             self.paused = True
             return
@@ -56,10 +78,13 @@ class UserMovementSystem:
                             sprite_artifact.positionX += self.previousdX
                             sprite_artifact.positionX = int(sprite_artifact.positionX)
 
+
     def input(self, _event):
-# nie wiem czemu, ale dodanie returna tutaj wywala..
-#        if self.paused:
-#            return
+        """
+        Process input events (create movement vectors for events based on input keystrokes)
+        :param _event: event to be processed
+        :return: nothing
+        """
         if _event.type == pygame.KEYDOWN:
             if _event.key == pygame.K_DOWN:
                 if not self.activeKeys.get(pygame.K_DOWN, False):

@@ -8,6 +8,9 @@ from system.gamesystem import GameState
 
 
 class DrawSystem:
+    """
+    System rsponsible for drawing items on screen.
+    """
     NAME = "DrawSystem"
     screen = None
     observing = []
@@ -16,9 +19,18 @@ class DrawSystem:
     col = 0
 
     def __init__(self):
+        """
+        Constructor
+        """
         self.createdisplay()
 
     def createdisplay(self, _resolution=(1024, 768), _maximized=False):
+        """
+        Function responsible for creating display
+        :param _resolution: Screen resolution dimensions tuple.
+        :param _maximized: Boolean value determining maximalization.
+        :return: nothing
+        """
         if _maximized:
             self.screen = pygame.display.set_mode(_resolution, pygame.FULLSCREEN | pygame.HWSURFACE | pygame.DOUBLEBUF,
                                                   32)
@@ -27,15 +39,29 @@ class DrawSystem:
         pygame.display.set_caption('KomesMan')
 
     def register(self, _object):
+        """
+        Add object for observing
+        :param _object: object to be added
+        :return: nothing
+        """
         if SpriteArtifact.NAME in _object.artifacts:
             self.observing.append(_object)
         else:
             raise NameError("ERROR!!!")
 
     def remove(self, _entity):
+        """
+        Remove entity from system
+        :param _entity: entity to be removed.
+        :return:
+        """
         self.observing[:] = [entity for entity in self.observing if entity != _entity]
 
     def draw(self):
+        """
+        Function responsible for drawing all observed items on screen, and for special effects.
+        :return: nothing
+        """
         self.screen.fill(pygame.Color('black'))
         for entity in self.observing:
             sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
@@ -67,10 +93,22 @@ class DrawSystem:
         pygame.display.flip()
 
     def update(self, _timedelta, _systems):
+        """
+        Updates all sprites
+        :param _timedelta: game loop delta
+        :param _systems: all game systems.
+        :return:
+        """
         for entity in self.observing:
             entity.artifacts[SpriteArtifact.NAME].sprite.update(_timedelta)
 
     def input(self, _event):
+        """
+        Responsible for processing events connected with drawing (especially
+        starting effects).
+        :param _event: event for processing
+        :return: nothing
+        """
         if _event.type == GAME_STATE_CHANGE_EVENT:
             self.currentGameState = _event.state
             self.currentEffect = None
