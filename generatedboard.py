@@ -5,6 +5,9 @@ import math
 
 
 class DrillDirection(Enum):
+    """
+    Enum representing direction of drill.
+    """
     UP = 0
     DOWN = 1
     LEFT = 2
@@ -13,6 +16,13 @@ class DrillDirection(Enum):
 
 class Drill:
     def __init__(self, _board, _direction, _x, _y):
+        """
+        Constructor
+        :param _board: Board to be drilled (2d array of BoardElement values)
+        :param _direction: Initial direction of drill
+        :param _x: Start X tile position of drill
+        :param _y: Start Y tile position of drill
+        """
         self.board = _board
         self.tripDistance = random.choice(list(range(2, 11, 2)))
         self.direction = _direction
@@ -23,6 +33,10 @@ class Drill:
         self.board[_x][_y] = BoardElement.EMPTY
 
     def drill(self):
+        """
+        Perform drilling of board.
+        :return: nothing
+        """
         next_x = self.x
         next_y = self.y
         if self.direction == DrillDirection.UP:
@@ -49,6 +63,10 @@ class Drill:
                 self.changedirection()
 
     def changedirection(self):
+        """
+        Randomly changes direction of drill based on previous direction
+        :return: nothing
+        """
         if self.direction == DrillDirection.UP:
             self.direction = random.choice([DrillDirection.LEFT, DrillDirection.RIGHT])
         elif self.direction == DrillDirection.DOWN:
@@ -59,15 +77,29 @@ class Drill:
             self.direction = random.choice([DrillDirection.UP, DrillDirection.DOWN])
 
     def isfinished(self):
+        """
+        Return if drill finished work
+        :return: True if drill finished, False otherwise.
+        """
         return self.finished
 
     def isborder(self, _x=None, _y=None):
+        """
+        Checks if X,Y (tile positions) are borders of board.
+        :param _x: X number of tile, or None if this parameter should be taken from Drill.
+        :param _y: Y number of tile, or None if this parameter should be taken from Drill.
+        :return: True if tile is on border, False otherwise.
+        """
         if _x is not None:
             return _x == 0 or _y == 0 or _x == len(self.board) - 1 or _y == len(self.board[0]) - 1
         else:
             return self.x == 0 or self.y == 0 or self.x == len(self.board) - 1 or self.y == len(self.board[0]) - 1
 
     def iscrossingborder(self):
+        """
+        Check if drill is going outside board
+        :return: True if drill is goingo outside board, False otherwise.
+        """
         if self.direction == DrillDirection.UP and self.y == 0:
             return True
         if self.direction == DrillDirection.DOWN and self.y == len(self.board[0]) - 1:
@@ -81,6 +113,11 @@ class Drill:
 
 class Builder:
     def __init__(self, _board, _numberofbuilders):
+        """
+        Constructor
+        :param _board: Board which should be drilled (probably full of BoardElement.Wall)
+        :param _numberofbuilders: Number of drills for creating board.
+        """
         self.board = _board
         self.drills = []
         used_rows = []
@@ -105,6 +142,10 @@ class Builder:
                 self.drills.append(Drill(self.board, direction, x, y))
 
     def drill(self):
+        """
+        Runs drilling on all drills until drilling is finished.
+        :return: nothing
+        """
         work_to_do = True
         while work_to_do:
             work_to_do = False
@@ -114,6 +155,11 @@ class Builder:
                     drill.drill()
                     
     def getNeighbours(self, _v):
+        """
+        Get not-yet drilled neighbours of certain coordinate.
+        :param _v: tuple of coordinates
+        :return:
+        """
         maxY = len(self.board[0])
         maxX = len(self.board)
         x, y = _v
@@ -129,6 +175,10 @@ class Builder:
         return result
                     
     def isConnected(self):
+        """
+        Is graph connected?
+        :return: True if graph is connected, False otherwise.
+        """
         maxY = len(self.board[0])
         maxX = len(self.board)
         graph = []
@@ -157,11 +207,18 @@ class Builder:
             
 
 class GeneratedBoard:
-    """Class holding randomly generated board"""
+    """
+    Class holding randomly generated board
+    """
 
     @staticmethod
     def get_board_binary(_sx, _sy):
-        """returns representation of randomly generated board"""
+        """
+        Returns representation of randomly generated board
+        :param _sx: number of tiles in X dimension
+        :param _sy: number of tiles in Y dimension
+        :return: Board in enum format (with simple walls and items)
+        """
 
         board = [[BoardElement.WALL for _ in range(_sx)] for _ in range(_sy)]
         builder = Builder(board, 4)

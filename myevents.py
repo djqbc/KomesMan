@@ -3,10 +3,7 @@ from threading import Timer
 
 import pygame
 
-# fajnie byoby to pozamieniac na enum ale mi sie nie chce
-# czemu mnie to nie dziwi?
-# widze ze nie tylko mi sie nie chce ;)
-# ogolnie odkrylem ze mozna miec tylko 8 eventow wlasnych - trzeba bedzie kompresowac
+# Definition of custom events.
 COLLISION_EVENT = pygame.USEREVENT + 0
 GAME_EVENT = pygame.USEREVENT + 1
 SCREEN_EFFECT_EVENT = pygame.USEREVENT + 2

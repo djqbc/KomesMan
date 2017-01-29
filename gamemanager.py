@@ -15,7 +15,9 @@ from system.playerprogresssystem import PlayerProgressSystem
 
 
 class GameManager:
-    """Class managing game state"""
+    """
+    Class processing game loop.
+    """
     drawSystem = DrawSystem()
     userMoveSystem = UserMovementSystem()
     aiMoveSystem = AiMovementSystem()
@@ -45,26 +47,50 @@ class GameManager:
     ]
 
     def __init__(self):
+        """
+        Constructor. Initializes pyGame.
+        """
         pygame.init()
         self.init()
 
     def update(self, _timedelta):
-        """Updates current game state"""
+        """
+        Updates current game state
+        :param _timedelta: game loop time delta
+        :return:
+        """
         for system in self.allSystemsForIteration:
             system.update(_timedelta, self.allSystems)
 
     def init(self):
+        """
+        End initialization of game system.
+        :return:
+        """
         self.gameSystem.endinit()
 
-    def render(self, _updatemidstep):
-        """Renders currect scene"""
+    def render(self):
+        """
+        Renders current scene
+        :return: nothing
+        """
         self.drawSystem.draw()
 
     def input(self, _event):
+        """
+        Process input through all systems.
+        All systems go !!!
+        :param _event: event to be processed by all systems !
+        :return: nothing
+        """
         for builder in self.builders:
             builder.input(_event)
         for system in self.allSystemsForIteration:
             system.input(_event)
 
     def quit(self):
+        """
+        Quit game
+        :return: nothing
+        """
         return self.gameSystem.quit()

@@ -11,6 +11,9 @@ from enum import IntEnum
 
 
 class BoardElement(IntEnum):
+    """
+    Enum representing kinds of items which can be placed on board!
+    """
     EMPTY = 0
     WALL = 1
     CAP = 2
@@ -23,7 +26,17 @@ class BoardElement(IntEnum):
 
 
 class Board(Entity):
+    """
+
+    """
     def __init__(self, board, systems, registerlist, tilesize):
+        """
+        Constructor.
+        :param board: Board - 2d array of WallKind items or 0's if there is no wall.
+        :param systems: Collection of all systems
+        :param registerlist: List where entities should be registered.
+        :param tilesize: Tile size of board in pixels
+        """
         super(Board, self).__init__()
         self.map = [[Entity() for x in range(len(board))] for y in range(len(board[0]))]
         self.boardData = board
@@ -45,17 +58,41 @@ class Board(Entity):
         registerlist.append(self)
 
     def getpos(self, pos):
+        """
+        Returns "tile" position, from "pixel" position
+        :param pos: position in pixels in specified dimension
+        :return: integer tile position.
+        """
         return int(pos / self.tileSize)
 
     def checknext(self, pos):
+        """
+        Defines if another tile should be checked for possibility of move
+        :param pos: Pixel position in specified dimension
+        :return: True if another tile should be checked, false otherwise.
+        """
         return pos % self.tileSize != 0
 
     def isbeyondborder(self, _x, _y):
+        """
+        Check if specified pixel location is outside border
+        :param _x: X integer position
+        :param _y: Y integer position
+        :return: true if pixel is beyond border, false otherwise.
+        """
         if _x < 0 or _y < 0 or _x > len(self.boardData[0]) * self.tileSize or _y > len(self.boardData) * self.tileSize:
             return True
         return False
 
     def checkmove(self, _posx, _posy, _dx, _dy):
+        """
+        Check if specified move is possible
+        :param _posx: Current X (pixels) position of moved object
+        :param _posy: Current Y (pixels) position of moved object
+        :param _dx: Amount of X pixels to move (if <0 move lest, if >0 move right)
+        :param _dy: Amount of Y pixels to move (if <0 move up, if >0 move down)
+        :return: true if move possible, false otherwise.
+        """
         try:
             if self.isbeyondborder(_posx + _dx, _posy + _dy):
                 return False
