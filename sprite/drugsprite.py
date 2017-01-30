@@ -1,3 +1,6 @@
+"""
+Drug sprite package
+"""
 from sprite.mysprite import MySprite
 import pygame
 

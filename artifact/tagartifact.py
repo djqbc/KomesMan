@@ -1,3 +1,6 @@
+"""
+Tag artifacts module
+"""
 from enum import Enum
 
 

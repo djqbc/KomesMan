@@ -59,24 +59,24 @@ class UserMovementSystem:
         board = tag_system.getentities(TagType.FIXED, TagSubType.BOARD)[0]
         for entity in self.observing:
             movement_artifact = entity.artifacts[MovementArtifact.NAME]
-            if movement_artifact.movementVector != [0, 0]:
-                d_x = movement_artifact.movementVector[0] * movement_artifact.speedModifier * _delta
-                d_y = movement_artifact.movementVector[1] * movement_artifact.speedModifier * _delta
+            if movement_artifact.movementvector != [0, 0]:
+                d_x = movement_artifact.movementvector[0] * movement_artifact.speedmodifier * _delta
+                d_y = movement_artifact.movementvector[1] * movement_artifact.speedmodifier * _delta
                 sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
-                if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y):
-                    sprite_artifact.positionX += d_x
-                    sprite_artifact.positionY += d_y
+                if board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, d_x, d_y):
+                    sprite_artifact.positionx += d_x
+                    sprite_artifact.positiony += d_y
                     self.previousdX = d_x
                     self.previousdY = d_y
                 else:
                     if d_x != 0:  # left
-                        if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, self.previousdY):
-                            sprite_artifact.positionY += self.previousdY
-                            sprite_artifact.positionY = int(sprite_artifact.positionY)
+                        if board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, 0, self.previousdY):
+                            sprite_artifact.positiony += self.previousdY
+                            sprite_artifact.positiony = int(sprite_artifact.positiony)
                     if d_y != 0:  # up
-                        if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, self.previousdX, 0):
-                            sprite_artifact.positionX += self.previousdX
-                            sprite_artifact.positionX = int(sprite_artifact.positionX)
+                        if board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, self.previousdX, 0):
+                            sprite_artifact.positionx += self.previousdX
+                            sprite_artifact.positionx = int(sprite_artifact.positionx)
 
 
     def input(self, _event):
@@ -90,53 +90,53 @@ class UserMovementSystem:
                 if not self.activeKeys.get(pygame.K_DOWN, False):
                     self.activeKeys[pygame.K_DOWN] = True
                     for entity in self.observing:
-                        entity.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_DOWN
-                        entity.artifacts[MovementArtifact.NAME].movementVector[1] = 1
+                        entity.artifacts[SpriteArtifact.NAME].sprite.currentanimation = AnimationState.MOVE_DOWN
+                        entity.artifacts[MovementArtifact.NAME].movementvector[1] = 1
             elif _event.key == pygame.K_UP:
                 if not self.activeKeys.get(pygame.K_UP, False):
                     self.activeKeys[pygame.K_UP] = True
                     for entity in self.observing:
-                        entity.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_UP
-                        entity.artifacts[MovementArtifact.NAME].movementVector[1] = -1
+                        entity.artifacts[SpriteArtifact.NAME].sprite.currentanimation = AnimationState.MOVE_UP
+                        entity.artifacts[MovementArtifact.NAME].movementvector[1] = -1
             elif _event.key == pygame.K_LEFT:
                 if not self.activeKeys.get(pygame.K_LEFT, False):
                     self.activeKeys[pygame.K_LEFT] = True
                     for entity in self.observing:
-                        entity.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_LEFT
-                        entity.artifacts[MovementArtifact.NAME].movementVector[0] = -1
+                        entity.artifacts[SpriteArtifact.NAME].sprite.currentanimation = AnimationState.MOVE_LEFT
+                        entity.artifacts[MovementArtifact.NAME].movementvector[0] = -1
             elif _event.key == pygame.K_RIGHT:
                 if not self.activeKeys.get(pygame.K_RIGHT, False):
                     self.activeKeys[pygame.K_RIGHT] = True
                     for entity in self.observing:
-                        entity.artifacts[SpriteArtifact.NAME].sprite.currentAnimation = AnimationState.MOVE_RIGHT
-                        entity.artifacts[MovementArtifact.NAME].movementVector[0] = 1
+                        entity.artifacts[SpriteArtifact.NAME].sprite.currentanimation = AnimationState.MOVE_RIGHT
+                        entity.artifacts[MovementArtifact.NAME].movementvector[0] = 1
         elif _event.type == pygame.KEYUP:
             if _event.key == pygame.K_DOWN:
                 if self.activeKeys[pygame.K_DOWN]:
                     self.activeKeys[pygame.K_DOWN] = False
                     for entity in self.observing:
-                        entity.artifacts[MovementArtifact.NAME].movementVector[1] = 0
+                        entity.artifacts[MovementArtifact.NAME].movementvector[1] = 0
             elif _event.key == pygame.K_UP:
                 if self.activeKeys[pygame.K_UP]:
                     self.activeKeys[pygame.K_UP] = False
                     for entity in self.observing:
-                        entity.artifacts[MovementArtifact.NAME].movementVector[1] = 0
+                        entity.artifacts[MovementArtifact.NAME].movementvector[1] = 0
             elif _event.key == pygame.K_LEFT:
                 if self.activeKeys[pygame.K_LEFT]:
                     self.activeKeys[pygame.K_LEFT] = False
                     for entity in self.observing:
-                        entity.artifacts[MovementArtifact.NAME].movementVector[0] = 0
+                        entity.artifacts[MovementArtifact.NAME].movementvector[0] = 0
             elif _event.key == pygame.K_RIGHT:
                 if self.activeKeys[pygame.K_RIGHT]:
                     self.activeKeys[pygame.K_RIGHT] = False
                     for entity in self.observing:
-                        entity.artifacts[MovementArtifact.NAME].movementVector[0] = 0
+                        entity.artifacts[MovementArtifact.NAME].movementvector[0] = 0
         elif _event.type == ENTITY_EFFECT_EVENT:
             if _event.effect == EntityEffect.SPEED_CHANGE:
                 if _event.reason == EventType.START:
                     for entity in self.observing:
                         if entity == _event.reference:
-                            entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
+                            entity.artifacts[MovementArtifact.NAME].speedmodifier *= _event.modifier
                             starttimer(_event.time, lambda:
                             pygame.event.post(pygame.event.Event(ENTITY_EFFECT_EVENT, effect=EntityEffect.SPEED_CHANGE,
                                                                  reason=EventType.STOP, modifier=1.0 / _event.modifier,
@@ -144,7 +144,7 @@ class UserMovementSystem:
                 elif _event.reason == EventType.STOP:
                     for entity in self.observing:
                         if entity == _event.reference:
-                            entity.artifacts[MovementArtifact.NAME].speedModifier *= _event.modifier
+                            entity.artifacts[MovementArtifact.NAME].speedmodifier *= _event.modifier
                 elif _event.reason == EventType.DELAYED:
                     tmp = copyevent(_event)
                     tmp.reason = EventType.START

@@ -1,3 +1,6 @@
+"""
+Behaviour artefact module
+"""
 class BehaviorArtifact:
     """
     Container class for bahavior artifact of certain object

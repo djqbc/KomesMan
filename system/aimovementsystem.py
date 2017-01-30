@@ -63,8 +63,8 @@ class AiMovementSystem:
             target = tag_system.getentities(TagType.KOMESMAN)[0]
 
         board = tag_system.getentities(TagType.FIXED, TagSubType.BOARD)[0]
-        x = target.artifacts[SpriteArtifact.NAME].positionX
-        y = target.artifacts[SpriteArtifact.NAME].positionY
+        x = target.artifacts[SpriteArtifact.NAME].positionx
+        y = target.artifacts[SpriteArtifact.NAME].positiony
         i_x = int(round(x / board.tileSize))
         i_y = int(round(y / board.tileSize))
         # print('komesman jest w ', iX, ' ', iY)
@@ -73,12 +73,12 @@ class AiMovementSystem:
             sprite_artifact = cop.artifacts[SpriteArtifact.NAME]
             if movement_artifact.target == None:
     
-                copi_x = int(sprite_artifact.positionX / board.tileSize)  # to jest kiepskie jezeli idziemy w góre
-                copi_y = int(sprite_artifact.positionY / board.tileSize)  # to jest kiepskie, jezeli idziemy w lewo!!!
+                copi_x = int(sprite_artifact.positionx / board.tileSize)  # to jest kiepskie jezeli idziemy w góre
+                copi_y = int(sprite_artifact.positiony / board.tileSize)  # to jest kiepskie, jezeli idziemy w lewo!!!
     
-                if sprite_artifact.positionX % board.tileSize != 0 and movement_artifact.movementVector[0] < 0:
+                if sprite_artifact.positionx % board.tileSize != 0 and movement_artifact.movementvector[0] < 0:
                     copi_x += 1
-                if sprite_artifact.positionY % board.tileSize != 0 and movement_artifact.movementVector[1] < 0:
+                if sprite_artifact.positiony % board.tileSize != 0 and movement_artifact.movementvector[1] < 0:
                     copi_y += 1
     
                 next_move = self.pathFinder.getnextmove(Node(copi_x, copi_y), Node(i_x, i_y))
@@ -100,49 +100,49 @@ class AiMovementSystem:
                 x_to_reach, y_to_reach = movement_artifact.target
 
             movement_artifact.movementVector = [0, 0]
-            maxShiftN = movement_artifact.speedModifier * _delta * -1;
-            maxShiftP = movement_artifact.speedModifier * _delta * 1;
-            if y_to_reach == int(sprite_artifact.positionY):
-                if sprite_artifact.positionY != int(sprite_artifact.positionY):
-                    sprite_artifact.positionY = int(sprite_artifact.positionY)
-            elif y_to_reach < sprite_artifact.positionY and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, maxShiftN):
-                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_UP
+            maxShiftN = movement_artifact.speedmodifier * _delta * -1;
+            maxShiftP = movement_artifact.speedmodifier * _delta * 1;
+            if y_to_reach == int(sprite_artifact.positiony):
+                if sprite_artifact.positiony != int(sprite_artifact.positiony):
+                    sprite_artifact.positiony = int(sprite_artifact.positiony)
+            elif y_to_reach < sprite_artifact.positiony and board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, 0, maxShiftN):
+                sprite_artifact.sprite.currentanimation = AnimationState.MOVE_UP
                 movement_artifact.movementVector[1] = -1
-            elif y_to_reach > sprite_artifact.positionY and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, maxShiftP):
-                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_DOWN
+            elif y_to_reach > sprite_artifact.positiony and board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, 0, maxShiftP):
+                sprite_artifact.sprite.currentanimation = AnimationState.MOVE_DOWN
                 movement_artifact.movementVector[1] = 1
                  
-            if x_to_reach == int(sprite_artifact.positionX):
-                if sprite_artifact.positionX != int(sprite_artifact.positionX):
-                    sprite_artifact.positionX = int(sprite_artifact.positionX)
-            elif x_to_reach < sprite_artifact.positionX and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, maxShiftN, 0):
-                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_LEFT
+            if x_to_reach == int(sprite_artifact.positionx):
+                if sprite_artifact.positionx != int(sprite_artifact.positionx):
+                    sprite_artifact.positionx = int(sprite_artifact.positionx)
+            elif x_to_reach < sprite_artifact.positionx and board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, maxShiftN, 0):
+                sprite_artifact.sprite.currentanimation = AnimationState.MOVE_LEFT
                 movement_artifact.movementVector[0] = -1
-            elif x_to_reach > sprite_artifact.positionX and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, maxShiftP, 0):
-                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_RIGHT
+            elif x_to_reach > sprite_artifact.positionx and board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, maxShiftP, 0):
+                sprite_artifact.sprite.currentanimation = AnimationState.MOVE_RIGHT
                 movement_artifact.movementVector[0] = 1
 
 
             if movement_artifact.movementVector != [0, 0]:
-                d_x = movement_artifact.movementVector[0] * movement_artifact.speedModifier * _delta
-                d_y = movement_artifact.movementVector[1] * movement_artifact.speedModifier * _delta
-                if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y):
+                d_x = movement_artifact.movementVector[0] * movement_artifact.speedmodifier * _delta
+                d_y = movement_artifact.movementVector[1] * movement_artifact.speedmodifier * _delta
+                if board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, d_x, d_y):
 #                     print(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
-                    diff1 = sprite_artifact.positionX - x_to_reach
-                    diff2 = sprite_artifact.positionX + d_x - x_to_reach
+                    diff1 = sprite_artifact.positionx - x_to_reach
+                    diff2 = sprite_artifact.positionx + d_x - x_to_reach
                     if diff1 * diff2 < 0:
-                        sprite_artifact.positionX = x_to_reach
+                        sprite_artifact.positionx = x_to_reach
                     else:
-                        sprite_artifact.positionX += d_x
+                        sprite_artifact.positionx += d_x
                         
-                    diff1 = sprite_artifact.positionY - y_to_reach
-                    diff2 = sprite_artifact.positionY + d_y - y_to_reach
+                    diff1 = sprite_artifact.positiony - y_to_reach
+                    diff2 = sprite_artifact.positiony + d_y - y_to_reach
                     if diff1 * diff2 < 0:
-                        sprite_artifact.positionY = y_to_reach
+                        sprite_artifact.positiony = y_to_reach
                     else:
-                        sprite_artifact.positionY += d_y
+                        sprite_artifact.positiony += d_y
                 else:
-                    print('Wrong move: ', sprite_artifact, movement_artifact.target, sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y)
+                    print('Wrong move: ', sprite_artifact, movement_artifact.target, sprite_artifact.positionx, sprite_artifact.positiony, d_x, d_y)
             else:
 #                 print("Erase target")
                 movement_artifact.target = None

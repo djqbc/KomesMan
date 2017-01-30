@@ -1,3 +1,6 @@
+"""
+HUD sprite package
+"""
 from sprite.mysprite import MySprite, Modifiers
 from sprite.textsprite import TextSprite
 from sprite.simpleimagesprite import SimpleImageSprite
@@ -15,14 +18,14 @@ class HUDSprite(MySprite):
         """
         super(HUDSprite, self).__init__()
         self.modifiers = _modifiers
-        self.SEPARATOR_WIDTH = 10
-        self.textCaps = TextSprite("")
-        self.imageLifes = SimpleImageSprite("res/img/life.png")
-        self.imageLifes.scale(self.textCaps.size()[1], self.textCaps.size()[1])
-        self.textLifes = TextSprite("")
-        self.imagePoints = SimpleImageSprite("res/img/points.png")
-        self.imagePoints.scale(self.textCaps.size()[1], self.textCaps.size()[1])
-        self.textPoints = TextSprite("")
+        self.seperator_width = 10
+        self.text_caps = TextSprite("")
+        self.image_lifes = SimpleImageSprite("res/img/life.png")
+        self.image_lifes.scale(self.text_caps.size()[1], self.text_caps.size()[1])
+        self.text_lifes = TextSprite("")
+        self.image_points = SimpleImageSprite("res/img/points.png")
+        self.image_points.scale(self.text_caps.size()[1], self.text_caps.size()[1])
+        self.text_points = TextSprite("")
 
     def draw(self, _screen, _positionx, _positiony):
         """
@@ -32,36 +35,36 @@ class HUDSprite(MySprite):
         :param _positiony: Y position to draw item
         :return: nothing
         """
-        text_caps_width, _ = self.textCaps.size()
-        image_lifes_width, _ = self.imageLifes.size()
-        text_lifes_width, _ = self.textLifes.size()
-        image_points_width, _ = self.imagePoints.size()
-        text_points_width, _ = self.textPoints.size()
+        text_caps_width, _ = self.text_caps.size()
+        image_lifes_width, _ = self.image_lifes.size()
+        text_lifes_width, _ = self.text_lifes.size()
+        image_points_width, _ = self.image_points.size()
+        text_points_width, _ = self.text_points.size()
 
         shift = 0
         if self.modifiers & Modifiers.CENTER_H:
             width = _screen.get_width() / 2
-            x = width - (
-                        text_caps_width + image_lifes_width + text_lifes_width + image_points_width + text_points_width + self.SEPARATOR_WIDTH * 4) / 2
-            self.textCaps.draw(_screen, x + shift, _positiony)
-            shift += text_caps_width + self.SEPARATOR_WIDTH
-            self.imageLifes.draw(_screen, x + shift, _positiony)
-            shift += image_lifes_width + self.SEPARATOR_WIDTH
-            self.textLifes.draw(_screen, x + shift, _positiony)
-            shift += text_lifes_width + self.SEPARATOR_WIDTH
-            self.imagePoints.draw(_screen, x + shift, _positiony)
-            shift += image_points_width + self.SEPARATOR_WIDTH
-            self.textPoints.draw(_screen, x + shift, _positiony)
+            xpos = width - (text_caps_width + image_lifes_width + text_lifes_width +
+                            image_points_width + text_points_width + self.seperator_width * 4) / 2
+            self.text_caps.draw(_screen, xpos + shift, _positiony)
+            shift += text_caps_width + self.seperator_width
+            self.image_lifes.draw(_screen, xpos + shift, _positiony)
+            shift += image_lifes_width + self.seperator_width
+            self.text_lifes.draw(_screen, xpos + shift, _positiony)
+            shift += text_lifes_width + self.seperator_width
+            self.image_points.draw(_screen, xpos + shift, _positiony)
+            shift += image_points_width + self.seperator_width
+            self.text_points.draw(_screen, xpos + shift, _positiony)
         else:
-            self.textCaps.draw(_screen, _positionx + shift, _positiony)
-            shift += text_caps_width + self.SEPARATOR_WIDTH
-            self.imageLifes.draw(_screen, _positionx + shift, _positiony)
-            shift += image_lifes_width + self.SEPARATOR_WIDTH
-            self.textLifes.draw(_screen, _positionx + shift, _positiony)
-            shift += text_lifes_width + self.SEPARATOR_WIDTH
-            self.imagePoints.draw(_screen, _positionx + shift, _positiony)
-            shift += image_points_width + self.SEPARATOR_WIDTH
-            self.textPoints.draw(_screen, _positionx + shift, _positiony)
+            self.text_caps.draw(_screen, _positionx + shift, _positiony)
+            shift += text_caps_width + self.seperator_width
+            self.image_lifes.draw(_screen, _positionx + shift, _positiony)
+            shift += image_lifes_width + self.seperator_width
+            self.text_lifes.draw(_screen, _positionx + shift, _positiony)
+            shift += text_lifes_width + self.seperator_width
+            self.image_points.draw(_screen, _positionx + shift, _positiony)
+            shift += image_points_width + self.seperator_width
+            self.text_points.draw(_screen, _positionx + shift, _positiony)
 
     def update(self, _delta):
         """
@@ -79,8 +82,8 @@ class HUDSprite(MySprite):
         :param _points: Collected points
         :return:
         """
-        self.textCaps = TextSprite(_caps)
-        self.imageLifes.scale(self.textCaps.size()[1], self.textCaps.size()[1])
-        self.textLifes = TextSprite(_lifes)
-        self.imagePoints.scale(self.textCaps.size()[1], self.textCaps.size()[1])
-        self.textPoints = TextSprite(_points)
+        self.text_caps = TextSprite(_caps)
+        self.image_lifes.scale(self.text_caps.size()[1], self.text_caps.size()[1])
+        self.text_lifes = TextSprite(_lifes)
+        self.image_points.scale(self.text_caps.size()[1], self.text_caps.size()[1])
+        self.text_points = TextSprite(_points)

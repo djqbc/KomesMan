@@ -1,4 +1,7 @@
-Mateusz III Wielki|0
-JBK|1000
 real|9999
+JBK|1000
+kkk|680
+kkkk|150
+Mateusz III Wielki|0
+kkk|0
 pepe|-1

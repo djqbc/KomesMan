@@ -1,3 +1,6 @@
+"""
+Movement artifact module
+"""
 class MovementArtifact:
     """
     Container class for movement properties.
@@ -10,6 +13,6 @@ class MovementArtifact:
         Constructor
         :param speedmodifier:  Value which base speed will be multiplied with
         """
-        self.speedModifier = self.baseSpeed * speedmodifier
-        self.movementVector = [0, 0]
+        self.speedmodifier = self.baseSpeed * speedmodifier
+        self.movementvector = [0, 0]
         self.target = None

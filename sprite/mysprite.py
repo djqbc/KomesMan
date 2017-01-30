@@ -1,3 +1,6 @@
+"""
+My sprite package
+"""
 from enum import Enum
 from enum import IntEnum
 import pygame
@@ -23,13 +26,16 @@ class Modifiers(IntEnum):
 
 
 class MySprite(pygame.sprite.Sprite):
+    """
+    Class defining my sprite.
+    """
     def __init__(self):
         """
         Constructor
         """
         super(MySprite, self).__init__()
-        self.timeElapsed = 0.0
-        self.currentAnimation = AnimationState.MOVE_UP
+        self.timeelapsed = 0.0
+        self.currentanimation = AnimationState.MOVE_UP
         self.animations = {}
         self.modifiers = Modifiers.NONE
 
@@ -49,10 +55,9 @@ class MySprite(pygame.sprite.Sprite):
         :param _newanimation: Animation for changing.
         :return:
         """
-        # TODO: to jest gdzieś używane ?
-        if _newanimation != self.currentAnimation:
-            self.currentAnimation = _newanimation
-            self.timeElapsed = 0.0
+        if _newanimation != self.currentanimation:
+            self.currentanimation = _newanimation
+            self.timeelapsed = 0.0
 
     def update(self, _delta):
         """
@@ -60,4 +65,4 @@ class MySprite(pygame.sprite.Sprite):
         :param _delta:
         :return: nothing
         """
-        self.timeElapsed += _delta
+        self.timeelapsed += _delta

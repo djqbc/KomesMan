@@ -1,3 +1,6 @@
+"""
+Simple image sprite package
+"""
 from sprite.mysprite import MySprite
 import pygame
 
@@ -39,11 +42,11 @@ class SimpleImageSprite(MySprite):
         """
         return self.image.get_size()
 
-    def scale(self, _x, _y):
+    def scale(self, xdim, ydim):
         """
         Scale image.
-        :param _x: X dimension in pixels
-        :param _y: Y dimension in pixels
+        :param xdim: X dimension in pixels
+        :param ydim: Y dimension in pixels
         :return: nothing
         """
-        self.image = pygame.transform.scale(self.image, (_x, _y))
+        self.image = pygame.transform.scale(self.image, (xdim, ydim))
