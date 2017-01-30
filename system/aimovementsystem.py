@@ -98,7 +98,7 @@ class AiMovementSystem:
                 if sprite_artifact.positiony != int(sprite_artifact.positiony):
                     sprite_artifact.positiony = int(sprite_artifact.positiony)
             elif y_to_reach < sprite_artifact.positiony and board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, 0, max_shift_n):
-                sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_UP
+                sprite_artifact.sprite.currentanimation = AnimationState.MOVE_UP
                 movement_artifact.movementVector[1] = -1
             elif y_to_reach > sprite_artifact.positiony and board.checkmove(sprite_artifact.positionx, sprite_artifact.positiony, 0, max_shift_p):
                 sprite_artifact.sprite.currentanimation = AnimationState.MOVE_DOWN
