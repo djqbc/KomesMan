@@ -94,9 +94,9 @@ class MenuSystem:
                 for node, options in self.menu.items():
                     for option in options:
                         if node == self.current_node:
-                            option.artifacts[SpriteArtifact.NAME].drawStage = GameState.MENU
+                            option.artifacts[SpriteArtifact.NAME].drawstage = GameState.MENU
                         else:
-                            option.artifacts[SpriteArtifact.NAME].drawStage = DRAW_NEVER
+                            option.artifacts[SpriteArtifact.NAME].drawstage = DRAW_NEVER
             else:
                 self.current_node = None
             #                 for element in self.menu[self.current_node]:

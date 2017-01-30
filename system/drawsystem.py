@@ -66,8 +66,8 @@ class DrawSystem:
         self.screen.fill(pygame.Color('black'))
         for entity in self.observing:
             sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
-            if sprite_artifact.drawStage & int(self.current_game_state):
-                sprite_artifact.sprite.draw(self.screen, sprite_artifact.positionX, sprite_artifact.positionY)
+            if sprite_artifact.drawstage & int(self.current_game_state):
+                sprite_artifact.sprite.draw(self.screen, sprite_artifact.positionx, sprite_artifact.positiony)
         if self.current_effect is not None:
             if self.current_effect.dict['type'] == ScreenEffectEvent.BLUR:  # czemu nie mog� dac .type
                 scale = 1.0 / float(20.0)

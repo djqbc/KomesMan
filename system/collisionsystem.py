@@ -41,8 +41,8 @@ class CollisionSystem:
             self.observing.append(_object)
             e1_sprite_artifact = _object.artifacts[SpriteArtifact.NAME]
             e1_behavior_artifact = _object.artifacts[BehaviorArtifact.NAME]
-            e1_sprite_artifact.sprite.rect.x = e1_sprite_artifact.positionX
-            e1_sprite_artifact.sprite.rect.y = e1_sprite_artifact.positionY
+            e1_sprite_artifact.sprite.rect.x = e1_sprite_artifact.positionx
+            e1_sprite_artifact.sprite.rect.y = e1_sprite_artifact.positiony
             self.all.append(e1_sprite_artifact.sprite.rect)
             self.sprites.append(e1_sprite_artifact)
             self.behaviors.append(e1_behavior_artifact)
@@ -111,8 +111,8 @@ class CollisionSystem:
             return
         self.systems = _systems
         for entity_ind in self.moveableIndexes:
-            self.all[entity_ind].x = self.sprites[entity_ind].positionX
-            self.all[entity_ind].y = self.sprites[entity_ind].positionY
+            self.all[entity_ind].x = self.sprites[entity_ind].positionx
+            self.all[entity_ind].y = self.sprites[entity_ind].positiony
 
         for entity_ind in self.moveableIndexes:
             colliding = self.all[entity_ind].collidelistall(self.all)

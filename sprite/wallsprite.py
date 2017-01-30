@@ -1,3 +1,6 @@
+"""
+Wall sprite package
+"""
 from enum import Enum
 import pygame
 from sprite.mysprite import MySprite
@@ -50,27 +53,35 @@ class WallKindTrueTable:
     """
     table = {
         Direction.LEFT: {
-            WallKindDirection.IN: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_BOTTOMLEFT, WallKind.HORIZONTAL_WALL,
+            WallKindDirection.IN: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_BOTTOMLEFT,
+                                   WallKind.HORIZONTAL_WALL,
                                    WallKind.END_LEFT, WallKind.NONE],
-            WallKindDirection.OUT: [WallKind.CORNER_BOTTOMRIGHT, WallKind.CORNER_TOPRIGHT, WallKind.HORIZONTAL_WALL,
+            WallKindDirection.OUT: [WallKind.CORNER_BOTTOMRIGHT, WallKind.CORNER_TOPRIGHT,
+                                    WallKind.HORIZONTAL_WALL,
                                     WallKind.END_RIGHT, WallKind.NONE]
         },
         Direction.RIGHT: {
-            WallKindDirection.IN: [WallKind.CORNER_BOTTOMRIGHT, WallKind.CORNER_TOPRIGHT, WallKind.HORIZONTAL_WALL,
+            WallKindDirection.IN: [WallKind.CORNER_BOTTOMRIGHT, WallKind.CORNER_TOPRIGHT,
+                                   WallKind.HORIZONTAL_WALL,
                                    WallKind.END_RIGHT, WallKind.NONE],
-            WallKindDirection.OUT: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_BOTTOMLEFT, WallKind.HORIZONTAL_WALL,
+            WallKindDirection.OUT: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_BOTTOMLEFT,
+                                    WallKind.HORIZONTAL_WALL,
                                     WallKind.END_LEFT, WallKind.NONE]
         },
         Direction.UP: {
-            WallKindDirection.IN: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_TOPRIGHT, WallKind.VERTICAL_WALL,
+            WallKindDirection.IN: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_TOPRIGHT,
+                                   WallKind.VERTICAL_WALL,
                                    WallKind.END_TOP, WallKind.NONE],
-            WallKindDirection.OUT: [WallKind.CORNER_BOTTOMLEFT, WallKind.CORNER_BOTTOMRIGHT, WallKind.VERTICAL_WALL,
+            WallKindDirection.OUT: [WallKind.CORNER_BOTTOMLEFT, WallKind.CORNER_BOTTOMRIGHT,
+                                    WallKind.VERTICAL_WALL,
                                     WallKind.END_BOTTOM, WallKind.NONE]
         },
         Direction.DOWN: {
-            WallKindDirection.IN: [WallKind.CORNER_BOTTOMLEFT, WallKind.CORNER_BOTTOMRIGHT, WallKind.VERTICAL_WALL,
+            WallKindDirection.IN: [WallKind.CORNER_BOTTOMLEFT, WallKind.CORNER_BOTTOMRIGHT,
+                                   WallKind.VERTICAL_WALL,
                                    WallKind.END_BOTTOM, WallKind.NONE],
-            WallKindDirection.OUT: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_TOPRIGHT, WallKind.VERTICAL_WALL,
+            WallKindDirection.OUT: [WallKind.CORNER_TOPLEFT, WallKind.CORNER_TOPRIGHT,
+                                    WallKind.VERTICAL_WALL,
                                     WallKind.END_TOP, WallKind.NONE]
         }
     }

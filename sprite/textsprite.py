@@ -1,3 +1,6 @@
+"""
+Text sprite package
+"""
 from sprite.mysprite import MySprite, Modifiers
 import pygame
 
@@ -15,10 +18,10 @@ class TextSprite(MySprite):
         """
         super(TextSprite, self).__init__()
         self.modifiers = _modifiers
-        self.basicFont = pygame.font.SysFont(None, 48)
-        self.textContent = _text
+        self.basicfont = pygame.font.SysFont(None, 48)
+        self.textcontent = _text
         self.color = (127, 127, 127)
-        self.text = self.basicFont.render(_text, True, self.color)
+        self.text = self.basicfont.render(_text, True, self.color)
 
     def draw(self, _screen, _positionx, _positiony):
         """
@@ -30,16 +33,16 @@ class TextSprite(MySprite):
         :return: nothing
         """
         if self.modifiers is not None:
-            x = _positionx
-            y = _positiony
-            text_width, text_height = self.basicFont.size(self.textContent)
+            xpos = _positionx
+            ypos = _positiony
+            text_width, text_height = self.basicfont.size(self.textcontent)
             if self.modifiers & Modifiers.CENTER_H:
                 width = _screen.get_width() / 2
-                x = width - text_width / 2
+                xpos = width - text_width / 2
             if self.modifiers & Modifiers.CENTER_V:
                 height = _screen.get_height() / 2
-                y = height - text_height / 2
-            _screen.blit(self.text, (x, y))
+                ypos = height - text_height / 2
+            _screen.blit(self.text, (xpos, ypos))
         else:
             _screen.blit(self.text, (_positionx, _positiony))
 
@@ -56,7 +59,7 @@ class TextSprite(MySprite):
         Get size of font
         :return: size of font
         """
-        return self.basicFont.size(self.textContent)
+        return self.basicfont.size(self.textcontent)
 
     def changetext(self, _text):
         """
@@ -64,8 +67,8 @@ class TextSprite(MySprite):
         :param _text: new text
         :return: nothing
         """
-        self.textContent = _text
-        self.text = self.basicFont.render(_text, True, self.color)
+        self.textcontent = _text
+        self.text = self.basicfont.render(_text, True, self.color)
 
     def addhighlight(self):
         """
@@ -73,7 +76,7 @@ class TextSprite(MySprite):
         :return: nothing
         """
         self.color = (255, 255, 255)
-        self.text = self.basicFont.render(self.textContent, True, self.color)
+        self.text = self.basicfont.render(self.textcontent, True, self.color)
 
     def removehighlight(self):
         """
@@ -81,4 +84,4 @@ class TextSprite(MySprite):
         :return: nothing
         """
         self.color = (127, 127, 127)
-        self.text = self.basicFont.render(self.textContent, True, self.color)
+        self.text = self.basicfont.render(self.textcontent, True, self.color)

@@ -1,8 +1,11 @@
+"""
+Simple cop behaviour package
+"""
 from myevents import COLLISION_EVENT, GAME_EVENT, GameEventType
 from artifact.tagartifact import TagArtifact, TagType, TagSubType
-import pygame
 from artifact.spriteartifact import SpriteArtifact
 from artifact.behaviorartifact import BehaviorArtifact
+import pygame
 
 
 class SimpleCopBehavior:
@@ -10,7 +13,7 @@ class SimpleCopBehavior:
     Class defining behaviour of standard cop on incoming events
     """
     def __init__(self):
-        self.firstInformed = None
+        self.firstinformed = None
 
     def input(self, _event, _posteventcallback):
         """
@@ -24,19 +27,25 @@ class SimpleCopBehavior:
             entity = _event.colliding
             tag_artifact = entity.artifacts[TagArtifact.NAME]
             if tag_artifact.type == TagType.ENEMY and tag_artifact.subtype == TagSubType.SIMPLE_COP:
-                self.firstInformed = True
+                self.firstinformed = True
                 try:
                     if entity.artifacts[BehaviorArtifact.NAME].behavior.firstInformed:
-                        self.firstInformed = False
+                        self.firstinformed = False
                 except:
                     pass
-                if self.firstInformed:
+                if self.firstinformed:
                     sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
                     _posteventcallback(
-                        pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=_event.me))
+                        pygame.event.Event(GAME_EVENT
+                                           , reason=GameEventType.REMOVE_OBJECT
+                                           , reference=_event.me))
                     _posteventcallback(
-                        pygame.event.Event(GAME_EVENT, reason=GameEventType.REMOVE_OBJECT, reference=entity))
+                        pygame.event.Event(GAME_EVENT
+                                           , reason=GameEventType.REMOVE_OBJECT, reference=entity))
                     _posteventcallback(
-                        pygame.event.Event(GAME_EVENT, reason=GameEventType.SPAWN_OBJECT, spawntype=TagType.ENEMY,
-                                           spawnsubtype=TagSubType.SUPER_COP, x=int(sprite_artifact.positionX),
-                                           y=int(sprite_artifact.positionY)))
+                        pygame.event.Event(GAME_EVENT
+                                           , reason=GameEventType.SPAWN_OBJECT
+                                           , spawntype=TagType.ENEMY,
+                                           spawnsubtype=TagSubType.SUPER_COP
+                                           , x=int(sprite_artifact.positionx),
+                                           y=int(sprite_artifact.positiony)))

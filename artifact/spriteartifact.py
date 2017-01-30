@@ -1,3 +1,6 @@
+"""
+Sprite artifact module
+"""
 DRAW_ALWAYS = 0xFFFFFFFF
 DRAW_NEVER = 0x00000000
 
@@ -17,6 +20,6 @@ class SpriteArtifact:
         :param _drawstage: Stage in which sprite should be shown.
         """
         self.sprite = _sprite
-        self.positionX = _positionx
-        self.positionY = _positiony
-        self.drawStage = _drawstage
+        self.positionx = _positionx
+        self.positiony = _positiony
+        self.drawstage = _drawstage

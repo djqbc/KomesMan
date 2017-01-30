@@ -1,6 +1,10 @@
-from sprite.mysprite import MySprite, AnimationState
+"""
+Cop sprite package
+"""
+
 from math import floor
 import pygame
+from sprite.mysprite import MySprite, AnimationState
 
 
 class CopSprite(MySprite):
@@ -34,12 +38,12 @@ class CopSprite(MySprite):
                 pygame.image.load('res/img/EneD_003.png')
             ]
         }
-        for k, v in self.animations.items():
+        for k, value in self.animations.items():
             tmp = []
-            for image in v:
+            for image in value:
                 tmp.append(pygame.transform.scale(image, (tilesize, tilesize)))
             self.animations[k] = tmp
-        self.image = self.animations[self.currentAnimation][0]
+        self.image = self.animations[self.currentanimation][0]
         self.rect = self.image.get_rect()
 
     def draw(self, _screen, _positionx, _positiony):
@@ -50,13 +54,13 @@ class CopSprite(MySprite):
         :param _positiony: Y position to draw item
         :return: nothing
         """
-        diff = self.timeElapsed - floor(self.timeElapsed)
+        diff = self.timeelapsed - floor(self.timeelapsed)
         if diff < 0.33:
-            _screen.blit(self.animations[self.currentAnimation][0], (_positionx, _positiony))
+            _screen.blit(self.animations[self.currentanimation][0], (_positionx, _positiony))
         elif diff < 0.66:
-            _screen.blit(self.animations[self.currentAnimation][1], (_positionx, _positiony))
+            _screen.blit(self.animations[self.currentanimation][1], (_positionx, _positiony))
         else:
-            _screen.blit(self.animations[self.currentAnimation][2], (_positionx, _positiony))
+            _screen.blit(self.animations[self.currentanimation][2], (_positionx, _positiony))
 
     def update(self, _delta):
         """

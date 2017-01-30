@@ -1,5 +1,4 @@
-real|9999
-JBK|1000
-fgsdfsdf|50
 Mateusz III Wielki|0
+JBK|1000
+real|9999
 pepe|-1

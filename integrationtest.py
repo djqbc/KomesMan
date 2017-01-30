@@ -47,8 +47,8 @@ class IntegrationTests(unittest.TestCase):
         GAME.input(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_RETURN))
         for event in pygame.event.get():
             GAME.input(event)
-        names = [e.artifacts[SpriteArtifact.NAME].sprite.textContent for e in GAME.builders[1].highscorenames]
-        values = [e.artifacts[SpriteArtifact.NAME].sprite.textContent for e in GAME.builders[1].highscorevalues]
+        names = [e.artifacts[SpriteArtifact.NAME].sprite.textcontent for e in GAME.builders[1].highscorenames]
+        values = [e.artifacts[SpriteArtifact.NAME].sprite.textcontent for e in GAME.builders[1].highscorevalues]
         xN = len([s for s in names if s != 'x'])
         names = names[:xN]
         values = values[:xN]

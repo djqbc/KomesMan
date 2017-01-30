@@ -1,3 +1,6 @@
+"""
+Menu artifact
+"""
 class MenuArtifact:
     """
     Container class for bahavior artifact of certain object
