@@ -274,7 +274,9 @@ class GeneratedBoard:
         prices = {  # dodac rozroznionych przeciwnikow
             BoardElement.ENEMY: 1500
         }
-        while current_board_value > 0:
+
+        i = 0
+        while current_board_value > 0 and i<3:
             available_enemies = {item: price for item, price in prices.items() if price <= current_board_value}
             if len(available_enemies) == 0:
                 current_board_value = 0
@@ -288,5 +290,6 @@ class GeneratedBoard:
                 empty_cells.remove((x, y))
                 board[x][y] = item
                 current_board_value -= item_price
+                i+= 1
 
         return board

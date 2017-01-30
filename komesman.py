@@ -6,7 +6,7 @@ from gamemanager import GameManager
 game = GameManager()
 
 t = 0.0
-TIME_DELTA = 0.01
+TIME_DELTA = 0.005
 
 currentTime = time.clock()
 accumulator = 0.0
