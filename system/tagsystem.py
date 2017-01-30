@@ -1,3 +1,6 @@
+"""
+TagSystem module
+"""
 from artifact.tagartifact import TagArtifact, TagType
 
 
@@ -37,9 +40,9 @@ class TagSystem:
         :param _entity: Entity to be removed
         :return: nothing
         """
-        for _, subtypeDict in self.tags.items():
-            for _, entityList in subtypeDict.items():
-                entityList[:] = [entity for entity in entityList if entity != _entity]
+        for _, subtype_dict in self.tags.items():
+            for _, entity_list in subtype_dict.items():
+                entity_list[:] = [entity for entity in entity_list if entity != _entity]
 
     def getentities(self, _type=TagType.KOMESMAN, _subtype=None):
         """
@@ -54,8 +57,8 @@ class TagSystem:
                 return type_dict.get(_subtype, [])
             else:
                 result = []
-                for _, entityList in type_dict.items():
-                    result += entityList
+                for _, entity_list in type_dict.items():
+                    result += entity_list
                 return result
         return []
 

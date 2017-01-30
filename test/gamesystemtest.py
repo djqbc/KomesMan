@@ -8,9 +8,9 @@ class TestGameSystem(unittest.TestCase):
         pygame.init()
     def test_game_state(self):
         system = GameSystem()
-        self.assertEqual(system.gameState, GameState.MENU)
+        self.assertEqual(system.game_state, GameState.MENU)
         system.endinit()
-        self.assertEqual(system.gameState, GameState.MENU)
+        self.assertEqual(system.game_state, GameState.MENU)
     
     def test_quit(self):
         system = GameSystem()

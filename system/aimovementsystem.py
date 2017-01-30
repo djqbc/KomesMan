@@ -1,3 +1,6 @@
+"""
+AIMovementSystem module
+"""
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
 from artifact.tagartifact import TagArtifact, TagSubType, TagType
@@ -18,7 +21,7 @@ class AiMovementSystem:
         """
         COnstructor
         """
-        self.pathFinder = None
+        self.pathfinder = None
 
     def remove(self, _entity):
         """
@@ -38,7 +41,7 @@ class AiMovementSystem:
             self.observing.append(_object)
         elif TagArtifact.NAME in _object.artifacts and _object.artifacts[
             TagArtifact.NAME].subtype == TagSubType.PATHFINDER:
-            self.pathFinder = _object
+            self.pathfinder = _object
         else:
             raise NameError("ERROR!!!")
 
@@ -63,62 +66,51 @@ class AiMovementSystem:
             target = tag_system.getentities(TagType.KOMESMAN)[0]
 
         board = tag_system.getentities(TagType.FIXED, TagSubType.BOARD)[0]
-        x = target.artifacts[SpriteArtifact.NAME].positionX
-        y = target.artifacts[SpriteArtifact.NAME].positionY
-        i_x = int(round(x / board.tileSize))
-        i_y = int(round(y / board.tileSize))
+        tmp_x = target.artifacts[SpriteArtifact.NAME].positionX
+        tmp_y = target.artifacts[SpriteArtifact.NAME].positionY
+        i_x = int(round(tmp_x / board.tile_size))
+        i_y = int(round(tmp_y / board.tile_size))
         # print('komesman jest w ', iX, ' ', iY)
-        for cop in self.observing:  # pozniej otagowac grupy wrogow i dla kazdej z nich miec mozliwosc innego kontrolera
+        for cop in self.observing:
             movement_artifact = cop.artifacts[MovementArtifact.NAME]
             sprite_artifact = cop.artifacts[SpriteArtifact.NAME]
-            if movement_artifact.target == None:
-    
-                copi_x = int(sprite_artifact.positionX / board.tileSize)  # to jest kiepskie jezeli idziemy w góre
-                copi_y = int(sprite_artifact.positionY / board.tileSize)  # to jest kiepskie, jezeli idziemy w lewo!!!
-    
-                if sprite_artifact.positionX % board.tileSize != 0 and movement_artifact.movementVector[0] < 0:
+            if movement_artifact.target is None:
+                copi_x = int(sprite_artifact.positionX / board.tile_size)
+                copi_y = int(sprite_artifact.positionY / board.tile_size)
+                if sprite_artifact.positionX % board.tile_size != 0 and movement_artifact.movementVector[0] < 0:
                     copi_x += 1
-                if sprite_artifact.positionY % board.tileSize != 0 and movement_artifact.movementVector[1] < 0:
+                if sprite_artifact.positionY % board.tile_size != 0 and movement_artifact.movementVector[1] < 0:
                     copi_y += 1
-    
-                next_move = self.pathFinder.getnextmove(Node(copi_x, copi_y), Node(i_x, i_y))
-    
+                next_move = self.pathfinder.getnextmove(Node(copi_x, copi_y), Node(i_x, i_y))
                 if copi_x == i_x and copi_y == i_y:
                     return
-    
-                # print('Cop is moving from: [{copX}, {copY}] to [{komX}, {komY}]. Next tile = [{nextX},{nextY}]'
-                # .format(copX = copiX, copY = copiY, komX = iX, komY = iY, nextX=nextMove.x, nextY=nextMove.y))
-    
-                x_to_reach = next_move.x * board.tileSize
-                y_to_reach = next_move.y * board.tileSize
-                movement_artifact.target = (x_to_reach, y_to_reach)
-#                 print('New target: ', movement_artifact.target, 'Current Pos: ', sprite_artifact.positionX, sprite_artifact.positionY)
 
-                # print('X TO REACH {x}. ACTUAL X {actx}. Y TO REACH. {y} ACTUAL Y {acty}'.
-                # format(actx=spriteArtifact.positionX,x=xToReach,acty=spriteArtifact.positionY,y=yToReach))
+                x_to_reach = next_move.node_x * board.tile_size
+                y_to_reach = next_move.node_y * board.tile_size
+                movement_artifact.target = (x_to_reach, y_to_reach)
             else:
                 x_to_reach, y_to_reach = movement_artifact.target
 
             movement_artifact.movementVector = [0, 0]
-            maxShiftN = movement_artifact.speedModifier * _delta * -1;
-            maxShiftP = movement_artifact.speedModifier * _delta * 1;
+            max_shift_n = movement_artifact.speedModifier * _delta * -1
+            max_shift_p = movement_artifact.speedModifier * _delta * 1
             if y_to_reach == int(sprite_artifact.positionY):
                 if sprite_artifact.positionY != int(sprite_artifact.positionY):
                     sprite_artifact.positionY = int(sprite_artifact.positionY)
-            elif y_to_reach < sprite_artifact.positionY and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, maxShiftN):
+            elif y_to_reach < sprite_artifact.positionY and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, max_shift_n):
                 sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_UP
                 movement_artifact.movementVector[1] = -1
-            elif y_to_reach > sprite_artifact.positionY and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, maxShiftP):
+            elif y_to_reach > sprite_artifact.positionY and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, max_shift_p):
                 sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_DOWN
                 movement_artifact.movementVector[1] = 1
-                 
+
             if x_to_reach == int(sprite_artifact.positionX):
                 if sprite_artifact.positionX != int(sprite_artifact.positionX):
                     sprite_artifact.positionX = int(sprite_artifact.positionX)
-            elif x_to_reach < sprite_artifact.positionX and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, maxShiftN, 0):
+            elif x_to_reach < sprite_artifact.positionX and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, max_shift_n, 0):
                 sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_LEFT
                 movement_artifact.movementVector[0] = -1
-            elif x_to_reach > sprite_artifact.positionX and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, maxShiftP, 0):
+            elif x_to_reach > sprite_artifact.positionX and board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, max_shift_p, 0):
                 sprite_artifact.sprite.currentAnimation = AnimationState.MOVE_RIGHT
                 movement_artifact.movementVector[0] = 1
 
@@ -134,7 +126,7 @@ class AiMovementSystem:
                         sprite_artifact.positionX = x_to_reach
                     else:
                         sprite_artifact.positionX += d_x
-                        
+
                     diff1 = sprite_artifact.positionY - y_to_reach
                     diff2 = sprite_artifact.positionY + d_y - y_to_reach
                     if diff1 * diff2 < 0:
@@ -148,4 +140,8 @@ class AiMovementSystem:
                 movement_artifact.target = None
 
     def input(self, _event):
+        """
+        :param _event: event variable
+        :return : nothing
+        """
         pass

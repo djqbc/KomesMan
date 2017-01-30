@@ -1,3 +1,7 @@
+"""
+Entity module
+"""
+
 class Entity:
     """
     Class representing single in-game Entity

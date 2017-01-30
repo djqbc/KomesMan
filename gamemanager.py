@@ -1,3 +1,7 @@
+"""
+GameManager module
+"""
+
 import pygame
 
 from system.drawsystem import DrawSystem
@@ -8,10 +12,10 @@ from system.collisionsystem import CollisionSystem
 from system.gamesystem import GameSystem
 from system.menusystem import MenuSystem
 from system.hudsystem import HUDSystem
-from builder.boardbuilder import BoardBuilder
-from builder.menubuilder import MenuBuilder
 from system.musicsystem import MusicSystem
 from system.playerprogresssystem import PlayerProgressSystem
+from builder.boardbuilder import BoardBuilder
+from builder.menubuilder import MenuBuilder
 
 
 class GameManager:
@@ -40,7 +44,7 @@ class GameManager:
         playerProgressSystem.NAME: playerProgressSystem,
         aiMoveSystem.NAME: aiMoveSystem,
     }
-    allSystemsForIteration = [item for item in allSystems.values()]# kolejnosc moze byc wazna < ale to mozna ogarnac tu a nie w slowniku..
+    allSystemsForIteration = [item for item in allSystems.values()]
     builders = [
         BoardBuilder(allSystems),
         MenuBuilder(allSystems)

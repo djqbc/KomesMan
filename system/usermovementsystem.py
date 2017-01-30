@@ -1,12 +1,15 @@
+"""
+UserMovementSystem module
+"""
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
+from artifact.tagartifact import TagType, TagSubType
 from sprite.mysprite import AnimationState
 from system.tagsystem import TagSystem
+from system.gamesystem import GameSystem, GameState
 import pygame
 from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, starttimer, \
     copyevent
-from system.gamesystem import GameSystem, GameState
-from artifact.tagartifact import TagType, TagSubType
 
 
 class UserMovementSystem:
@@ -21,8 +24,8 @@ class UserMovementSystem:
         """
         Constructor
         """
-        self.previousdX = 0
-        self.previousdY = 0
+        self.previous_dx = 0
+        self.previous_dy = 0
         self.paused = False
 
     def register(self, _object):
@@ -66,16 +69,16 @@ class UserMovementSystem:
                 if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, d_x, d_y):
                     sprite_artifact.positionX += d_x
                     sprite_artifact.positionY += d_y
-                    self.previousdX = d_x
-                    self.previousdY = d_y
+                    self.previous_dx = d_x
+                    self.previous_dy = d_y
                 else:
                     if d_x != 0:  # left
-                        if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, self.previousdY):
-                            sprite_artifact.positionY += self.previousdY
+                        if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, 0, self.previous_dy):
+                            sprite_artifact.positionY += self.previous_dy
                             sprite_artifact.positionY = int(sprite_artifact.positionY)
                     if d_y != 0:  # up
-                        if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, self.previousdX, 0):
-                            sprite_artifact.positionX += self.previousdX
+                        if board.checkmove(sprite_artifact.positionX, sprite_artifact.positionY, self.previous_dx, 0):
+                            sprite_artifact.positionX += self.previous_dx
                             sprite_artifact.positionX = int(sprite_artifact.positionX)
 
 

@@ -1,8 +1,10 @@
-# from math import inf
+"""
+Pathfinder module
+"""
 
+from threading import Thread
 from artifact.tagartifact import TagArtifact, TagType, TagSubType
 from entity import Entity
-from threading import Thread
 
 
 class Node:
@@ -12,18 +14,18 @@ class Node:
     def __init__(self, x, y):
         """
         Constructor
-        :param x: X tile position of node.
-        :param y: Y tile position of node.
+        :param node_x: X tile position of node.
+        :param node_y: Y tile position of node.
         """
-        self.x = x
-        self.y = y
+        self.node_x = x
+        self.node_y = y
 
     def __hash__(self):
         """
         Returns hash of Node.
         :return: hash of node
         """
-        return hash((self.x, self.y))
+        return hash((self.node_x, self.node_y))
 
     def __eq__(self, other):
         """
@@ -31,7 +33,7 @@ class Node:
         :param other: Second node to compare to
         :return: True if equal, false if not
         """
-        return (self.x, self.y) == (other.x, other.y)
+        return (self.node_x, self.node_y) == (other.node_x, other.node_y)
 
     def __ne__(self, other):
         """
@@ -39,7 +41,7 @@ class Node:
         :param other: Second node to compare to
         :return: True if are not equal, False otherwise.
         """
-        return not (self == other)
+        return not self == other
 
 
 class Edge:
@@ -49,18 +51,18 @@ class Edge:
     def __init__(self, u, v):
         """
         Constructor
-        :param u: 1st node
-        :param v: 2nd node
+        :param node_u: 1st node
+        :param node_v: 2nd node
         """
-        self.u = u
-        self.v = v
+        self.node_u = u
+        self.node_v = v
 
     def __hash__(self):
         """
         Returns hash of Edge
         :return: hash of Edge
         """
-        return hash((self.u, self.v))
+        return hash((self.node_u, self.node_v))
 
     def __eq__(self, other):
         """
@@ -68,7 +70,7 @@ class Edge:
         :param other: Second edge to compare to
         :return: True if equal, false if not
         """
-        return (self.u, self.v) == (other.u, other.v)
+        return (self.node_u, self.node_v) == (other.node_u, other.node_v)
 
     def __ne__(self, other):
         """
@@ -76,7 +78,7 @@ class Edge:
         :param other: Second edge to compare to
         :return: True if are not equal, False otherwise.
         """
-        return not (self == other)
+        return not self == other
 
 
 class Pathfinder(Entity):
@@ -93,9 +95,9 @@ class Pathfinder(Entity):
         self.board = board
         self.nodes = []
         #self.shortestPaths = {}
-        self.indexesNodes = {}
-        self.nodesIndexes = []
-        self.nextNodes = []
+        self.indexes_nodes = {}
+        self.nodes_indexes = []
+        self.next_nodes = []
         self.addartifact(TagArtifact(TagType.OTHER, TagSubType.PATHFINDER))
         self.ready = False
 
@@ -105,18 +107,18 @@ class Pathfinder(Entity):
         :return: nothing
         """
         self.ready = False
-        t = Thread(target=self.prepareallstepsforshortestpaths_, args=())
-        t.daemon = True
-        t.start()
+        my_thread = Thread(target=self.workerthread, args=())
+        my_thread.daemon = True
+        my_thread.start()
 
-    def prepareallstepsforshortestpaths_(self):
+    def workerthread(self):
         """
         Prepares all shortest paths.
-        They are accessible via nextNodes.
+        They are accessible via next_nodes.
         Each node has coressponding index in pathfinder, and nodes should be accessed self.NodesIndexes
-        Node index can be converted back by use of self.indexesNodes.
+        Node index can be converted back by use of self.indexes_nodes.
         Example usage:
-        self.indexesNodes[self.nextNodes[[self.nodesIndexes[self.nodesIndexes[sx][sy]][self.nodesIndexes[dx][dy]]]]]
+        self.indexes_nodes[self.next_nodes[[self.nodes_indexes[self.nodes_indexes[sx][sy]][self.nodes_indexes[dx][dy]]]]]
         Where (sx, sy) - start point, (dx, dy) - destination
 
         :return: nothing
@@ -124,81 +126,86 @@ class Pathfinder(Entity):
         # Generate all edges of graph
         max_y = len(self.board)
         max_x = len(self.board[1])
-        nodes_indexes = [[0 for x in range(max_y)] for y in range(max_x)]
-        self.indexesNodes.clear()
+        nodes_indexes = [[0 for tmp_x in range(max_y)] for tmp_y in range(max_x)]
+        self.indexes_nodes.clear()
 
         i = 0
-        y = 0
+        tmp_y = 0
         for row in self.board:
-            x = 0
+            tmp_x = 0
             for cell in row:
                 if cell == 0:
-                    node = Node(x, y)
+                    node = Node(tmp_x, tmp_y)
                     self.nodes.append(node)
-                    nodes_indexes[x][y] = i
-                    #self.indexesNodes.append(node)
-                    self.indexesNodes[i] = node
+                    nodes_indexes[tmp_x][tmp_y] = i
+                    #self.indexes_nodes.append(node)
+                    self.indexes_nodes[i] = node
                     i += 1
-                x += 1
-            y += 1
+                tmp_x += 1
+            tmp_y += 1
 
         nodes_count = len(self.nodes)
-        distance_table = [[float('inf') for x in range(nodes_count)] for y in range(nodes_count)]
-        next_nodes_table = [[None for x in range(nodes_count)] for y in range(nodes_count)]
+        distance_table = [[float('inf') for tmp_x in range(nodes_count)] for tmp_y in range(nodes_count)]
+        next_nodes_table = [[None for tmp_x in range(nodes_count)] for tmp_y in range(nodes_count)]
 
         # initiate same nodes with zeros
-        for x in range(nodes_count):
-            distance_table[x][x] = 0
+        for tmp_x in range(nodes_count):
+            distance_table[tmp_x][tmp_x] = 0
 
         # now put neighbours with their value = 1
-        y = 0
+        tmp_y = 0
         for row in self.board:
-            x = 0
+            tmp_x = 0
             for cell in row:
                 if cell == 0:
-                    xy_node_index = nodes_indexes[x][y]
-                    if x > 0 and self.board[y][x - 1] == 0:
-                        distance_table[xy_node_index][nodes_indexes[x - 1][y]] = 1
-                        next_nodes_table[xy_node_index][nodes_indexes[x - 1][y]] = nodes_indexes[x - 1][y]
-                    if x < max_x - 1 and self.board[y][x + 1] == 0:
-                        distance_table[xy_node_index][nodes_indexes[x + 1][y]] = 1
-                        next_nodes_table[xy_node_index][nodes_indexes[x + 1][y]] = nodes_indexes[x + 1][y]
-                    if y > 0 and self.board[y - 1][x] == 0:
-                        distance_table[xy_node_index][nodes_indexes[x][y - 1]] = 1
-                        next_nodes_table[xy_node_index][nodes_indexes[x][y - 1]] = nodes_indexes[x][y - 1]
-                    if y < max_y - 1 and self.board[y + 1][x] == 0:
-                        distance_table[xy_node_index][nodes_indexes[x][y + 1]] = 1
-                        next_nodes_table[xy_node_index][nodes_indexes[x][y + 1]] = nodes_indexes[x][y + 1]
-                x += 1
-            y += 1
-        for u in self.nodes:
-            for v1 in self.nodes:
-                for v2 in self.nodes:
-                    if v1.x == v2.x:
-                        if v1.y == v2.y - 1 or v1.y == v2.y + 1 or v2.y == v1.y - 1 or v2.y == v1.y + 1:
+                    xy_node_index = nodes_indexes[tmp_x][tmp_y]
+                    if tmp_x > 0 and self.board[tmp_y][tmp_x - 1] == 0:
+                        distance_table[xy_node_index][nodes_indexes[tmp_x - 1][tmp_y]] = 1
+                        next_nodes_table[xy_node_index][nodes_indexes[tmp_x - 1][tmp_y]] = nodes_indexes[tmp_x - 1][tmp_y]
+                    if tmp_x < max_x - 1 and self.board[tmp_y][tmp_x + 1] == 0:
+                        distance_table[xy_node_index][nodes_indexes[tmp_x + 1][tmp_y]] = 1
+                        next_nodes_table[xy_node_index][nodes_indexes[tmp_x + 1][tmp_y]] = nodes_indexes[tmp_x + 1][tmp_y]
+                    if tmp_y > 0 and self.board[tmp_y - 1][tmp_x] == 0:
+                        distance_table[xy_node_index][nodes_indexes[tmp_x][tmp_y - 1]] = 1
+                        next_nodes_table[xy_node_index][nodes_indexes[tmp_x][tmp_y - 1]] = nodes_indexes[tmp_x][tmp_y - 1]
+                    if tmp_y < max_y - 1 and self.board[tmp_y + 1][tmp_x] == 0:
+                        distance_table[xy_node_index][nodes_indexes[tmp_x][tmp_y + 1]] = 1
+                        next_nodes_table[xy_node_index][nodes_indexes[tmp_x][tmp_y + 1]] = nodes_indexes[tmp_x][tmp_y + 1]
+                tmp_x += 1
+            tmp_y += 1
+        for tmp_u in self.nodes:
+            for tmp_v1 in self.nodes:
+                for tmp_v2 in self.nodes:
+                    if tmp_v1.node_x == tmp_v2.node_x:
+                        if tmp_v1.node_y == tmp_v2.node_y - 1 or tmp_v1.node_y == tmp_v2.node_y + 1 or tmp_v2.node_y == tmp_v1.node_y - 1 or tmp_v2.node_y == tmp_v1.node_y + 1:
                             continue
-                    if v1.y == v2.y:
-                        if v1.x == v2.x - 1 or v1.x == v2.x + 1 or v2.x == v1.x - 1 or v2.x == v1.x + 1:
+                    if tmp_v1.node_y == tmp_v2.node_y:
+                        if tmp_v1.node_x == tmp_v2.node_x - 1 or tmp_v1.node_x == tmp_v2.node_x + 1 or tmp_v2.node_x == tmp_v1.node_x - 1 or tmp_v2.node_x == tmp_v1.node_x + 1:
                             continue
-                    index_v1 = nodes_indexes[v1.x][v1.y]
-                    index_v2 = nodes_indexes[v2.x][v2.y]
-                    index_u = nodes_indexes[u.x][u.y]
+                    index_v1 = nodes_indexes[tmp_v1.node_x][tmp_v1.node_y]
+                    index_v2 = nodes_indexes[tmp_v2.node_x][tmp_v2.node_y]
+                    index_u = nodes_indexes[tmp_u.node_x][tmp_u.node_y]
                     possible_shorter_distance = distance_table[index_v1][index_u] + distance_table[index_u][index_v2]
                     if distance_table[index_v1][index_v2] > possible_shorter_distance:
                         distance_table[index_v1][index_v2] = possible_shorter_distance
                         next_nodes_table[index_v1][index_v2] = next_nodes_table[index_v1][index_u]
 
         # that are the only things that matters for us after all.
-        self.nodesIndexes = nodes_indexes
-        self.nextNodes = next_nodes_table
+        self.nodes_indexes = nodes_indexes
+        self.next_nodes = next_nodes_table
         print("Finish")
         self.ready = True
 
     def getnextmove(self, startnode, destnode):
+        """
+        :param startnode: starting node
+        :param destnode: destination node
+        :return: new target node
+        """
         try:
             if self.ready:
-                return self.indexesNodes[
-                    self.nextNodes[self.nodesIndexes[startnode.x][startnode.y]][self.nodesIndexes[destnode.x][destnode.y]]]
+                return self.indexes_nodes[
+                    self.next_nodes[self.nodes_indexes[startnode.node_x][startnode.node_y]][self.nodes_indexes[destnode.node_x][destnode.node_y]]]
             else:
                 return destnode
         except:

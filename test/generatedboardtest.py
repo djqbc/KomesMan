@@ -26,4 +26,4 @@ class TestGeneratedBoard(unittest.TestCase):
         board = generator.get_board_binary(12, 16)
         builder = Builder(generator.get_board_binary(12, 16), 4)
         builder.board = board
-        self.assertTrue(builder.isConnected())
+        self.assertTrue(builder.isconnected())

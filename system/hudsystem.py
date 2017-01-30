@@ -1,3 +1,6 @@
+"""
+HudSystem module
+"""
 from artifact.spriteartifact import SpriteArtifact
 from myevents import GAME_EVENT, GameEventType
 

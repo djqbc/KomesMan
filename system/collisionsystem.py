@@ -1,12 +1,15 @@
-from artifact.spriteartifact import SpriteArtifact
+"""
+Collision system module
+"""
+import random
 import pygame
+from artifact.spriteartifact import SpriteArtifact
 from artifact.behaviorartifact import BehaviorArtifact
+from artifact.movementartifact import MovementArtifact
+from artifact.tagartifact import TagType, TagSubType
 from myevents import COLLISION_EVENT, ENTITY_EFFECT_EVENT, EntityEffect
 from system.gamesystem import GameSystem, GameState
 from system.tagsystem import TagSystem
-from artifact.tagartifact import TagType, TagSubType, TagArtifact
-import random
-from artifact.movementartifact import MovementArtifact
 
 
 class CollisionSystem:
@@ -17,7 +20,7 @@ class CollisionSystem:
     all = []
     moveableIndexes = []
     observing = []
-    
+
     sprites = []
     behaviors = []
 
@@ -77,7 +80,7 @@ class CollisionSystem:
         """
         if _event.type == ENTITY_EFFECT_EVENT and _event.effect == EntityEffect.TELEPORT:
             teleports = self.systems[TagSystem.NAME].getentities(TagType.FIXED, TagSubType.TELEPORT)
-            teleports = [t for t in teleports if t != _event.teleport]
+            teleports = [FPS_TIME for FPS_TIME in teleports if FPS_TIME != _event.teleport]
             if len(teleports) > 0:
                 board = self.systems[TagSystem.NAME].getentities(TagType.FIXED, TagSubType.BOARD)[0]
                 target_teleport = random.choice(teleports)
@@ -95,7 +98,7 @@ class CollisionSystem:
                 elif board.checkmove(entity_sprite_artifact.positionX, entity_sprite_artifact.positionY, self.tile_size, 0):
                     entity_sprite_artifact.positionX += self.tile_size
                 else:
-                    print("Couldn't find teleport output cell")
+                    print("Couldn'FPS_TIME find teleport output cell")
 
     def update(self, _timedelta, _systems):
         """
@@ -107,18 +110,18 @@ class CollisionSystem:
         if _systems[GameSystem.NAME].getcurrentgamestate() != GameState.GAME:
             return
         self.systems = _systems
-        for entityInd in self.moveableIndexes:
-            self.all[entityInd].x = self.sprites[entityInd].positionX
-            self.all[entityInd].y = self.sprites[entityInd].positionY
-            
-        for entityInd in self.moveableIndexes:
-            colliding = self.all[entityInd].collidelistall(self.all)
+        for entity_ind in self.moveableIndexes:
+            self.all[entity_ind].x = self.sprites[entity_ind].positionX
+            self.all[entity_ind].y = self.sprites[entity_ind].positionY
+
+        for entity_ind in self.moveableIndexes:
+            colliding = self.all[entity_ind].collidelistall(self.all)
             for index in colliding:
-                if index != entityInd:
-                    entity = self.observing[entityInd]
+                if index != entity_ind:
+                    entity = self.observing[entity_ind]
                     entity2 = self.observing[index]
 
-                    self.behaviors[entityInd].behavior.input(
+                    self.behaviors[entity_ind].behavior.input(
                         pygame.event.Event(COLLISION_EVENT, me=entity, colliding=entity2), pygame.event.post)
 
                     if index not in self.moveableIndexes:

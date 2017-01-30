@@ -1,7 +1,11 @@
+"""
+Generated board module
+"""
+
 import random
 from enum import Enum
-from board import BoardElement
 import math
+from board import BoardElement
 
 
 class DrillDirection(Enum):
@@ -15,6 +19,9 @@ class DrillDirection(Enum):
 
 
 class Drill:
+    """
+    Drill class
+    """
     def __init__(self, _board, _direction, _x, _y):
         """
         Constructor
@@ -24,10 +31,10 @@ class Drill:
         :param _y: Start Y tile position of drill
         """
         self.board = _board
-        self.tripDistance = random.choice(list(range(2, 11, 2)))
+        self.trip_distance = random.choice(list(range(2, 11, 2)))
         self.direction = _direction
-        self.x = _x
-        self.y = _y
+        self.node_x = _x
+        self.node_y = _y
         self.finished = False
         self.visited = [(_x, _y)]
         self.board[_x][_y] = BoardElement.EMPTY
@@ -37,8 +44,8 @@ class Drill:
         Perform drilling of board.
         :return: nothing
         """
-        next_x = self.x
-        next_y = self.y
+        next_x = self.node_x
+        next_y = self.node_y
         if self.direction == DrillDirection.UP:
             next_y -= 1
         if self.direction == DrillDirection.DOWN:
@@ -48,18 +55,18 @@ class Drill:
         if self.direction == DrillDirection.RIGHT:
             next_x += 1
         if self.isborder(next_x, next_y):
-            self.tripDistance = random.choice(list(range(2, 11, 2)))
+            self.trip_distance = random.choice(list(range(2, 11, 2)))
             self.changedirection()
         elif self.board[next_x][next_y] == BoardElement.EMPTY and not (next_x, next_y) in self.visited:
             self.finished = True
         else:
             self.board[next_x][next_y] = BoardElement.EMPTY
-            self.tripDistance -= 1
-            self.x = next_x
-            self.y = next_y
+            self.trip_distance -= 1
+            self.node_x = next_x
+            self.node_y = next_y
             self.visited += [(next_x, next_y)]
-            if self.tripDistance == 0:
-                self.tripDistance = random.choice(list(range(2, 11, 2)))
+            if self.trip_distance == 0:
+                self.trip_distance = random.choice(list(range(2, 11, 2)))
                 self.changedirection()
 
     def changedirection(self):
@@ -83,35 +90,38 @@ class Drill:
         """
         return self.finished
 
-    def isborder(self, _x=None, _y=None):
+    def isborder(self, nodex=None, nodey=None):
         """
         Checks if X,Y (tile positions) are borders of board.
-        :param _x: X number of tile, or None if this parameter should be taken from Drill.
-        :param _y: Y number of tile, or None if this parameter should be taken from Drill.
+        :param nodex: X number of tile, or None if this parameter should be taken from Drill.
+        :param nodey: Y number of tile, or None if this parameter should be taken from Drill.
         :return: True if tile is on border, False otherwise.
         """
-        if _x is not None:
-            return _x == 0 or _y == 0 or _x == len(self.board) - 1 or _y == len(self.board[0]) - 1
+        if nodex is not None:
+            return nodex == 0 or nodey == 0 or nodex == len(self.board) - 1 or nodey == len(self.board[0]) - 1
         else:
-            return self.x == 0 or self.y == 0 or self.x == len(self.board) - 1 or self.y == len(self.board[0]) - 1
+            return self.node_x == 0 or self.node_y == 0 or self.node_x == len(self.board) - 1 or self.node_y == len(self.board[0]) - 1
 
     def iscrossingborder(self):
         """
         Check if drill is going outside board
         :return: True if drill is goingo outside board, False otherwise.
         """
-        if self.direction == DrillDirection.UP and self.y == 0:
+        if self.direction == DrillDirection.UP and self.node_y == 0:
             return True
-        if self.direction == DrillDirection.DOWN and self.y == len(self.board[0]) - 1:
+        if self.direction == DrillDirection.DOWN and self.node_y == len(self.board[0]) - 1:
             return True
-        if self.direction == DrillDirection.LEFT and self.x == 0:
+        if self.direction == DrillDirection.LEFT and self.node_x == 0:
             return True
-        if self.direction == DrillDirection.RIGHT and self.x == len(self.board) - 1:
+        if self.direction == DrillDirection.RIGHT and self.node_x == len(self.board) - 1:
             return True
         return False
 
 
 class Builder:
+    """
+    Builder class
+    """
     def __init__(self, _board, _numberofbuilders):
         """
         Constructor
@@ -123,23 +133,23 @@ class Builder:
         used_rows = []
         used_columns = []
         for _ in range(_numberofbuilders):
-            x = random.randint(1, len(self.board) - 2)
-            y = random.randint(1, len(self.board[0]) - 2)
-            while x in used_columns or y in used_rows:
-                x = random.randint(1, len(self.board) - 2)
-                y = random.randint(1, len(self.board[0]) - 2)
-            used_columns += [x]
-            used_rows += [y]
+            tmp_x = random.randint(1, len(self.board) - 2)
+            tmp_y = random.randint(1, len(self.board[0]) - 2)
+            while tmp_x in used_columns or tmp_y in used_rows:
+                tmp_x = random.randint(1, len(self.board) - 2)
+                tmp_y = random.randint(1, len(self.board[0]) - 2)
+            used_columns += [tmp_x]
+            used_rows += [tmp_y]
             tmp = [2] * 50 + [3] * 30 + [4] * 20
             number_of_drills = random.choice(tmp)
             drill_directions = [DrillDirection.UP, DrillDirection.DOWN, DrillDirection.LEFT, DrillDirection.RIGHT]
             for _ in range(number_of_drills):
                 direction_chances = []
-                for d in drill_directions:
-                    direction_chances = direction_chances + [d] * int(100 / len(drill_directions))
+                for drill_d in drill_directions:
+                    direction_chances = direction_chances + [drill_d] * int(100 / len(drill_directions))
                 direction = random.choice(direction_chances)
                 drill_directions.remove(direction)
-                self.drills.append(Drill(self.board, direction, x, y))
+                self.drills.append(Drill(self.board, direction, tmp_x, tmp_y))
 
     def drill(self):
         """
@@ -153,58 +163,54 @@ class Builder:
                 if not drill.isfinished():
                     work_to_do = True
                     drill.drill()
-                    
-    def getNeighbours(self, _v):
+
+    def getneighbours(self, node_v):
         """
         Get not-yet drilled neighbours of certain coordinate.
-        :param _v: tuple of coordinates
+        :param node_v: tuple of coordinates
         :return:
         """
-        maxY = len(self.board[0])
-        maxX = len(self.board)
-        x, y = _v
+        max_y = len(self.board[0])
+        max_x = len(self.board)
+        tmp_x, tmp_y = node_v
         result = []
-        if x > 0 and self.board[x - 1][y] != BoardElement.WALL:
-            result.append((x - 1, y))
-        if y > 0 and self.board[x][y - 1] != BoardElement.WALL:
-            result.append((x, y - 1))
-        if x + 1 < maxX and self.board[x + 1][y] != BoardElement.WALL:
-            result.append((x + 1, y))
-        if y + 1 < maxY and self.board[x][y + 1] != BoardElement.WALL:
-            result.append((x, y + 1))
+        if tmp_x > 0 and self.board[tmp_x - 1][tmp_y] != BoardElement.WALL:
+            result.append((tmp_x - 1, tmp_y))
+        if tmp_y > 0 and self.board[tmp_x][tmp_y - 1] != BoardElement.WALL:
+            result.append((tmp_x, tmp_y - 1))
+        if tmp_x + 1 < max_x and self.board[tmp_x + 1][tmp_y] != BoardElement.WALL:
+            result.append((tmp_x + 1, tmp_y))
+        if tmp_y + 1 < max_y and self.board[tmp_x][tmp_y + 1] != BoardElement.WALL:
+            result.append((tmp_x, tmp_y + 1))
         return result
-                    
-    def isConnected(self):
+
+    def isconnected(self):
         """
         Is graph connected?
         :return: True if graph is connected, False otherwise.
         """
-        maxY = len(self.board[0])
-        maxX = len(self.board)
+        max_y = len(self.board[0])
+        max_x = len(self.board)
         graph = []
-        for x in range(maxX):
-            for y in range(maxY):
-                if self.board[x][y] != BoardElement.WALL:
-                    graph += [(x, y)]
-        n = len(graph)
-        visited = [False for _ in range(n)]
+        for tmp_x in range(max_x):
+            for tmp_y in range(max_y):
+                if self.board[tmp_x][tmp_y] != BoardElement.WALL:
+                    graph += [(tmp_x, tmp_y)]
+        graph_len = len(graph)
+        visited = [False for _ in range(graph_len)]
         stack = []
-        vc = 0
+        visited_count = 0
         stack.append(graph[0])
         visited[0] = True
         while len(stack) > 0:
-            v = stack.pop()
-            vc += 1
-            for u in self.getNeighbours(v):
-                i = graph.index(u)
-                if visited[i] == False:
+            tmp_v = stack.pop()
+            visited_count += 1
+            for tmp_u in self.getneighbours(tmp_v):
+                i = graph.index(tmp_u)
+                if not visited[i]:
                     visited[i] = True
-                    stack.append(u)
-        if vc == n:
-            return True
-        else:
-            return False
-            
+                    stack.append(tmp_u)
+        return visited_count == graph_len
 
 class GeneratedBoard:
     """
@@ -223,17 +229,17 @@ class GeneratedBoard:
         board = [[BoardElement.WALL for _ in range(_sx)] for _ in range(_sy)]
         builder = Builder(board, 4)
         builder.drill()
-        while builder.isConnected() == False:
+        while not builder.isconnected():
             print("Unconnected graph - generating again....")
             board = [[BoardElement.WALL for _ in range(_sx)] for _ in range(_sy)]
             builder = Builder(board, 4)
             builder.drill()
-        
+
         empty_cells = []
-        for x in range(_sy):
-            for y in range(_sx):
-                if board[x][y] == BoardElement.EMPTY:
-                    empty_cells += [(x, y)]
+        for tmp_x in range(_sy):
+            for tmp_y in range(_sx):
+                if board[tmp_x][tmp_y] == BoardElement.EMPTY:
+                    empty_cells += [(tmp_x, tmp_y)]
         empty_cells_len = len(empty_cells)
         caps_number = random.randint(int(empty_cells_len / 10), int(empty_cells_len / 2))
         for _ in range(caps_number):
@@ -259,9 +265,9 @@ class GeneratedBoard:
             else:
                 item = random.choice(list(available_items))
                 item_price = available_items[item]
-                x, y = random.choice(empty_cells)
-                empty_cells.remove((x, y))
-                board[x][y] = item
+                tmp_x, tmp_y = random.choice(empty_cells)
+                empty_cells.remove((tmp_x, tmp_y))
+                board[tmp_x][tmp_y] = item
                 current_board_value -= item_price
 
         # add komesman
@@ -285,10 +291,10 @@ class GeneratedBoard:
                 item_price = available_enemies[item]
                 dist = 0
                 while dist <= 3:
-                    x, y = random.choice(empty_cells)
-                    dist = math.hypot(x - komesman_x, y - komesman_y)
-                empty_cells.remove((x, y))
-                board[x][y] = item
+                    tmp_x, tmp_y = random.choice(empty_cells)
+                    dist = math.hypot(tmp_x - komesman_x, tmp_y - komesman_y)
+                empty_cells.remove((tmp_x, tmp_y))
+                board[tmp_x][tmp_y] = item
                 current_board_value -= item_price
                 i+= 1
 

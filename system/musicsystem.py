@@ -1,3 +1,6 @@
+"""
+MusicSystem module
+"""
 from myevents import ENTITY_EFFECT_EVENT, EntityEffect
 import pygame
 

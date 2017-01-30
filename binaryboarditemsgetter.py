@@ -1,3 +1,6 @@
+"""
+BinaryBoardItemGetter
+"""
 from board import BoardElement
 
 
@@ -31,23 +34,23 @@ class BinaryBoardItemsGetter:
         self.enemies.clear()
         self.teleports.clear()
         self.komesman = (0, 0)
-        y = 0
+        tmp_y = 0
         for row in board:
-            x = 0
+            tmp_x = 0
             for cell in row:
                 if cell == BoardElement.CAP:
-                    self.caps.append((x, y))
+                    self.caps.append((tmp_x, tmp_y))
                 elif cell == BoardElement.BEER:
-                    self.beers.append((x, y))
+                    self.beers.append((tmp_x, tmp_y))
                 elif cell == BoardElement.DRUG:
-                    self.amphs.append((x, y))
+                    self.amphs.append((tmp_x, tmp_y))
                 elif cell == BoardElement.PILL:
-                    self.pills.append((x, y))
+                    self.pills.append((tmp_x, tmp_y))
                 elif cell == BoardElement.ENEMY:
-                    self.enemies.append((x, y))
+                    self.enemies.append((tmp_x, tmp_y))
                 elif cell == BoardElement.KOMESMAN:
-                    self.komesman = (x, y)
+                    self.komesman = (tmp_x, tmp_y)
                 elif cell == BoardElement.TELEPORT:
-                    self.teleports.append((x, y))
-                x += 1
-            y += 1
+                    self.teleports.append((tmp_x, tmp_y))
+                tmp_x += 1
+            tmp_y += 1

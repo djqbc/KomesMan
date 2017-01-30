@@ -8,14 +8,14 @@ class TestDrawSystem(unittest.TestCase):
         pygame.init()
     def test_start_effect(self):
         system = DrawSystem()
-        self.assertEqual(system.currentEffect, None)
+        self.assertEqual(system.current_effect, None)
         system.input(pygame.event.Event(SCREEN_EFFECT_EVENT, reason=EventType.START, time=None))
-        self.assertNotEqual(system.currentEffect, None)
+        self.assertNotEqual(system.current_effect, None)
         
     def test_stop_effect(self):
         system = DrawSystem()
-        self.assertEqual(system.currentEffect, None)
+        self.assertEqual(system.current_effect, None)
         system.input(pygame.event.Event(SCREEN_EFFECT_EVENT, reason=EventType.START, time=None))
-        self.assertNotEqual(system.currentEffect, None)
+        self.assertNotEqual(system.current_effect, None)
         system.input(pygame.event.Event(SCREEN_EFFECT_EVENT, reason=EventType.STOP, time=None))
-        self.assertEqual(system.currentEffect, None)
+        self.assertEqual(system.current_effect, None)

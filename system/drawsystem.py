@@ -1,8 +1,9 @@
-import numpy
-
+"""
+DrawSystem module
+"""
 from artifact.spriteartifact import SpriteArtifact
 from myevents import SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType, starttimer, \
-    GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, GAME_EVENT
+    GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType
 import pygame
 from system.gamesystem import GameState
 
@@ -14,8 +15,8 @@ class DrawSystem:
     NAME = "DrawSystem"
     screen = None
     observing = []
-    currentEffect = None
-    currentGameState = GameState.INIT
+    current_effect = None
+    current_game_state = GameState.INIT
     col = 0
 
     def __init__(self):
@@ -65,17 +66,17 @@ class DrawSystem:
         self.screen.fill(pygame.Color('black'))
         for entity in self.observing:
             sprite_artifact = entity.artifacts[SpriteArtifact.NAME]
-            if sprite_artifact.drawStage & int(self.currentGameState):
+            if sprite_artifact.drawStage & int(self.current_game_state):
                 sprite_artifact.sprite.draw(self.screen, sprite_artifact.positionX, sprite_artifact.positionY)
-        if self.currentEffect is not None:
-            if self.currentEffect.dict['type'] == ScreenEffectEvent.BLUR:  # czemu nie mog� dac .type
+        if self.current_effect is not None:
+            if self.current_effect.dict['type'] == ScreenEffectEvent.BLUR:  # czemu nie mog� dac .type
                 scale = 1.0 / float(20.0)
                 surf_size = self.screen.get_size()
                 scale_size = (int(surf_size[0] * scale), int(surf_size[1] * scale))
                 surf = pygame.transform.smoothscale(self.screen, scale_size)
                 surf = pygame.transform.smoothscale(surf, surf_size)
                 self.screen.blit(surf, (0, 0))
-            elif self.currentEffect.dict['type'] == ScreenEffectEvent.COLOR_EXPLOSION:  # czemu nie mog� dac .type
+            elif self.current_effect.dict['type'] == ScreenEffectEvent.COLOR_EXPLOSION:  # czemu nie mog� dac .type
                 surf = self.screen
                 array = pygame.surfarray.pixels3d(surf)
                 array[:, :, self.col:] = 0
@@ -84,7 +85,7 @@ class DrawSystem:
                 if self.col == 3:
                     self.col = 0
                 self.screen.blit(surf, (0, 0))
-            elif self.currentEffect.dict['type'] == ScreenEffectEvent.PAUSE_EFFECT:
+            elif self.current_effect.dict['type'] == ScreenEffectEvent.PAUSE_EFFECT:
                 surf = self.screen
                 array = pygame.surfarray.pixels3d(surf)
                 array[:, :, 1:] = 0
@@ -110,16 +111,16 @@ class DrawSystem:
         :return: nothing
         """
         if _event.type == GAME_STATE_CHANGE_EVENT:
-            self.currentGameState = _event.state
-            self.currentEffect = None
+            self.current_game_state = _event.state
+            self.current_effect = None
         elif _event.type == SCREEN_EFFECT_EVENT:  # dodac obsluge wielu efektow na raz
             if _event.reason == EventType.START:
-                self.currentEffect = _event
+                self.current_effect = _event
                 if _event.time is not None:
                     starttimer(_event.time,
                            lambda: pygame.event.post(pygame.event.Event(SCREEN_EFFECT_EVENT, reason=EventType.STOP)))
             elif _event.reason == EventType.STOP:
-                self.currentEffect = None
+                self.current_effect = None
         elif _event.type == MENU_EVENT:
             if _event.action == MenuEventType.MAXIMIZE:
                 self.createdisplay(_maximized=True)

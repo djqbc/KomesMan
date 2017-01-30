@@ -1,3 +1,6 @@
+"""
+HighscoreManager module
+"""
 import os
 
 
@@ -69,8 +72,8 @@ class HighscoresManager:
         """
         if not self.loaded:
             if os.path.isfile(self.filename):
-                with open(self.filename) as f:
-                    for line in f:
+                with open(self.filename) as file:
+                    for line in file:
                         self.highscores.append(Highscore(line.strip(), None))
         self.loaded = True
 
@@ -79,7 +82,7 @@ class HighscoresManager:
         Saves internal model of highscores to file
         :return: nothing
         """
-        with open(self.filename, 'w') as f:
+        with open(self.filename, 'w') as file:
             for highscore in self.highscores:
-                f.write(str(highscore))
-                f.write('\n')
+                file.write(str(highscore))
+                file.write('\n')

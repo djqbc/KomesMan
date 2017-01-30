@@ -68,7 +68,7 @@ class BoardBuilder:
         self.systems[CollisionSystem.NAME].tile_size = self.tile_size
         
         if not _restart:
-            if self.systems[PlayerProgressSystem.NAME].currentLevel == 0:
+            if self.systems[PlayerProgressSystem.NAME].current_level == 0:
                 self.binaryboard = PredefinedBoard().get_board_binary()
             else:
                 self.binaryboard = GeneratedBoard().get_board_binary(resolution_x // self.tile_size, resolution_y // self.tile_size)
@@ -147,8 +147,8 @@ class BoardBuilder:
     def createkomesman(self, x, y):
         """
         Creates our hero - KomesMan
-        :param x: integer X position
-        :param y: integer Y position
+        :param node_x: integer X position
+        :param node_y: integer Y position
         :return: nothing
         """
         komes_man = Entity()

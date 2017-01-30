@@ -1,3 +1,6 @@
+"""
+MyEvents module
+"""
 from enum import Enum
 from threading import Timer
 
@@ -78,9 +81,9 @@ def starttimer(_timeoutms, _timeoutcallback):
     :param _timeoutcallback: Function to call after timeout
     :return:
     """
-    t = Timer(_timeoutms / 1000, _timeoutcallback)
-    t.start()
-    return t
+    thread = Timer(_timeoutms / 1000, _timeoutcallback)
+    thread.start()
+    return thread
 
 
 def copyevent(_event):
@@ -92,7 +95,7 @@ def copyevent(_event):
     # todo: tu nie powinno byc dalej deepcopy ale na konkretnym elemencie ?
 
     tmp = {}
-    for k, v in _event.dict.items():
-        tmp[k] = v
+    for k, value in _event.dict.items():
+        tmp[k] = value
 
     return pygame.event.Event(_event.type, tmp)

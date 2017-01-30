@@ -18,13 +18,13 @@ class TestMenuSystem(unittest.TestCase):
         system.register(item)
         system.register(item)
         system.register(item)
-        system.currentGameState = GameState.MENU
+        system.current_game_state = GameState.MENU
         
-        self.assertEqual(system.currentIndex, 0)
+        self.assertEqual(system.current_index, 0)
         system.input(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_UP))
-        self.assertEqual(system.currentIndex, 2)
+        self.assertEqual(system.current_index, 2)
         system.input(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_UP))
-        self.assertEqual(system.currentIndex, 1)
+        self.assertEqual(system.current_index, 1)
         
         system.remove(item)
         system.remove(item)
@@ -38,13 +38,13 @@ class TestMenuSystem(unittest.TestCase):
         system.register(item)
         system.register(item)
         system.register(item)
-        system.currentGameState = GameState.MENU
+        system.current_game_state = GameState.MENU
         
-        self.assertEqual(system.currentIndex, 0)
+        self.assertEqual(system.current_index, 0)
         system.input(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_DOWN))
-        self.assertEqual(system.currentIndex, 1)
+        self.assertEqual(system.current_index, 1)
         system.input(pygame.event.Event(pygame.KEYDOWN, key=pygame.K_DOWN))
-        self.assertEqual(system.currentIndex, 2)
+        self.assertEqual(system.current_index, 2)
         
         system.remove(item)
         system.remove(item)

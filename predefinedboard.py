@@ -1,3 +1,7 @@
+"""
+PredefiniedBoard module
+"""
+
 class PredefinedBoard:
     """
     Class holding default predefined board
@@ -19,8 +23,6 @@ class PredefinedBoard:
         TELEPORT = 8
         :return: 2d BoardItems array representing board
         """
-        """returns representation of default board"""
-
 
         return [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
