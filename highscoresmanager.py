@@ -45,7 +45,8 @@ class HighscoresManager:
         :param potentialhighscore: user score
         :return: True if value is one of best scores, false otherwise.
         """
-        if len([x for x in self.highscores if potentialhighscore > x.score]) > 0 or len(self.highscores) < self.topscorescount:
+        if len([x for x in self.highscores if potentialhighscore > x.score]) > 0 or len(
+                self.highscores) < self.topscorescount:
             return True
         return False
 

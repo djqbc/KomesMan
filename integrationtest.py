@@ -77,9 +77,10 @@ class IntegrationTests(unittest.TestCase):
 #             game.render()
             if game.gameSystem.getcurrentgamestate() & GameState.PAUSED:
                 game.input(pygame.event.Event(pygame.KEYUP, key=pygame.K_p))
-            if len(game.tagSystem.getentities(TagType.ENEMY)) == 0 or i > 10000:
+            if len(game.tagSystem.getentities(TagType.ENEMY)) == 0 or i > 1000000:
                 print("Reload")
                 pygame.event.post(pygame.event.Event(GAME_STATE_CHANGE_EVENT, state=GameState.WON_GAME))
+                i = 0
             if game.playerProgressSystem.currentLifes == 0:
                 break
             i += 1
