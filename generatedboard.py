@@ -1,6 +1,4 @@
-"""
-Generated board module
-"""
+"""Generated board module."""
 
 import random
 from enum import Enum
@@ -9,9 +7,8 @@ from board import BoardElement
 
 
 class DrillDirection(Enum):
-    """
-    Enum representing direction of drill.
-    """
+    """Enum representing direction of drill."""
+
     UP = 0
     DOWN = 1
     LEFT = 2
@@ -19,12 +16,12 @@ class DrillDirection(Enum):
 
 
 class Drill:
-    """
-    Drill class
-    """
+    """Drill class."""
+
     def __init__(self, _board, _direction, _x, _y):
         """
-        Constructor
+        Constructor.
+
         :param _board: Board to be drilled (2d array of BoardElement values)
         :param _direction: Initial direction of drill
         :param _x: Start X tile position of drill
@@ -42,6 +39,7 @@ class Drill:
     def drill(self):
         """
         Perform drilling of board.
+
         :return: nothing
         """
         next_x = self.node_x
@@ -71,7 +69,8 @@ class Drill:
 
     def changedirection(self):
         """
-        Randomly changes direction of drill based on previous direction
+        Randomly changes direction of drill based on previous direction.
+
         :return: nothing
         """
         if self.direction == DrillDirection.UP:
@@ -85,14 +84,16 @@ class Drill:
 
     def isfinished(self):
         """
-        Return if drill finished work
+        Return if drill finished work.
+
         :return: True if drill finished, False otherwise.
         """
         return self.finished
 
     def isborder(self, nodex=None, nodey=None):
         """
-        Checks if X,Y (tile positions) are borders of board.
+        Check if X,Y (tile positions) are borders of board.
+
         :param nodex: X number of tile, or None if this parameter should be taken from Drill.
         :param nodey: Y number of tile, or None if this parameter should be taken from Drill.
         :return: True if tile is on border, False otherwise.
@@ -104,7 +105,8 @@ class Drill:
 
     def iscrossingborder(self):
         """
-        Check if drill is going outside board
+        Check if drill is going outside board.
+
         :return: True if drill is goingo outside board, False otherwise.
         """
         if self.direction == DrillDirection.UP and self.node_y == 0:
@@ -119,12 +121,12 @@ class Drill:
 
 
 class Builder:
-    """
-    Builder class
-    """
+    """Builder class."""
+
     def __init__(self, _board, _numberofbuilders):
         """
-        Constructor
+        Constructor.
+
         :param _board: Board which should be drilled (probably full of BoardElement.Wall)
         :param _numberofbuilders: Number of drills for creating board.
         """
@@ -153,7 +155,8 @@ class Builder:
 
     def drill(self):
         """
-        Runs drilling on all drills until drilling is finished.
+        Run drilling on all drills until drilling is finished.
+
         :return: nothing
         """
         work_to_do = True
@@ -167,6 +170,7 @@ class Builder:
     def getneighbours(self, node_v):
         """
         Get not-yet drilled neighbours of certain coordinate.
+
         :param node_v: tuple of coordinates
         :return:
         """
@@ -186,7 +190,8 @@ class Builder:
 
     def isconnected(self):
         """
-        Is graph connected?
+        Return if graph connected.
+
         :return: True if graph is connected, False otherwise.
         """
         max_y = len(self.board[0])
@@ -213,19 +218,17 @@ class Builder:
         return visited_count == graph_len
 
 class GeneratedBoard:
-    """
-    Class holding randomly generated board
-    """
+    """Class holding randomly generated board."""
 
     @staticmethod
     def get_board_binary(_sx, _sy):
         """
-        Returns representation of randomly generated board
+        Return representation of randomly generated board.
+
         :param _sx: number of tiles in X dimension
         :param _sy: number of tiles in Y dimension
         :return: Board in enum format (with simple walls and items)
         """
-
         board = [[BoardElement.WALL for _ in range(_sx)] for _ in range(_sy)]
         builder = Builder(board, 4)
         builder.drill()

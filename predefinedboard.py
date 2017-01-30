@@ -1,16 +1,13 @@
-"""
-PredefiniedBoard module
-"""
+"""PredefiniedBoard module."""
 
 class PredefinedBoard:
-    """
-    Class holding default predefined board
-    """
+    """Class holding default predefined board."""
 
     @staticmethod
     def get_board_binary():
         """
-        Gets default board
+        Get default board.
+
         Short handout for editing (Enum values not used for ease of editing)
         EMPTY = 0
         WALL = 1
@@ -23,7 +20,6 @@ class PredefinedBoard:
         TELEPORT = 8
         :return: 2d BoardItems array representing board
         """
-
         return [
             [1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1],
             [1, 7, 0, 0, 0, 0, 0, 0, 0, 0, 6, 0, 2, 2, 2, 1],

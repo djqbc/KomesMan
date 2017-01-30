@@ -1,20 +1,16 @@
-"""
-Entity module
-"""
+"""Entity module."""
 
 class Entity:
-    """
-    Class representing single in-game Entity
-    """
+    """Class representing single in-game Entity."""
+
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.artifacts = {}
 
     def addartifact(self, _artifact):
         """
-        Add artifact to entity
+        Add artifact to entity.
+
         :param _artifact: Artifact to add
         :return: nothing
         """

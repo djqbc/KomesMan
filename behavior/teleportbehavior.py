@@ -1,6 +1,4 @@
-"""
-Teleport behaviour package
-"""
+"""Teleport behaviour package."""
 import math
 import pygame
 from myevents import COLLISION_EVENT, ENTITY_EFFECT_EVENT, EntityEffect
@@ -9,13 +7,13 @@ from artifact.spriteartifact import SpriteArtifact
 
 
 class TeleportBehavior:
-    """
-    Class defining behaviour of teleport on incoming events
-    """
+    """Class defining behaviour of teleport on incoming events."""
+
     @staticmethod
     def input(_event, _posteventcallback):
         """
         Reaction on incoming event.
+
         Teleports player or enemy to the other side of screen.
         :param _event: event to process
         :param _posteventcallback: function to evaluate after processing input

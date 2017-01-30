@@ -1,18 +1,16 @@
-"""
-BinaryBoardItemGetter
-"""
+"""Binary Board Item Getter."""
 from board import BoardElement
 
 
 class BinaryBoardItemsGetter:
     """
-    Class responsible for converting items from 2d array into
-    lists of coordinates (by map tile)
+    Class responsible for converting items from 2d array.
+
+    Creates lists of coordinates (by map tile)
     """
+
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.caps = []
         self.beers = []
         self.amphs = []
@@ -23,7 +21,8 @@ class BinaryBoardItemsGetter:
 
     def load_items(self, board):
         """
-        Load items from board into lists of items
+        Load items from board into lists of items.
+
         :param board: board to process
         :return: nothing
         """

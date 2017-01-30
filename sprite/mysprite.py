@@ -1,15 +1,12 @@
-"""
-My sprite package
-"""
+"""My sprite package."""
 from enum import Enum
 from enum import IntEnum
 import pygame
 
 
 class AnimationState(Enum):
-    """
-    Enum representing animation state
-    """
+    """Enum representing animation state."""
+
     MOVE_UP = 0
     MOVE_LEFT = 1
     MOVE_RIGHT = 2
@@ -17,22 +14,18 @@ class AnimationState(Enum):
 
 
 class Modifiers(IntEnum):
-    """
-    Modifiers allowing to align text.
-    """
+    """Modifiers allowing to align text."""
+
     NONE = 0
     CENTER_H = 1
     CENTER_V = 2
 
 
 class MySprite(pygame.sprite.Sprite):
-    """
-    Class defining my sprite.
-    """
+    """Class defining my sprite."""
+
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         super(MySprite, self).__init__()
         self.timeelapsed = 0.0
         self.currentanimation = AnimationState.MOVE_UP
@@ -41,7 +34,8 @@ class MySprite(pygame.sprite.Sprite):
 
     def draw(self, _screen, _positionx, _positiony):
         """
-        Draw method stub
+        Draw method stub.
+
         :param _screen: unused
         :param _positionx: unused
         :param _positiony: unused
@@ -51,7 +45,8 @@ class MySprite(pygame.sprite.Sprite):
 
     def changeanimation(self, _newanimation):
         """
-        Change animation
+        Change animation.
+
         :param _newanimation: Animation for changing.
         :return:
         """
@@ -61,7 +56,8 @@ class MySprite(pygame.sprite.Sprite):
 
     def update(self, _delta):
         """
-        Update sprite
+        Update sprite.
+
         :param _delta:
         :return: nothing
         """

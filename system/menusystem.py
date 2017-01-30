@@ -1,6 +1,4 @@
-"""
-MenuSystem module
-"""
+"""MenuSystem module."""
 from artifact.spriteartifact import SpriteArtifact, DRAW_NEVER
 from artifact.menuartifact import MenuArtifact
 from highscoresmanager import HighscoresManager
@@ -11,9 +9,8 @@ import pygame
 
 
 class MenuSystem:
-    """
-    System repsonsible for managing all game menus and dialogs.
-    """
+    """System repsonsible for managing all game menus and dialogs."""
+
     NAME = "MenuSystem"
     menu = {}
     current_node = None
@@ -25,14 +22,13 @@ class MenuSystem:
     focus_item = True
 
     def __init__(self):
-        """
-        Constructor. Creates Highscore Manager.
-        """
+        """Constructor. Creates Highscore Manager."""
         self.highscoresmanager = HighscoresManager()
 
     def remove(self, _entity):
         """
-        Removes entity from system
+        Remove entity from system.
+
         :param _entity: Entity to be removed
         :return: nothing
         """
@@ -47,7 +43,8 @@ class MenuSystem:
 
     def register(self, _object, _parent=None):
         """
-        Registers entity to the system
+        Register entity to the system.
+
         :param _object: object to be added
         :param _parent: parent of selected menu item, if applicable.
         :return:
@@ -63,7 +60,8 @@ class MenuSystem:
 
     def update(self, _timedelta, _systems):
         """
-        Updates system. Responsible for saving highscore and focusing first item.
+        Update system. Responsible for saving highscore and focusing first item.
+
         :param _timedelta: game loop time delta
         :param _systems: collection of all systems.
         :return:
@@ -82,6 +80,7 @@ class MenuSystem:
     def input(self, _event):
         """
         Responsible for processing events connected with menu, highscores.
+
         Allows adding name to highscores, allows navigation through menu.
         :param _event: event to be processed
         :return: nothing

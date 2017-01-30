@@ -1,6 +1,4 @@
-"""
-Collision system module
-"""
+"""Collision system module."""
 import random
 import pygame
 from artifact.spriteartifact import SpriteArtifact
@@ -13,9 +11,8 @@ from system.tagsystem import TagSystem
 
 
 class CollisionSystem:
-    """
-    System responsible for handling collisions
-    """
+    """System responsible for handling collisions."""
+
     NAME = "CollisionSystem"
     all = []
     moveableIndexes = []
@@ -25,15 +22,14 @@ class CollisionSystem:
     behaviors = []
 
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.systems = None
         self.tile_size = 64
 
     def register(self, _object):
         """
-        Registers objects for collision detection system. Holds positions, sprites and behaviours.
+        Register objects for collision detection system. Holds positions, sprites and behaviours.
+
         :param _object: Object to be added to collision processing system
         :return: nothing
         """
@@ -53,7 +49,8 @@ class CollisionSystem:
 
     def remove(self, _entity):
         """
-        Removes entity from system
+        Remove entity from system.
+
         :param _entity: entity to remove
         :return: nothing
         """
@@ -75,6 +72,7 @@ class CollisionSystem:
     def input(self, _event):
         """
         Processing of player's teleporation when reached border of screen.
+
         :param _event: event to process
         :return: nothing
         """
@@ -102,7 +100,8 @@ class CollisionSystem:
 
     def update(self, _timedelta, _systems):
         """
-        Verifies if items are colliding, and creates collision events, for both entities.
+        Verify if items are colliding, and creates collision events, for both entities.
+
         :param _timedelta: game loop delta
         :param _systems: all system collection
         :return: nothing

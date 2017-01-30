@@ -1,6 +1,4 @@
-"""
-PlayerProgressSystem module
-"""
+"""Player Progress System module."""
 from highscoresmanager import HighscoresManager
 from myevents import GAME_EVENT, GameEventType, ENTITY_EFFECT_EVENT, \
     EntityEffect, MENU_EVENT, MenuEventType
@@ -12,15 +10,15 @@ from system.tagsystem import TagSystem
 
 class PlayerProgressSystem:
     """
-    System responsible for maintaining player progress:
-    points, lifes, levels, caps...
+    System responsible for maintaining player progress.
+
+    Points, lifes, levels, caps...
     """
+
     NAME = "PlayerProgressSystem"
 
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.highscoresmanager = HighscoresManager()
         self.highscoresmanager.load()
         self.current_level = 1
@@ -32,7 +30,8 @@ class PlayerProgressSystem:
 
     def register(self, _object):
         """
-        Register method stub
+        Register method stub.
+
         :param _object: object to be registered
         :return: nothing
         """
@@ -40,7 +39,8 @@ class PlayerProgressSystem:
 
     def remove(self, _entity):
         """
-        Remove method stub
+        Remove method stub.
+
         :param _entity: entity to be removed
         :return: nothing
         """
@@ -48,7 +48,8 @@ class PlayerProgressSystem:
 
     def update(self, _timedelta, _systems):
         """
-        Update method for system
+        Update method for system.
+
         :param _timedelta: game loop time delta
         :param _systems: collection of all systems
         :return:
@@ -57,7 +58,8 @@ class PlayerProgressSystem:
 
     def input(self, _event):
         """
-        Method responsibel for adding points for certain actions
+        Method responsibel for adding points for certain actions.
+
         Continuing to next level, removing points for using bait, or pausing game.
         :param _event: event to be processed.
         :return: nothing
@@ -114,7 +116,8 @@ class PlayerProgressSystem:
 
     def updatehud(self):
         """
-        Method responsible for creating event for hud update
+        Method responsible for creating event for hud update.
+
         :return: nothing
         """
         current_caps_string = str(self.current_caps) + "/" + str(self.current_max_caps)

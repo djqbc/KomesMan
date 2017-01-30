@@ -1,19 +1,16 @@
-"""
-Komes man sprite package
-"""
+"""Komes man sprite package."""
 from math import floor
 import pygame
 from sprite.mysprite import MySprite, AnimationState
 
 
 class KomesManSprite(MySprite):
-    """
-    KomesMan!!!!
-    """
+    """KomesMan."""
 
     def __init__(self, tilesize):
         """
-        Constructor
+        Constructor.
+
         :param tilesize: desired width and height of tile in pixels.
         """
         super(KomesManSprite, self).__init__()
@@ -49,7 +46,8 @@ class KomesManSprite(MySprite):
 
     def draw(self, _screen, _positionx, _positiony):
         """
-        Draw KomesMan (animated)
+        Draw KomesMan (animated).
+
         :param _screen: screen surface
         :param _positionx: X position to draw item
         :param _positiony: Y position to draw item
@@ -65,7 +63,8 @@ class KomesManSprite(MySprite):
 
     def update(self, _delta):
         """
-        Update sprite
+        Update sprite.
+
         :param _delta:
         :return: nothing
         """

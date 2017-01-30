@@ -1,6 +1,4 @@
-"""
-Drug behaviour package
-"""
+"""Drug behaviour package."""
 from myevents import COLLISION_EVENT, GAME_EVENT, SCREEN_EFFECT_EVENT, \
     ENTITY_EFFECT_EVENT, ScreenEffectEvent, \
     EventType, \
@@ -10,13 +8,13 @@ import pygame
 
 
 class DrugBehavior:
-    """
-    Class defining behaviour of drug on incoming events
-    """
+    """Class defining behaviour of drug on incoming events."""
+
     @staticmethod
     def input(_event, _posteventcallback):
         """
         Reaction on incoming event.
+
         Currently handles only collision (deletes object from map,
         changes colors, and speed, and plays proper sound)
         :param _event: event to process

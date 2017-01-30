@@ -1,19 +1,17 @@
-"""
-Komes man behaviour package
-"""
+"""Komes man behaviour package."""
 from myevents import COLLISION_EVENT, GAME_EVENT, GameEventType
 from artifact.tagartifact import TagArtifact, TagType
 import pygame
 
 
 class KomesManBehavior:
-    """
-    Class defining behaviour of KomesMan on incoming events
-    """
+    """Class defining behaviour of KomesMan on incoming events."""
+
     @staticmethod
     def input(_event, _posteventcallback):
         """
-        Reaction on incoming event (Death if colliding with enemy)
+        Reaction on incoming event (Death if colliding with enemy.
+
         :param _event: event to process
         :param _posteventcallback: function to evaluate after processing input
         :return: nothing

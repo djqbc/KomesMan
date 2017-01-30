@@ -1,15 +1,13 @@
-"""
-Behaviour artefact module
-"""
+"""Behaviour artefact module."""
 class BehaviorArtifact:
-    """
-    Container class for bahavior artifact of certain object
-    """
+    """Container class for bahavior artifact of certain object."""
+
     NAME = "BehaviorArtifact"
 
     def __init__(self, _behavior=None):
         """
-        Constructor
+        Constructor.
+
         :param _behavior: behavior of certain object
         """
         self.behavior = _behavior

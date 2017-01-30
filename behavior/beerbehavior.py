@@ -1,6 +1,4 @@
-"""
-Beer behaviour package
-"""
+"""Beer behaviour package."""
 from myevents import COLLISION_EVENT, SCREEN_EFFECT_EVENT, ScreenEffectEvent, \
     EventType, GAME_EVENT, GameEventType, ENTITY_EFFECT_EVENT, EntityEffect
 from artifact.tagartifact import TagArtifact, TagType
@@ -8,13 +6,13 @@ import pygame
 
 
 class BeerBehavior:
-    """
-    Defines behaviour of Beer object on incoming events
-    """
+    """Defines behaviour of Beer object on incoming events."""
+
     @staticmethod
     def input(_event, _posteventcallback):
         """
         Reaction on incoming event.
+
         Currently handles only collision (deletes object from map, turns on drunkness,
         and plays proper sound)
         :param _event: event to process

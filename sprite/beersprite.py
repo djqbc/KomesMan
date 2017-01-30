@@ -1,6 +1,4 @@
-"""
-Beer sprite package
-"""
+"""Beer sprite package."""
 from sprite.mysprite import MySprite
 import pygame
 
@@ -8,12 +6,14 @@ import pygame
 class BeerSprite(MySprite):
     """
     Sprite of beer item - good, old Komes.
+
     OK... - actually it's Kasztelan...
     """
 
     def __init__(self, tilesize):
         """
-        Constructor
+        Constructor.
+
         :param tilesize: desired width and height of tile in pixels.
         """
         super(BeerSprite, self).__init__()
@@ -23,7 +23,8 @@ class BeerSprite(MySprite):
 
     def draw(self, _screen, _positionx, _positiony):
         """
-        Draw item
+        Draw item.
+
         :param _screen: screen surface
         :param _positionx: X position to draw item
         :param _positiony: Y position to draw item
@@ -33,7 +34,8 @@ class BeerSprite(MySprite):
 
     def update(self, _delta):
         """
-        Update sprite
+        Update sprite.
+
         :param _delta:
         :return: nothing
         """

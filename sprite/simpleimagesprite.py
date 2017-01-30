@@ -1,16 +1,15 @@
-"""
-Simple image sprite package
-"""
+"""Simple image sprite package."""
 from sprite.mysprite import MySprite
 import pygame
 
 
 class SimpleImageSprite(MySprite):
-    """SimpleImageSprite"""
+    """Simple Image Sprite."""
 
     def __init__(self, _path):
         """
-        Constructor
+        Constructor.
+
         :param _path: Path to image
         """
         super(SimpleImageSprite, self).__init__()
@@ -19,7 +18,8 @@ class SimpleImageSprite(MySprite):
 
     def draw(self, _screen, _positionx, _positiony):
         """
-        Draw item
+        Draw item.
+
         :param _screen: screen surface
         :param _positionx: X position to draw item
         :param _positiony: Y position to draw item
@@ -29,7 +29,8 @@ class SimpleImageSprite(MySprite):
 
     def update(self, _delta):
         """
-        Update sprite
+        Update sprite.
+
         :param _delta:
         :return: nothing
         """
@@ -37,7 +38,8 @@ class SimpleImageSprite(MySprite):
 
     def size(self):
         """
-        Get size of image
+        Get size of image.
+
         :return: size of image
         """
         return self.image.get_size()
@@ -45,6 +47,7 @@ class SimpleImageSprite(MySprite):
     def scale(self, xdim, ydim):
         """
         Scale image.
+
         :param xdim: X dimension in pixels
         :param ydim: Y dimension in pixels
         :return: nothing

@@ -1,6 +1,4 @@
-"""
-Menu builder package
-"""
+"""Menu builder package."""
 from copy import copy
 
 from entity import Entity
@@ -22,12 +20,12 @@ from myevents import MenuEventType, GAME_STATE_CHANGE_EVENT, MENU_EVENT
 
 
 class MenuBuilder:
-    """
-    Class handling building of menu
-    """
+    """Class handling building of menu."""
+
     def __init__(self, _systems):
         """
-        Constructor
+        Constructor.
+
         :param _systems: Reference to other systems collection.
         """
         self.dirty = True
@@ -42,7 +40,8 @@ class MenuBuilder:
 
     def build(self):
         """
-        Creates menu items, and large messages (f.e. after deatH)
+        Create menu items, and large messages (f.e. after death).
+
         :return: nothing
         """
         self.createmenubackground(0, 0)
@@ -66,6 +65,7 @@ class MenuBuilder:
     def clear(self):
         """
         Cleanup of menu items in other systems.
+
         :return: nothing
         """
         for entity in self.elements:
@@ -76,7 +76,8 @@ class MenuBuilder:
 
     def input(self, _event):
         """
-        Handles rebuilding menu elements on ceratin events
+        Handle rebuilding menu elements on ceratin events.
+
         Handles entering of name for highscores.
         :param _event: event to process
         :return: nothing
@@ -106,7 +107,8 @@ class MenuBuilder:
 
     def createmenuelement(self, _elementx, _elementy, _text, _type, _parent):
         """
-        Creates single menu element
+        Create single menu element.
+
         :param _elementx: X position of text
         :param _elementy: Y position of text
         :param _text: Text of element
@@ -125,7 +127,8 @@ class MenuBuilder:
 
     def createmenubackground(self, _menux, _menuy):
         """
-        Creates large KomesMan logo
+        Create large KomesMan logo.
+
         :param _menux: X position of logo
         :param _menuy: Y position of logo
         :return: nothing
@@ -138,7 +141,8 @@ class MenuBuilder:
 
     def createhud(self, _hudx, _hudy):
         """
-        Creates HUD (points, lives, cap status)
+        Create HUD (points, lives, cap status).
+
         :param _hudx: X position in pixels
         :param _hudy: Y position in pixels
         :return: nothing
@@ -151,7 +155,8 @@ class MenuBuilder:
 
     def createresult(self, _text, _type):
         """
-        Creates black board with specified text
+        Create black board with specified text.
+
         :param _text: text to display
         :param _type: GameState in which board should be displayed.
         :return: nothing
@@ -164,7 +169,8 @@ class MenuBuilder:
 
     def createhighscores(self):
         """
-        Creates labels for highscore entering, and placeholder for entering player name.
+        Create labels for highscore entering, and placeholder for entering player name.
+
         :return: nothing
         """
         new_highscore = Entity()
@@ -187,7 +193,8 @@ class MenuBuilder:
 
     def createhalloffame(self):
         """
-        Creates labels and placeholders for loading highscore values.
+        Create labels and placeholders for loading highscore values.
+
         :return: nothing
         """
         potential_size_of_one_line = (self.screen_height - 2*self.margin) \
@@ -223,7 +230,8 @@ class MenuBuilder:
 
     def reloadhighscores(self):
         """
-        Loads highscores using highscoresManager into menu entities.
+        Load highscores using highscoresManager into menu entities.
+
         :return: nothing
         """
         self.highscoresmanager.load()

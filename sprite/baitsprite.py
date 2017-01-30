@@ -1,18 +1,15 @@
-"""
-Bait sprite package
-"""
+"""Bait sprite package."""
 from sprite.mysprite import MySprite
 import pygame
 
 
 class BaitSprite(MySprite):
-    """
-    Sprite of bait item
-    """
+    """Sprite of bait item."""
 
     def __init__(self, tilesize):
         """
-        Constructor
+        Constructor.
+
         :param tilesize: desired width and height of tile in pixels.
         """
         super(BaitSprite, self).__init__()
@@ -22,7 +19,8 @@ class BaitSprite(MySprite):
 
     def draw(self, _screen, _positionx, _positiony):
         """
-        Draw item
+        Draw item.
+
         :param _screen: screen surface
         :param _positionx: X position to draw item
         :param _positiony: Y position to draw item
@@ -32,7 +30,8 @@ class BaitSprite(MySprite):
 
     def update(self, _delta):
         """
-        Update sprite
+        Update sprite.
+
         :param _delta:
         :return: nothing
         """

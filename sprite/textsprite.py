@@ -1,17 +1,15 @@
-"""
-Text sprite package
-"""
+"""Text sprite package."""
 from sprite.mysprite import MySprite, Modifiers
 import pygame
 
 
 class TextSprite(MySprite):
-    """
-    Text sprite.
-    """
+    """Text sprite."""
+
     def __init__(self, _text, _modifiers=Modifiers.NONE):
         """
-        Constructor
+        Constructor.
+
         :param _text: Text to show
         :param _modifiers: Position modifier (Modifiers.CENTER_H / Modifiers.CENTER_V)
         Used for text alignment.
@@ -25,7 +23,9 @@ class TextSprite(MySprite):
 
     def draw(self, _screen, _positionx, _positiony):
         """
-        Draw text. If self.modifiers contains Modifiers.CENTER_H, text is centered
+        Draw text.
+
+        If self.modifiers contains Modifiers.CENTER_H, text is centered
         horizontally. In case of Modifiers.CENTER_V, text is centered vertically.
         :param _screen: screen surface
         :param _positionx: X position to draw item
@@ -48,7 +48,8 @@ class TextSprite(MySprite):
 
     def update(self, _delta):
         """
-        Update sprite
+        Update sprite.
+
         :param _delta:
         :return: nothing
         """
@@ -56,14 +57,16 @@ class TextSprite(MySprite):
 
     def size(self):
         """
-        Get size of font
+        Get size of font.
+
         :return: size of font
         """
         return self.basicfont.size(self.textcontent)
 
     def changetext(self, _text):
         """
-        Change text of text srpite
+        Change text of text srpite.
+
         :param _text: new text
         :return: nothing
         """
@@ -73,6 +76,7 @@ class TextSprite(MySprite):
     def addhighlight(self):
         """
         Add hihlight to text.
+
         :return: nothing
         """
         self.color = (255, 255, 255)
@@ -81,6 +85,7 @@ class TextSprite(MySprite):
     def removehighlight(self):
         """
         Remove highlight from text.
+
         :return: nothing
         """
         self.color = (127, 127, 127)

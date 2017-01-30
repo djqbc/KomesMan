@@ -1,24 +1,20 @@
-"""
-TagSystem module
-"""
+"""TagSystem module."""
 from artifact.tagartifact import TagArtifact, TagType
 
 
 class TagSystem:
-    """
-    System responsible for getting objects tags
-    """
+    """System responsible for getting objects tags."""
+
     NAME = "TagSystem"
 
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.tags = {}
 
     def register(self, _object):
         """
-        Register object for system
+        Register object for system.
+
         :param _object: Object to be registered
         :return: nothing
         """
@@ -36,7 +32,8 @@ class TagSystem:
 
     def remove(self, _entity):
         """
-        Remove object from system
+        Remove object from system.
+
         :param _entity: Entity to be removed
         :return: nothing
         """
@@ -46,7 +43,8 @@ class TagSystem:
 
     def getentities(self, _type=TagType.KOMESMAN, _subtype=None):
         """
-        Method responsible for getting entities of certain type
+        Method responsible for getting entities of certain type.
+
         :param _type: Type of entity to get
         :param _subtype: Subtype of entity to get
         :return: Entities list
@@ -64,7 +62,8 @@ class TagSystem:
 
     def update(self, _timedelta, _systems):
         """
-        Update method stub
+        Update method stub.
+
         :param _timedelta: game loop time delta
         :param _systems: all systems collection
         :return: nothing
@@ -73,7 +72,8 @@ class TagSystem:
 
     def input(self, _event):
         """
-        Input method stub
+        Input method stub.
+
         :param _event: event to be processed
         :return: nothing
         """

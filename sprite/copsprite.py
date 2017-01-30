@@ -1,6 +1,4 @@
-"""
-Cop sprite package
-"""
+"""Cop sprite package."""
 
 from math import floor
 import pygame
@@ -8,11 +6,12 @@ from sprite.mysprite import MySprite, AnimationState
 
 
 class CopSprite(MySprite):
-    """Bad cop"""
+    """Bad cop."""
 
     def __init__(self, tilesize):
         """
         Constructor. Creates animation for each direction of movement.
+
         :param tilesize: desired width and height of tile in pixels.
         """
         super(CopSprite, self).__init__()
@@ -48,7 +47,8 @@ class CopSprite(MySprite):
 
     def draw(self, _screen, _positionx, _positiony):
         """
-        Draw item
+        Draw item.
+
         :param _screen: screen surface
         :param _positionx: X position to draw item
         :param _positiony: Y position to draw item
@@ -64,7 +64,8 @@ class CopSprite(MySprite):
 
     def update(self, _delta):
         """
-        Update sprite
+        Update sprite.
+
         :param _delta:
         :return: nothing
         """

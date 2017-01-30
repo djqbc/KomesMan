@@ -1,6 +1,4 @@
-"""
-Board module
-"""
+"""Board module."""
 from enum import IntEnum
 from artifact.spriteartifact import SpriteArtifact
 from artifact.tagartifact import TagArtifact, TagType, TagSubType
@@ -14,9 +12,8 @@ from system.gamesystem import GameState
 
 
 class BoardElement(IntEnum):
-    """
-    Enum representing kinds of items which can be placed on board!
-    """
+    """Enum representing kinds of items which can be placed on board."""
+
     EMPTY = 0
     WALL = 1
     CAP = 2
@@ -29,12 +26,12 @@ class BoardElement(IntEnum):
 
 
 class Board(Entity):
-    """
-    Board class
-    """
+    """Board class."""
+
     def __init__(self, board, systems, registerlist, tilesize):
         """
         Constructor.
+
         :param board: Board - 2d array of WallKind items or 0's if there is no wall.
         :param systems: Collection of all systems
         :param registerlist: List where entities should be registered.
@@ -62,7 +59,8 @@ class Board(Entity):
 
     def getpos(self, pos):
         """
-        Returns "tile" position, from "pixel" position
+        Return "tile" position, from "pixel" position.
+
         :param pos: position in pixels in specified dimension
         :return: integer tile position.
         """
@@ -70,7 +68,8 @@ class Board(Entity):
 
     def checknext(self, pos):
         """
-        Defines if another tile should be checked for possibility of move
+        Define if another tile should be checked for possibility of move.
+
         :param pos: Pixel position in specified dimension
         :return: True if another tile should be checked, false otherwise.
         """
@@ -78,7 +77,8 @@ class Board(Entity):
 
     def isbeyondborder(self, pos_x, pos_y):
         """
-        Check if specified pixel location is outside border
+        Check if specified pixel location is outside border.
+
         :param pos_x: X integer position
         :param pos_y: Y integer position
         :return: true if pixel is beyond border, false otherwise.
@@ -89,7 +89,8 @@ class Board(Entity):
 
     def checkmove(self, pos_x, pos_y, delta_x, delta_y):
         """
-        Check if specified move is possible
+        Check if specified move is possible.
+
         :param pos_x: Current X (pixels) position of moved object
         :param pos_y: Current Y (pixels) position of moved object
         :param delta_x: Amount of X pixels to move (if <0 move lest, if >0 move right)

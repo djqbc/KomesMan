@@ -1,6 +1,4 @@
-"""
-UserMovementSystem module
-"""
+"""UserMovementSystem module."""
 from artifact.movementartifact import MovementArtifact
 from artifact.spriteartifact import SpriteArtifact
 from artifact.tagartifact import TagType, TagSubType
@@ -13,24 +11,22 @@ from myevents import ENTITY_EFFECT_EVENT, EventType, EntityEffect, starttimer, \
 
 
 class UserMovementSystem:
-    """
-    System responsible for humant movement.
-    """
+    """System responsible for humant movement."""
+
     NAME = "UserMovementSystem"
     observing = []
     activeKeys = {}
 
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.previous_dx = 0
         self.previous_dy = 0
         self.paused = False
 
     def register(self, _object):
         """
-        Register movable object for system
+        Register movable object for system.
+
         :param _object: Movable entity
         :return: nothing
         """
@@ -41,7 +37,8 @@ class UserMovementSystem:
 
     def remove(self, _entity):
         """
-        Remove entity from system
+        Remove entity from system.
+
         :param _entity: Entity to be removed
         :return: Nothing
         """
@@ -49,7 +46,8 @@ class UserMovementSystem:
 
     def update(self, _delta, _systems):
         """
-        Update observed entities based on received events. Works only when unpaused
+        Update observed entities based on received events. Works only when unpaused.
+
         :param _delta: game loop delta
         :param _systems: all systems collection
         :return: nothing
@@ -84,7 +82,8 @@ class UserMovementSystem:
 
     def input(self, _event):
         """
-        Process input events (create movement vectors for events based on input keystrokes)
+        Process input events (create movement vectors for events based on input keystrokes).
+
         :param _event: event to be processed
         :return: nothing
         """

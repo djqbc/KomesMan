@@ -1,6 +1,4 @@
-"""
-Pill behaviour package
-"""
+"""Pill behaviour package."""
 from myevents import COLLISION_EVENT, GAME_EVENT, ENTITY_EFFECT_EVENT, EventType, \
     EntityEffect, GameEventType
 from artifact.tagartifact import TagArtifact, TagType
@@ -8,13 +6,13 @@ import pygame
 
 
 class PillBehavior:
-    """
-    Class defining behaviour of pill on incoming events
-    """
+    """Class defining behaviour of pill on incoming events."""
+
     @staticmethod
     def input(_event, _posteventcallback):
         """
         Reaction on incoming event.
+
         Currently handles only collision (causes speed variations of player)
         :param _event: event to process
         :param _posteventcallback: function to evaluate after processing input

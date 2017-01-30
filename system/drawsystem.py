@@ -1,6 +1,4 @@
-"""
-DrawSystem module
-"""
+"""DrawSystem module."""
 from artifact.spriteartifact import SpriteArtifact
 from myevents import SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType, starttimer, \
     GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType
@@ -9,9 +7,8 @@ from system.gamesystem import GameState
 
 
 class DrawSystem:
-    """
-    System rsponsible for drawing items on screen.
-    """
+    """System rsponsible for drawing items on screen."""
+
     NAME = "DrawSystem"
     screen = None
     observing = []
@@ -20,14 +17,13 @@ class DrawSystem:
     col = 0
 
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.createdisplay()
 
     def createdisplay(self, _resolution=(1024, 768), _maximized=False):
         """
-        Function responsible for creating display
+        Function responsible for creating display.
+
         :param _resolution: Screen resolution dimensions tuple.
         :param _maximized: Boolean value determining maximalization.
         :return: nothing
@@ -41,7 +37,8 @@ class DrawSystem:
 
     def register(self, _object):
         """
-        Add object for observing
+        Add object for observing.
+
         :param _object: object to be added
         :return: nothing
         """
@@ -52,7 +49,8 @@ class DrawSystem:
 
     def remove(self, _entity):
         """
-        Remove entity from system
+        Remove entity from system.
+
         :param _entity: entity to be removed.
         :return:
         """
@@ -61,6 +59,7 @@ class DrawSystem:
     def draw(self):
         """
         Function responsible for drawing all observed items on screen, and for special effects.
+
         :return: nothing
         """
         self.screen.fill(pygame.Color('black'))
@@ -95,7 +94,8 @@ class DrawSystem:
 
     def update(self, _timedelta, _systems):
         """
-        Updates all sprites
+        Update all sprites.
+
         :param _timedelta: game loop delta
         :param _systems: all game systems.
         :return:
@@ -105,8 +105,8 @@ class DrawSystem:
 
     def input(self, _event):
         """
-        Responsible for processing events connected with drawing (especially
-        starting effects).
+        Responsible for processing events connected with drawing.
+
         :param _event: event for processing
         :return: nothing
         """

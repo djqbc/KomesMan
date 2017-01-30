@@ -1,27 +1,23 @@
-"""
-HudSystem module
-"""
+"""HudSystem module."""
 from artifact.spriteartifact import SpriteArtifact
 from myevents import GAME_EVENT, GameEventType
 
 
 class HUDSystem:
-    """
-    System responsible for updating HUD
-    """
+    """System responsible for updating HUD."""
+
     NAME = "HUDSystem"
     observing = []
     dirty = True
 
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.observing = []
 
     def register(self, _object):
         """
-        Registers aprite objects to the system.
+        Register aprite objects to the system.
+
         :param _object: Sprite object
         :return: nothing
         """
@@ -33,7 +29,8 @@ class HUDSystem:
 
     def remove(self, _entity):
         """
-        Removes object from system
+        Remove object from system.
+
         :param _entity: Entity to be removed
         :return: nothing
         """
@@ -41,7 +38,8 @@ class HUDSystem:
 
     def update(self, _timedelta, _systems):
         """
-        Stub method for updating system
+        Stub method for updating system.
+
         :param _timedelta: time delta of game loop
         :param _systems: collection of all systems.
         :return:
@@ -50,7 +48,8 @@ class HUDSystem:
 
     def input(self, _event):
         """
-        Processes input for HUD sytem.
+        Process input for HUD sytem.
+
         Updates system with new data from event.
         :param _event: Event for processing
         :return: nothing

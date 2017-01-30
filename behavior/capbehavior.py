@@ -1,6 +1,4 @@
-"""
-Cap behaviour package
-"""
+"""Cap behaviour package."""
 from myevents import COLLISION_EVENT, GAME_EVENT, \
     ENTITY_EFFECT_EVENT, EntityEffect, GameEventType
 from artifact.tagartifact import TagArtifact, TagType
@@ -8,13 +6,13 @@ import pygame
 
 
 class CapBehavior:
-    """
-    Class defining behaviour of cap on incoming events
-    """
+    """Class defining behaviour of cap on incoming events."""
+
     @staticmethod
     def input(_event, _posteventcallback):
         """
         Reaction on incoming event.
+
         Currently handles only collision (deletes object from map, sends proper event,
         and plays proper sound)
         :param _event: event to process

@@ -1,6 +1,4 @@
-"""
-GameSystem module
-"""
+"""GameSystem module."""
 from enum import IntEnum
 from myevents import GAME_EVENT, GAME_STATE_CHANGE_EVENT, MENU_EVENT, MenuEventType, starttimer, GameEventType, \
     ENTITY_EFFECT_EVENT, EntityEffect, SCREEN_EFFECT_EVENT, ScreenEffectEvent, EventType
@@ -8,9 +6,8 @@ import pygame
 
 
 class GameState(IntEnum):
-    """
-    Enum representing game state
-    """
+    """Enum representing game state."""
+
     MENU = 1
     END = 2
     GAME = 4
@@ -23,22 +20,20 @@ class GameState(IntEnum):
     PAUSED = 512
 
 class GameSystem:
-    """
-    System responsible for maintaining game state.
-    """
+    """System responsible for maintaining game state."""
+
     NAME = "GameSystem"
     game_state = GameState.GAME
 
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         self.game_state = GameState.MENU
         self.active_timer = None
 
     def remove(self, _entity):
         """
-        Stub method
+        Stub method.
+
         :param _entity: unused
         :return: nothing
         """
@@ -46,7 +41,8 @@ class GameSystem:
 
     def input(self, _event):
         """
-        Processes events connected with game state.
+        Process events connected with game state.
+
         Porcesses GAME_EVENT such as: NEW_HIGHSCORE, PAUSE_GAME, LOST_GAME, LOST_LIFE, WON_GAME
         Processes breaking game by pressing ESC
         :param _event: event to be processed
@@ -115,6 +111,7 @@ class GameSystem:
     def update(self, _timedelta, _systems):
         """
         Stub method for updating systems.
+
         :param _timedelta: time delta of game loop
         :param _systems: all systems
         :return: nothing
@@ -123,21 +120,24 @@ class GameSystem:
 
     def quit(self):
         """
-        Ends game.
+        End game.
+
         :return: nothing
         """
         return self.game_state == GameState.END
 
     def getcurrentgamestate(self):
         """
-        Game state getter
+        Game state getter.
+
         :return: game state
         """
         return self.game_state
 
     def endinit(self):
         """
-        Finishes initialization of system.
+        Finish initialization of system.
+
         :return: nothing
         """
         self.game_state = GameState.MENU

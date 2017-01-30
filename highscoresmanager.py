@@ -1,18 +1,16 @@
-"""
-HighscoreManager module
-"""
+"""Highscore Manager module."""
 import os
 
 
 class Highscore:
-    """
-    Class representing one value of highscores
-    """
+    """Class representing one value of highscores."""
+
     delimiter = '|'
 
     def __init__(self, line, score):
         """
-        Constructor
+        Constructor.
+
         :param line: User name, or line from loaded file if no score specified
         :param score: Score (optional)
         """
@@ -25,26 +23,37 @@ class Highscore:
             self.score = score
 
     def __repr__(self):
+        """
+        Return representation of highscore entry.
+
+        :return: string representation of highscore entry.
+        """
         return '{}{}{}'.format(self.name, self.delimiter, self.score)
 
     def __str__(self):
+        """
+        Return representation of highscore entry.
+
+        :return: string representation of highscore entry.
+        """
         return self.__repr__()
 
 
 class HighscoresManager:
-    """
-    Class responsible for loading, saving and inserting highscores.
-    """
+    """Class responsible for loading, saving and inserting highscores."""
+
     filename = "highscores.txt"
     topscorescount = 10
 
     def __init__(self):
+        """Constructor."""
         self.highscores = []
         self.loaded = False
 
     def ishighscore(self, potentialhighscore):
         """
         Function for checking if score is one of best.
+
         :param potentialhighscore: user score
         :return: True if value is one of best scores, false otherwise.
         """
@@ -55,7 +64,8 @@ class HighscoresManager:
 
     def inserthighscore(self, player, score):
         """
-        Inserts highscore into internal highscores representation
+        Insert highscore into internal highscores representation.
+
         :param player: player name as string
         :param score: score as integer
         :return: nothing
@@ -68,7 +78,8 @@ class HighscoresManager:
 
     def load(self):
         """
-        Loads highscores from file, for further use.
+        Load highscores from file, for further use.
+
         :return: nothing
         """
         if not self.loaded:
@@ -80,7 +91,8 @@ class HighscoresManager:
 
     def save(self):
         """
-        Saves internal model of highscores to file
+        Save internal model of highscores to file.
+
         :return: nothing
         """
         with open(self.filename, 'w') as file:

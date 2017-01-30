@@ -1,19 +1,16 @@
-"""
-HUD sprite package
-"""
+"""HUD sprite package."""
 from sprite.mysprite import MySprite, Modifiers
 from sprite.textsprite import TextSprite
 from sprite.simpleimagesprite import SimpleImageSprite
 
 
 class HUDSprite(MySprite):
-    """
-    Sprite of on-screen display of points, caps and life
-    """
+    """Sprite of on-screen display of points, caps and life."""
 
     def __init__(self, _modifiers=Modifiers.NONE):
         """
-        Constructor for HUD
+        Constructor for HUD.
+
         :param tilesize: desired width and height of tile in pixels.
         """
         super(HUDSprite, self).__init__()
@@ -30,6 +27,7 @@ class HUDSprite(MySprite):
     def draw(self, _screen, _positionx, _positiony):
         """
         Draw HUD (Points, caps status, lifes) - with images.
+
         :param _screen: screen surface
         :param _positionx: X position to draw item
         :param _positiony: Y position to draw item
@@ -68,7 +66,8 @@ class HUDSprite(MySprite):
 
     def update(self, _delta):
         """
-        Update sprite
+        Update sprite.
+
         :param _delta:
         :return: nothing
         """
@@ -76,7 +75,8 @@ class HUDSprite(MySprite):
 
     def updatehud(self, _caps, _lifes, _points):
         """
-        Updates HUD with specified number of caps, lifes, and points
+        Update HUD with specified number of caps, lifes, and points.
+
         :param _caps: Collected caps
         :param _lifes: Lifes left
         :param _points: Collected points

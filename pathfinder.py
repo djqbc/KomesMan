@@ -1,6 +1,4 @@
-"""
-Pathfinder module
-"""
+"""Pathfinder module."""
 
 from threading import Thread
 from artifact.tagartifact import TagArtifact, TagType, TagSubType
@@ -8,12 +6,12 @@ from entity import Entity
 
 
 class Node:
-    """
-    Node class for pathfinder.
-    """
+    """Node class for pathfinder."""
+
     def __init__(self, x, y):
         """
-        Constructor
+        Constructor.
+
         :param node_x: X tile position of node.
         :param node_y: Y tile position of node.
         """
@@ -22,14 +20,16 @@ class Node:
 
     def __hash__(self):
         """
-        Returns hash of Node.
+        Return hash of Node.
+
         :return: hash of node
         """
         return hash((self.node_x, self.node_y))
 
     def __eq__(self, other):
         """
-        Check for equality of Nodes
+        Check for equality of Nodes.
+
         :param other: Second node to compare to
         :return: True if equal, false if not
         """
@@ -38,6 +38,7 @@ class Node:
     def __ne__(self, other):
         """
         Check for not ewuality of Nodes.
+
         :param other: Second node to compare to
         :return: True if are not equal, False otherwise.
         """
@@ -45,12 +46,12 @@ class Node:
 
 
 class Edge:
-    """
-    Edge between two nodes.
-    """
+    """Edge between two nodes."""
+
     def __init__(self, u, v):
         """
-        Constructor
+        Constructor.
+
         :param node_u: 1st node
         :param node_v: 2nd node
         """
@@ -59,14 +60,16 @@ class Edge:
 
     def __hash__(self):
         """
-        Returns hash of Edge
+        Return hash of Edge.
+
         :return: hash of Edge
         """
         return hash((self.node_u, self.node_v))
 
     def __eq__(self, other):
         """
-        Check for equality of Edges
+        Check for equality of Edges.
+
         :param other: Second edge to compare to
         :return: True if equal, false if not
         """
@@ -74,7 +77,8 @@ class Edge:
 
     def __ne__(self, other):
         """
-        Check for not ewuality of Edge
+        Check for not ewuality of Edge.
+
         :param other: Second edge to compare to
         :return: True if are not equal, False otherwise.
         """
@@ -83,12 +87,15 @@ class Edge:
 
 class Pathfinder(Entity):
     """
-    Class creating shortest paths between all nodes!
+    Class creating shortest paths between all nodes.
+
     Using Floyd-Warshall Alghorithm!
     """
+
     def __init__(self, board):
         """
-        Constructor
+        Constructor.
+
         :param board: binary representation of board for generation of shortest paths.
         """
         super(Pathfinder, self).__init__()
@@ -104,6 +111,7 @@ class Pathfinder(Entity):
     def prepareallstepsforshortestpaths(self):
         """
         Run preparation in seperate thread.
+
         :return: nothing
         """
         self.ready = False
@@ -113,7 +121,8 @@ class Pathfinder(Entity):
 
     def workerthread(self):
         """
-        Prepares all shortest paths.
+        Prepare all shortest paths.
+
         They are accessible via next_nodes.
         Each node has coressponding index in pathfinder, and nodes should be accessed self.NodesIndexes
         Node index can be converted back by use of self.indexes_nodes.
@@ -198,6 +207,8 @@ class Pathfinder(Entity):
 
     def getnextmove(self, startnode, destnode):
         """
+        Get next move.
+
         :param startnode: starting node
         :param destnode: destination node
         :return: new target node

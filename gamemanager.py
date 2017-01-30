@@ -1,6 +1,4 @@
-"""
-GameManager module
-"""
+"""GameManager module."""
 
 import pygame
 
@@ -19,9 +17,8 @@ from builder.menubuilder import MenuBuilder
 
 
 class GameManager:
-    """
-    Class processing game loop.
-    """
+    """Class processing game loop."""
+
     drawSystem = DrawSystem()
     userMoveSystem = UserMovementSystem()
     aiMoveSystem = AiMovementSystem()
@@ -51,15 +48,14 @@ class GameManager:
     ]
 
     def __init__(self):
-        """
-        Constructor. Initializes pyGame.
-        """
+        """Constructor. Initializes pyGame."""
         pygame.init()
         self.init()
 
     def update(self, _timedelta):
         """
-        Updates current game state
+        Update current game state.
+
         :param _timedelta: game loop time delta
         :return:
         """
@@ -69,13 +65,15 @@ class GameManager:
     def init(self):
         """
         End initialization of game system.
+
         :return:
         """
         self.gameSystem.endinit()
 
     def render(self):
         """
-        Renders current scene
+        Render current scene.
+
         :return: nothing
         """
         self.drawSystem.draw()
@@ -83,6 +81,7 @@ class GameManager:
     def input(self, _event):
         """
         Process input through all systems.
+
         All systems go !!!
         :param _event: event to be processed by all systems !
         :return: nothing
@@ -94,7 +93,8 @@ class GameManager:
 
     def quit(self):
         """
-        Quit game
+        Quit game.
+
         :return: nothing
         """
         return self.gameSystem.quit()

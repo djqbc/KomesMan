@@ -1,6 +1,4 @@
-"""
-Board builder package
-"""
+"""Board builder package."""
 import time
 import pygame
 
@@ -46,13 +44,12 @@ from system.usermovementsystem import UserMovementSystem
 from system.drawsystem import DrawSystem
 
 class BoardBuilder:
-    """
-    Class responsible for preparing game board for play.
-    """
+    """Class responsible for preparing game board for play."""
 
     def __init__(self, _systems):
         """
-        Constructor
+        Constructor.
+
         :param _systems: Reference to systems collection
         """
         self.systems = _systems
@@ -63,7 +60,8 @@ class BoardBuilder:
 
     def build(self, _restart=False):
         """
-        Function responsible for building board for game:
+        Function responsible for building board for game.
+
          - Generate board
          - Convert board to sprites
          - Insert items.
@@ -116,7 +114,8 @@ class BoardBuilder:
 
     def clear(self):
         """
-        Clears board elements from other systems.
+        Clear board elements from other systems.
+
         :return: nothing
         """
         for entity in self.elements:
@@ -126,7 +125,8 @@ class BoardBuilder:
 
     def process_menu_event(self, _event):
         """
-        Processes input events for MENU_EVENT
+        Process input events for MENU_EVENT.
+
         :param _event: event to process
         :return: nothing
         """
@@ -145,7 +145,8 @@ class BoardBuilder:
 
     def input(self, _event):
         """
-        Processes input events for:
+        Process input events for.
+
          - recreating the board (MENU_EVENT)
          - removing and adding objects (GAME_EVENT)
         :param _event: event to process
@@ -171,7 +172,8 @@ class BoardBuilder:
 
     def createkomesman(self, komesx, komesy):
         """
-        Creates our hero - KomesMan
+        Create our hero - KomesMan.
+
         :param komesx: integer X position
         :param komesy: integer Y position
         :return: nothing
@@ -190,7 +192,8 @@ class BoardBuilder:
 
     def createcop(self, copx, copy):
         """
-        Creates cop.
+        Create cop.
+
         :param copx: integer X position
         :param copy: integer Y position
         :return: nothing
@@ -208,7 +211,8 @@ class BoardBuilder:
 
     def createsupercop(self, supercopx, supercopy):
         """
-        Creates super cop.
+        Create super cop.
+
         :param supercopx: integer X position
         :param supercopy: integer Y position
         :return:
@@ -227,7 +231,8 @@ class BoardBuilder:
 
     def createbeer(self, beerx, beery):
         """
-        Creates bottle of beer
+        Create bottle of beer.
+
         :param beerx: integer X position
         :param beery: integer Y position
         :return: nothing
@@ -243,7 +248,8 @@ class BoardBuilder:
 
     def createbait(self, baitx, baity):
         """
-        Creates bait for cops
+        Create bait for cops.
+
         :param baitx: integer X position
         :param baity: integer Y position
         :return: nothing
@@ -259,7 +265,8 @@ class BoardBuilder:
 
     def createdrug(self, drugx, drugy):
         """
-        Creates drug (powder)
+        Create drug (powder).
+
         :param drugx: integer X position
         :param drugy: integer Y position
         :return:
@@ -275,7 +282,8 @@ class BoardBuilder:
 
     def createcap(self, capx, capy):
         """
-        Creates beer cap
+        Create beer cap.
+
         :param capx: integer X position
         :param capy: integer Y position
         :return:
@@ -291,7 +299,8 @@ class BoardBuilder:
 
     def createteleport(self, teleportx, teleporty):
         """
-        Creates teleport
+        Create teleport.
+
         :param teleportx: integer X position
         :param teleporty: integer Y position
         :return:
@@ -308,7 +317,8 @@ class BoardBuilder:
 
     def createpill(self, pillx, pilly):
         """
-        Creates pill
+        Create pill.
+
         :param pillx: integer X position
         :param pilly: integer Y position
         :return:
@@ -324,7 +334,8 @@ class BoardBuilder:
 
     def createboard(self, predefinedboard, uselastdata):
         """
-        Creates board and prepares paths if not prepared.
+        Create board and prepares paths if not prepared.
+
         :param predefinedboard: Array of sprites
         :param uselastdata: Bool value determining if paths have already been calculated.
         :return: nothing

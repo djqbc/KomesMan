@@ -1,25 +1,21 @@
-"""
-MusicSystem module
-"""
+"""MusicSystem module."""
 from myevents import ENTITY_EFFECT_EVENT, EntityEffect
 import pygame
 
 
 class MusicSystem:
-    """
-    System responsible for playing sound.
-    """
+    """System responsible for playing sound."""
+
     NAME = "MusicSystem"
 
     def __init__(self):
-        """
-        Constructor
-        """
+        """Constructor."""
         pass
 
     def register(self, _object):
         """
-        Register object method stub
+        Register object method stub.
+
         :param _object: object to be registered
         :return: nothing
         """
@@ -27,7 +23,8 @@ class MusicSystem:
 
     def remove(self, _entity):
         """
-        Remove object method stub
+        Remove object method stub.
+
         :param _entity: entity to be deleted
         :return: nothing
         """
@@ -35,7 +32,8 @@ class MusicSystem:
 
     def update(self, _timedelta, _systems):
         """
-        Update method stub
+        Update method stub.
+
         :param _timedelta: game loop delta
         :param _systems: collection of all systems
         :return: nothing
@@ -45,7 +43,8 @@ class MusicSystem:
     @staticmethod
     def input(_event):
         """
-        Function responsible for processing sound playing requests
+        Function responsible for processing sound playing requests.
+
         :param _event: event to be processed
         :return: nothing
         """

@@ -1,18 +1,19 @@
-"""
-BinaryBoardToSpriteConverter module
-"""
+"""BinaryBoardToSpriteConverter module."""
 from sprite.wallsprite import WallKind
 
 
 class BinaryBoardToSpritesConverter:
     """
-    Class designed for converting walls from "binary" representation
-    of board walls into WallKinds enum values - needed to make better looking corners.
+    Class designed for converting walls from "binary" representation.
+
+    Creates board walls WallKinds enum values - needed to make better looking corners.
     """
+
     @staticmethod
     def convert(board):
         """
         Convert array representing board into array representing kinds of walls.
+
         :param board: 2d array of integers representing map
         :return: 2d array of WallKinds, or 0 in places where is no wall.
         """
